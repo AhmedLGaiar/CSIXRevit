@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<RevitAddIns>
+	<AddIn Type="Command">
+		<Name>FromRevit</Name>
+		<Assembly>FromRevit.dll</Assembly>
+		<AddInId>
+			36FBA1B9-ED69-4F05-A634-34E76037BD49
+		</AddInId>
+		<FullClassName>FromRevit.Columns</FullClassName>
+		<Text>Get Column From Revit</Text>
+		<Description>Get Column From Revit</Description>
+		<VendorId>ITI</VendorId>
+		<VendorDescription>@ITI</VendorDescription>
+		<VisibilityMode>NotVisibleWhenNoActiveDocument</VisibilityMode>
+	</AddIn>
+</RevitAddIns>
