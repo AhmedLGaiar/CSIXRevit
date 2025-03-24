@@ -39,9 +39,11 @@
     </Reference>
     <Reference Include="RevitAPI">
       <HintPath>..\..\..\..\Program Files\Autodesk\Revit 2022\RevitAPI.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="RevitAPIUI">
       <HintPath>..\..\..\..\Program Files\Autodesk\Revit 2022\RevitAPIUI.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -54,12 +56,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Columns.cs" />
+    <Compile Include="Helpers\DoubleExtensions.cs" />
+    <Compile Include="Helpers\UnitConverter.cs" />
+    <Compile Include="Helpers\FixityHelper.cs" />
+    <Compile Include="Data\Fixity.cs" />
+    <Compile Include="Data\PointData .cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Data\ColumnData.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.addin" />
+    <None Include="app.addin">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>Copy "$(TargetDir)"."" "$(AppData)\Autodesk\Revit\Addins\2022\"</PostBuildEvent>
