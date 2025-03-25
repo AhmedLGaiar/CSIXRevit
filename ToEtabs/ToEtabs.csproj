@@ -31,8 +31,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ETABSv17">
-      <HintPath>..\..\..\..\Program Files\Computers and Structures\ETABS 17\ETABSv17.dll</HintPath>
+    <Reference Include="ETABSv17, Version=17.0.0.0, Culture=neutral, PublicKeyToken=c5652baf8659117d, processorArchitecture=MSIL">
+      <HintPath>..\packages\ETABSv17.17.0.0\lib\net46\ETABSv17.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -44,8 +47,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="WriteStructuralWalls.cs" />
     <Compile Include="WriteColumns.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FromRevit\FromRevit.csproj">
+      <Project>{f3b3faba-5c5c-4f96-9f80-9366cb23ad9d}</Project>
+      <Name>FromRevit</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

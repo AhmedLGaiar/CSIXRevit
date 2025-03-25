@@ -8,13 +8,11 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Xml.Linq;
 
 namespace FromRevit
 {
     [Transaction(TransactionMode.ReadOnly)]
-    public class SharedWalls : IExternalCommand
+    public class SharedStructuralWalls : IExternalCommand
     {
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
@@ -23,16 +21,16 @@ namespace FromRevit
 
             try
             {
-                // Collect all walls that are shared
-                var wallCollector = new FilteredElementCollector(doc)
-                    .OfCategory(BuiltInCategory.OST_Walls)
+                // Collect all structural walls
+                var structuralWallCollector = new FilteredElementCollector(doc)
+                    .OfCategory(BuiltInCategory.OST_WallsStructure)
                     .WhereElementIsNotElementType()
                     .Cast<Wall>()
-                    .Where(w => w.WallType.Function == WallFunction.Exterior || w.WallType.Function == WallFunction.Interior);
+                    .Where(w => w.WallType.Function == WallFunction.Coreshaft); //
 
-                List<WallData> wallList = new List<WallData>();
+                List<StructuralWallData> structuralWallList = new List<StructuralWallData>();
 
-                foreach (var wall in wallCollector)
+                foreach (var wall in structuralWallCollector)
                 {
                     // Get wall geometry
                     LocationCurve locCurve = wall.Location as LocationCurve;
@@ -53,7 +51,7 @@ namespace FromRevit
 
                     // Get wall height
                     double height = wall.get_Parameter(BuiltInParameter.WALL_USER_HEIGHT_PARAM)?.AsDouble() ??
-                                    wall.get_Parameter(BuiltInParameter.WALL_HEIGHT_PARAM)?.AsDouble() ?? 0;
+                                    wall.get_Parameter(BuiltInParameter.WALL_HEIGHT_TYPE)?.AsDouble() ?? 0;   //
 
                     // Get wall orientation vector
                     XYZ wallVector = (endPoint - startPoint).Normalize();
@@ -65,14 +63,12 @@ namespace FromRevit
                     string baseLevel = wall.get_Parameter(BuiltInParameter.WALL_BASE_CONSTRAINT)?.AsValueString() ?? "Unknown";
                     string topLevel = wall.get_Parameter(BuiltInParameter.WALL_HEIGHT_TYPE)?.AsValueString() ?? "Unknown";
 
-                    // Get wall material
-                    string material = wallType.LookupParameter("Material")?.AsValueString() ?? "Unknown";
+                    // Get structural wall specific information
+                    string structuralMaterial = wallType.get_Parameter(BuiltInParameter.STRUCTURAL_MATERIAL_PARAM)?.AsValueString() ?? "Unknown";
+                    string loadBearing = wall.get_Parameter(BuiltInParameter.WALL_STRUCTURAL_SIGNIFICANT)?.AsValueString() ?? "Unknown";
 
-                    // Get wall function (Exterior/Interior)
-                    string wallFunction = wall.WallType.Function.ToString();
-
-                    // Add wall data
-                    wallList.Add(new WallData
+                    // Add structural wall data
+                    structuralWallList.Add(new StructuralWallData
                     {
                         Id = wall.Id.IntegerValue.ToString(),
                         StartPoint = PointData.FromXYZ(startPoint),
@@ -83,33 +79,35 @@ namespace FromRevit
                         OrientationAngle = orientationAngle,
                         BaseLevel = baseLevel,
                         TopLevel = topLevel,
-                        Material = material,
-                        WallFunction = wallFunction,
-                        WallTypeName = wallType.Name
+                        Material = structuralMaterial,
+                        WallFunction = "Structural",
+                        WallTypeName = wallType.Name,
+                        AdditionalProperties = new Dictionary<string, string>
+                        {
+                            { "LoadBearing", loadBearing }
+                        }
                     });
                 }
 
                 // Convert to JSON with indented formatting
-                string jsonOutput = JsonConvert.SerializeObject(new { Walls = wallList }, Formatting.Indented);
+                string jsonOutput = JsonConvert.SerializeObject(new { StructuralWalls = structuralWallList }, Formatting.Indented);
 
                 // Define file path on desktop
-                string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "Revit_SharedWalls.json");
+                string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "Revit_StructuralWalls.json");
 
                 // Write to file
                 File.WriteAllText(filePath, jsonOutput);
 
                 // Show completion dialog
-                TaskDialog.Show("Export Complete", $"Shared walls data has been exported to: \n{filePath}");
+                TaskDialog.Show("Export Complete", $"Structural walls data has been exported to: \n{filePath}");
 
                 return Result.Succeeded;
             }
             catch (Exception ex)
             {
-                message = $"Error exporting walls: {ex.Message}";
+                message = $"Error exporting structural walls: {ex.Message}";
                 return Result.Failed;
             }
         }
     }
-
-   
 }

@@ -34,6 +34,9 @@
     <ApplicationManifest>app.addin</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ETABSv17, Version=17.0.0.0, Culture=neutral, PublicKeyToken=c5652baf8659117d, processorArchitecture=MSIL">
+      <HintPath>..\packages\ETABSv17.17.0.0\lib\net46\ETABSv17.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -56,7 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Columns.cs" />
-    <Compile Include="Data\WallData.cs" />
+    <Compile Include="Data\StructuralWallData.cs" />
     <Compile Include="Helpers\DoubleExtensions.cs" />
     <Compile Include="Helpers\UnitConverter.cs" />
     <Compile Include="Helpers\FixityHelper.cs" />
