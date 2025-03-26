@@ -64,7 +64,7 @@
     <Compile Include="Data\PointData .cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Data\ColumnData.cs" />
-    <Compile Include="SharedWalls.cs" />
+    <Compile Include="ShearWalls.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.addin">
