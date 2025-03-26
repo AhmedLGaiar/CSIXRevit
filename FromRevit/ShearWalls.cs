@@ -20,6 +20,7 @@ namespace FromRevit
             Document doc = uIDocument.Document;
 
             try
+
             {
                 // Collect all structural walls
                 var structuralWallCollector = new FilteredElementCollector(doc)
