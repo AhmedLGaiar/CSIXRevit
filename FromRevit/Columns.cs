@@ -21,12 +21,14 @@ namespace FromRevit
 
             try
             {
-                var colCollector = new FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_StructuralColumns)
-                                                .WhereElementIsNotElementType();
 
+                IEnumerable<FamilyInstance> colCollector = new FilteredElementCollector(doc).OfClass(typeof(FamilyInstance))
+                                                        .OfCategory(BuiltInCategory.OST_StructuralColumns)
+                                                        .Cast< FamilyInstance>();
+                                                
                 List<ColumnData> columnList = new List<ColumnData>();
 
-                foreach (var col in colCollector.Cast<FamilyInstance>())
+                foreach (var col in colCollector)
                 {
                 
 
