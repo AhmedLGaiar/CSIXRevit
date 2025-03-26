@@ -21,7 +21,6 @@ namespace ETABSPlugin
                 ISapPlugin.Finish(1);
             }
         }
-
   
     }
 }
