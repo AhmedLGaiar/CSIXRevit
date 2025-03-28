@@ -24,13 +24,13 @@ namespace FromRevit
 
                 IEnumerable<FamilyInstance> colCollector = new FilteredElementCollector(doc).OfClass(typeof(FamilyInstance))
                                                         .OfCategory(BuiltInCategory.OST_StructuralColumns)
-                                                        .Cast< FamilyInstance>();
-                                                
+                                                        .Cast<FamilyInstance>();
+
                 List<ColumnData> columnList = new List<ColumnData>();
 
                 foreach (var col in colCollector)
                 {
-                
+
 
                     // Get base and top points
                     LocationPoint loc = col.Location as LocationPoint;

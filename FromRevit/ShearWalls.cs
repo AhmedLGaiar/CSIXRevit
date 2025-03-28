@@ -2,7 +2,6 @@
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using FromRevit.Data;
-using FromRevit.Helpers;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -12,7 +11,7 @@ using System.Linq;
 namespace FromRevit
 {
     [Transaction(TransactionMode.ReadOnly)]
-    public class SharedStructuralWalls : IExternalCommand
+    public class ShearWalls : IExternalCommand
     {
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
@@ -20,14 +19,11 @@ namespace FromRevit
             Document doc = uIDocument.Document;
 
             try
-
             {
-                // Collect all structural walls
                 var structuralWallCollector = new FilteredElementCollector(doc)
-                    .OfCategory(BuiltInCategory.OST_WallsStructure)
+                    .OfCategory(BuiltInCategory.OST_Walls)
                     .WhereElementIsNotElementType()
-                    .Cast<Wall>()
-                    .Where(w => w.WallType.Function == WallFunction.Coreshaft); //
+                    .Cast<Wall>();
 
                 List<StructuralWallData> structuralWallList = new List<StructuralWallData>();
 
@@ -44,29 +40,47 @@ namespace FromRevit
                     // Get wall type and parameters
                     WallType wallType = wall.WallType;
 
-                    // Calculate wall length
+                    // Calculate wall length (convert to feet if needed, Revit uses internal units)
                     double wallLength = wallCurve.Length;
 
                     // Get wall thickness
-                    double thickness = wall.Width;
+                    double thickness = wallType.Width; // Use WallType.Width for consistency
 
                     // Get wall height
                     double height = wall.get_Parameter(BuiltInParameter.WALL_USER_HEIGHT_PARAM)?.AsDouble() ??
-                                    wall.get_Parameter(BuiltInParameter.WALL_HEIGHT_TYPE)?.AsDouble() ?? 0;   //
+                                    wall.get_Parameter(BuiltInParameter.WALL_STRUCTURAL_USAGE_PARAM)?.AsDouble() ?? 0;
 
                     // Get wall orientation vector
                     XYZ wallVector = (endPoint - startPoint).Normalize();
 
-                    // Calculate wall orientation angle
+                    // Calculate wall orientation angle (in degrees)
                     double orientationAngle = Math.Atan2(wallVector.Y, wallVector.X) * (180 / Math.PI);
 
-                    // Get levels
-                    string baseLevel = wall.get_Parameter(BuiltInParameter.WALL_BASE_CONSTRAINT)?.AsValueString() ?? "Unknown";
-                    string topLevel = wall.get_Parameter(BuiltInParameter.WALL_HEIGHT_TYPE)?.AsValueString() ?? "Unknown";
+                    // Get base level
+                    Parameter baseLevelParam = wall.get_Parameter(BuiltInParameter.WALL_BASE_CONSTRAINT);
+                    if (baseLevelParam == null)
+                    {
+                        throw new Exception($"Wall ID {wall.Id.IntegerValue} is missing WALL_BASE_CONSTRAINT parameter.");
+                    }
+                    string baseLevel = baseLevelParam.AsValueString();
+
+                    // Get top level using WALL_HEIGHT_TYPE
+                    Parameter topLevelIdParam = wall.get_Parameter(BuiltInParameter.WALL_HEIGHT_TYPE);
+                    if (topLevelIdParam == null)
+                    {
+                        throw new Exception($"Wall ID {wall.Id.IntegerValue} is missing WALL_HEIGHT_TYPE parameter.");
+                    }
+                    ElementId topLevelId = topLevelIdParam.AsElementId();
+                    Level topLevelElement = doc.GetElement(topLevelId) as Level;
+                    if (topLevelElement == null)
+                    {
+                        throw new Exception($"Wall ID {wall.Id.IntegerValue} has an invalid top level ID.");
+                    }
+                    string topLevel = topLevelElement.Name;
 
                     // Get structural wall specific information
                     string structuralMaterial = wallType.get_Parameter(BuiltInParameter.STRUCTURAL_MATERIAL_PARAM)?.AsValueString() ?? "Unknown";
-                    string loadBearing = wall.get_Parameter(BuiltInParameter.WALL_STRUCTURAL_SIGNIFICANT)?.AsValueString() ?? "Unknown";
+                    string loadBearing = wall.get_Parameter(BuiltInParameter.WALL_STRUCTURAL_SIGNIFICANT)?.AsValueString() ?? "Yes"; // Default to "Yes" for structural walls
 
                     // Add structural wall data
                     structuralWallList.Add(new StructuralWallData
@@ -81,13 +95,19 @@ namespace FromRevit
                         BaseLevel = baseLevel,
                         TopLevel = topLevel,
                         Material = structuralMaterial,
-                        WallFunction = "Structural",
+                        WallFunction = wallType.Function.ToString(),
                         WallTypeName = wallType.Name,
                         AdditionalProperties = new Dictionary<string, string>
                         {
                             { "LoadBearing", loadBearing }
                         }
                     });
+                }
+
+                // Debug: Show how many walls were found
+                if (structuralWallList.Count == 0)
+                {
+                    throw new Exception("No structural walls found in the model.");
                 }
 
                 // Convert to JSON with indented formatting
@@ -100,15 +120,47 @@ namespace FromRevit
                 File.WriteAllText(filePath, jsonOutput);
 
                 // Show completion dialog
-                TaskDialog.Show("Export Complete", $"Structural walls data has been exported to: \n{filePath}");
+                TaskDialog.Show("Export Complete", $"Structural walls data has been exported to: \n{filePath}\nFound {structuralWallList.Count} walls.");
 
                 return Result.Succeeded;
             }
             catch (Exception ex)
             {
-                message = $"Error exporting structural walls: {ex.Message}";
+                message = $"Error exporting structural walls: {ex.Message}\nStack Trace: {ex.StackTrace}";
+                TaskDialog.Show("Error", message);
                 return Result.Failed;
             }
         }
+       public static PointData FromXYZ(XYZ xyz)
+        {
+            return new PointData { X = xyz.X, Y = xyz.Y, Z = xyz.Z };
+        }
     }
-}
+    }
+
+    //public class StructuralWallData
+    //{
+    //    public string Id { get; set; }
+    //    public PointData StartPoint { get; set; }
+    //    public PointData EndPoint { get; set; }
+    //    public double Length { get; set; }
+    //    public double Thickness { get; set; }
+    //    public double Height { get; set; }
+    //    public double OrientationAngle { get; set; }
+    //    public string BaseLevel { get; set; }
+    //    public string TopLevel { get; set; }
+    //    public string Material { get; set; }
+    //    public string WallFunction { get; set; }
+    //    public string WallTypeName { get; set; }
+    //    public Dictionary<string, string> AdditionalProperties { get; set; }
+    //}
+
+    //public class PointData
+    //{
+    //    public double X { get; set; }
+    //    public double Y { get; set; }
+    //    public double Z { get; set; }
+
+       
+    
+

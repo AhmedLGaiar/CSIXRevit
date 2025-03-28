@@ -10,17 +10,17 @@ namespace ETABSPlugin
         {
             try
             {
-                
+
                 ISapPlugin.Finish(0);
             }
             catch (Exception ex)
             {
-                
+
 
                 // Indicate an error in the plugin execution
                 ISapPlugin.Finish(1);
             }
         }
-  
+
     }
 }

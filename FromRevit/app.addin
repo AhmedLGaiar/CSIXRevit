@@ -1,16 +1,23 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <RevitAddIns>
 	<AddIn Type="Command">
-		<Name>FromRevit</Name>
+		<Name>FromRevit_Columns</Name>
 		<Assembly>FromRevit.dll</Assembly>
-		<AddInId>
-			36FBA1B9-ED69-4F05-A634-34E76037BD49
-		</AddInId>
+		<AddInId>9569A180-074E-456D-ABC9-E319DCD32A0D</AddInId>
 		<FullClassName>FromRevit.Columns</FullClassName>
-		<Text>Get Column From Revit</Text>
-		<Description>Get Column From Revit</Description>
+		<Text>Get Columns From Revit</Text>
+		<Description>Get Columns From Revit</Description>
 		<VendorId>ITI</VendorId>
-		<VendorDescription>@ITI</VendorDescription>
-		<VisibilityMode>NotVisibleWhenNoActiveDocument</VisibilityMode>
+	</AddIn>
+
+	
+	<AddIn Type="Command">
+		<Name>FromRevit_Walls</Name>
+		<Assembly>FromRevit.dll</Assembly>
+		<AddInId>44068114-6085-4AD0-9497-59AB4D09F4EB</AddInId>
+		<FullClassName>FromRevit.ShearWalls</FullClassName>
+		<Text>Get ST Walls From Revit</Text>
+		<Description>Get ST Walls From Revit</Description>
+		<VendorId>ITI</VendorId>
 	</AddIn>
 </RevitAddIns>
