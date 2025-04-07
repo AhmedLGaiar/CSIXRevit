@@ -70,7 +70,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.addin">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
