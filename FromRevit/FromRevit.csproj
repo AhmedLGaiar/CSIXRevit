@@ -59,7 +59,6 @@
     <Compile Include="Data\StructuralWallData.cs" />
     <Compile Include="ExportJsonfFile.cs" />
     <Compile Include="Helpers\DoubleExtensions.cs" />
-    <Compile Include="Helpers\UnitConverter.cs" />
     <Compile Include="Data\Fixity.cs" />
     <Compile Include="Data\PointData .cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
