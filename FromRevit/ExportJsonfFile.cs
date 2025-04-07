@@ -5,35 +5,9 @@ using System.Linq;
 using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
-using Newtonsoft.Json;
 
 namespace ExportJsonFileFromRevit
 {
-    public interface IBeamExporter
-    {
-        void Export(object beamsData, string filePath);
-    }
-
-    public class JsonBeamExporter : IBeamExporter
-    {
-        public void Export(object beamsData, string filePath)
-        {
-            string json = JsonConvert.SerializeObject(beamsData, Formatting.Indented);
-            File.WriteAllText(filePath, json);
-        }
-    }
-
-    public class BeamData
-    {
-        public string Type { get; set; } = "Beam";
-        public string ApplicationId { get; set; }
-        public string Name { get; set; }
-        public object StartPoint { get; set; }
-        public object EndPoint { get; set; }
-        public object Material { get; set; }
-        public object Section { get; set; }
-        public object Constraints { get; set; }
-    }
 
     public class BeamExtractor
     {
@@ -136,8 +110,10 @@ namespace ExportJsonFileFromRevit
                 };
 
                 string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-                IBeamExporter exporter = new JsonBeamExporter();
-                exporter.Export(beamsData, Path.Combine(desktopPath, "BeamsData.json"));
+                string filePath = Path.Combine(desktopPath, "BeamsData.json");
+
+                IDataExporter<object> exporter = new JsonDataExporter<object>();
+                exporter.Export(beamsData, filePath);
 
                 TaskDialog.Show("Success", "Exported JSON file successfully to the desktop.");
                 return Result.Succeeded;

@@ -1,6 +1,7 @@
 ﻿using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
+using ExportJsonFileFromRevit;
 using FromRevit.Data;
 using Newtonsoft.Json;
 using System;
@@ -110,14 +111,11 @@ namespace FromRevit
                     throw new Exception("No structural walls found in the model.");
                 }
 
-                // Convert to JSON with indented formatting
-                string jsonOutput = JsonConvert.SerializeObject(new { StructuralWalls = structuralWallList }, Formatting.Indented);
-
                 // Define file path on desktop
                 string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "Revit_StructuralWalls.json");
 
-                // Write to file
-                File.WriteAllText(filePath, jsonOutput);
+                IDataExporter<List<StructuralWallData>> exporter = new JsonDataExporter<List<StructuralWallData>>();
+                exporter.Export(structuralWallList, filePath);
 
                 // Show completion dialog
                 TaskDialog.Show("Export Complete", $"Structural walls data has been exported to: \n{filePath}\nFound {structuralWallList.Count} walls.");
@@ -131,36 +129,13 @@ namespace FromRevit
                 return Result.Failed;
             }
         }
-       public static PointData FromXYZ(XYZ xyz)
+        public static PointData FromXYZ(XYZ xyz)
         {
             return new PointData { X = xyz.X, Y = xyz.Y, Z = xyz.Z };
         }
     }
-    }
+}
 
-    //public class StructuralWallData
-    //{
-    //    public string Id { get; set; }
-    //    public PointData StartPoint { get; set; }
-    //    public PointData EndPoint { get; set; }
-    //    public double Length { get; set; }
-    //    public double Thickness { get; set; }
-    //    public double Height { get; set; }
-    //    public double OrientationAngle { get; set; }
-    //    public string BaseLevel { get; set; }
-    //    public string TopLevel { get; set; }
-    //    public string Material { get; set; }
-    //    public string WallFunction { get; set; }
-    //    public string WallTypeName { get; set; }
-    //    public Dictionary<string, string> AdditionalProperties { get; set; }
-    //}
 
-    //public class PointData
-    //{
-    //    public double X { get; set; }
-    //    public double Y { get; set; }
-    //    public double Z { get; set; }
 
-       
-    
 

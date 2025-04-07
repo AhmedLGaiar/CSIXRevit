@@ -1,6 +1,7 @@
 ﻿using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
+using ExportJsonFileFromRevit;
 using FromRevit.Data;
 using FromRevit.Helpers;
 using Newtonsoft.Json;
@@ -93,17 +94,12 @@ namespace FromRevit
                     });
                 }
 
-                // Convert to JSON
-                string jsonOutput = JsonConvert.SerializeObject(new { Columns = columnList }, Formatting.Indented);
-
-                // Define file path
                 string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "Revit_Columns.json");
 
-                // Write to file
-                File.WriteAllText(filePath, jsonOutput);
+                IDataExporter<List<ColumnData>> exporter = new JsonDataExporter<List<ColumnData>>();
+                exporter.Export(columnList, filePath);
 
                 TaskDialog.Show("Export Complete", $"Column data has been exported to: \n{filePath}");
-
                 return Result.Succeeded;
             }
             catch (Exception ex)
@@ -113,4 +109,5 @@ namespace FromRevit
             }
         }
     }
+
 }

@@ -19,7 +19,4 @@ namespace FromRevit.Data
         public string Story { get; set; }
         public Fixity Fixity { get; set; }
     }
-
-
-
 }
