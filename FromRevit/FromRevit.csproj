@@ -57,6 +57,7 @@
   <ItemGroup>
     <Compile Include="Columns.cs" />
     <Compile Include="Data\StructuralWallData.cs" />
+    <Compile Include="ExportJsonfFile.cs" />
     <Compile Include="Helpers\DoubleExtensions.cs" />
     <Compile Include="Helpers\UnitConverter.cs" />
     <Compile Include="Helpers\FixityHelper.cs" />
