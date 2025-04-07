@@ -37,6 +37,4 @@ namespace FromRevit.Data
             return pointData.ToXYZ();
         }
     }
-
-
 }

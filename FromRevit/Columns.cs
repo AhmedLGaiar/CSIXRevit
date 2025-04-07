@@ -70,7 +70,7 @@ namespace FromRevit
                     string topLevel = col.get_Parameter(BuiltInParameter.FAMILY_TOP_LEVEL_PARAM).AsValueString();
 
                     // Get actual fixity conditions
-                    Fixity fixity = FixityHelper.GetColumnFixity(col);
+                    Fixity fixity = Fixity.GetColumnFixity(col);
 
                     // Add column data
                     columnList.Add(new ColumnData

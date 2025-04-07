@@ -21,8 +21,8 @@ namespace FromRevit
             try
             {
                 var structuralWallCollector = new FilteredElementCollector(doc)
+                    .OfClass(typeof(Wall))
                     .OfCategory(BuiltInCategory.OST_Walls)
-                    .WhereElementIsNotElementType()
                     .Cast<Wall>();
 
                 List<StructuralWallData> structuralWallList = new List<StructuralWallData>();

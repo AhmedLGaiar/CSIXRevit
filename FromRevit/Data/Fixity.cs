@@ -7,7 +7,7 @@ namespace FromRevit.Data
         public string Base { get; set; }
         public string Top { get; set; }
 
-        public  Fixity GetColumnFixity(FamilyInstance column)
+        public  static Fixity GetColumnFixity(FamilyInstance column)
         {
             Fixity fixity = new Fixity { Base = "Fixed", Top = "Fixed" }; // Default
 
