@@ -59,8 +59,10 @@ namespace FromRevit
                     string sectionName = colType?.Name ?? "Unknown";
 
                     // Get material
-                    Parameter materialParam = colType?.LookupParameter("Material");
-                    string material = materialParam != null ? materialParam.AsValueString() : "Unknown";
+                    ElementId materialId = col.StructuralMaterialId;
+                    Element materialElement = doc.GetElement(materialId) ;
+
+                    string material = materialElement.Name;
 
                     // Get rotation
                     double rotation = loc.Rotation * (180 / Math.PI); // Convert to degrees
