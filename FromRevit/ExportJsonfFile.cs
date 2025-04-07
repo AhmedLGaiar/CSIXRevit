@@ -83,7 +83,7 @@ namespace ExportJsonFileFromRevit
         }
     }
 
-    [Transaction(TransactionMode.Manual)]
+    [Transaction(TransactionMode.ReadOnly)]
     public class ExportJsonfFile : IExternalCommand
     {
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
