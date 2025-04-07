@@ -129,13 +129,5 @@ namespace FromRevit
                 return Result.Failed;
             }
         }
-        public static PointData FromXYZ(XYZ xyz)
-        {
-            return new PointData { X = xyz.X, Y = xyz.Y, Z = xyz.Z };
-        }
     }
 }
-
-
-
-
