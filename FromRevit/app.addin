@@ -10,7 +10,6 @@
 		<VendorId>ITI</VendorId>
 	</AddIn>
 
-	
 	<AddIn Type="Command">
 		<Name>FromRevit_Walls</Name>
 		<Assembly>FromRevit.dll</Assembly>
@@ -18,6 +17,18 @@
 		<FullClassName>FromRevit.ShearWalls</FullClassName>
 		<Text>Get ST Walls From Revit</Text>
 		<Description>Get ST Walls From Revit</Description>
+		<VendorId>ITI</VendorId>
+	</AddIn>
+
+	<AddIn Type="Command">
+		<Name>FromRevit_Beams</Name>
+		<Assembly>FromRevit.dll</Assembly>
+		<AddInId>
+			51C1D9A6-3B0E-4835-BA56-5A21E8B1CD56
+		</AddInId>
+		<FullClassName>FromRevit.ExportJsonfFile</FullClassName>
+		<Text>Export Beams to JSON</Text>
+		<Description>Exports structural beam data to JSON format</Description>
 		<VendorId>ITI</VendorId>
 	</AddIn>
 </RevitAddIns>

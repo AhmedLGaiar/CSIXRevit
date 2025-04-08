@@ -5,8 +5,9 @@ using System.Linq;
 using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
+using ExportJsonFileFromRevit;
 
-namespace ExportJsonFileFromRevit
+namespace FromRevit
 {
 
     public class BeamExtractor
