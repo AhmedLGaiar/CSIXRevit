@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using Autodesk.Revit.Attributes;
+﻿using System.Collections.Generic;
 using Autodesk.Revit.DB;
-using Autodesk.Revit.UI;
 using ExportJsonFileFromRevit;
 
 namespace FromRevit
 {
-
     public class BeamExtractor
     {
         private readonly Document _doc;
@@ -71,7 +66,7 @@ namespace FromRevit
                             depth,
                             width
                         },
-                    Constraints = new { start = "Fixed", end = "Pinned" }
+                   
                 };
             }
         }
@@ -80,49 +75,6 @@ namespace FromRevit
         {
             Parameter param = beam.Symbol.LookupParameter(paramName);
             return param != null ? param.AsDouble() * 0.3048 : defaultValue;
-        }
-    }
-
-    [Transaction(TransactionMode.ReadOnly)]
-    public class Beams : IExternalCommand
-    {
-        public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
-        {
-            try
-            {
-                UIApplication uiApp = commandData.Application;
-                UIDocument uiDoc = uiApp.ActiveUIDocument;
-                Document doc = uiDoc.Document;
-
-                BeamExtractor extractor = new BeamExtractor(doc);
-                var beams = extractor.ExtractBeams().ToList();
-
-                if (!beams.Any())
-                {
-                    TaskDialog.Show("Error", "No beams found in the project.");
-                    return Result.Failed;
-                }
-
-                var beamsData = new
-                {
-                    steelBeams = beams.Where(b => ((dynamic)b.Material).name.ToLower().Contains("steel")),
-                    concreteBeams = beams.Where(b => ((dynamic)b.Material).name.ToLower().Contains("concrete"))
-                };
-
-                string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-                string filePath = Path.Combine(desktopPath, "BeamsData.json");
-
-                IDataExporter<object> exporter = new JsonDataExporter<object>();
-                exporter.Export(beamsData, filePath);
-
-                TaskDialog.Show("Success", "Exported JSON file successfully to the desktop.");
-                return Result.Succeeded;
-            }
-            catch (Exception ex)
-            {
-                TaskDialog.Show("Error", $"An error occurred: {ex.Message}");
-                return Result.Failed;
-            }
         }
     }
 }

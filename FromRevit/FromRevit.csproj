@@ -55,10 +55,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Beams_Export\BeamExtractor.cs" />
     <Compile Include="Data\BeamData.cs" />
     <Compile Include="Columns.cs" />
     <Compile Include="Data\StructuralWallData.cs" />
-    <Compile Include="ExportJsonfFile.cs" />
+    <Compile Include="Beams_Export\ExportJsonfFile.cs" />
     <Compile Include="Helpers\DoubleExtensions.cs" />
     <Compile Include="Data\PointData .cs" />
     <Compile Include="JsonHandling\IDataExporter.cs" />
