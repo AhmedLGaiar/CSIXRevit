@@ -7,12 +7,12 @@
         d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel, IsDesignTimeCreatable=False}"
         xmlns:local="clr-namespace:ToEtabs"
         mc:Ignorable="d"
-        Title="FromRevitToEtabs" Height="150" Width="200"
+        Title="FromRevitToEtabs" Height="250" Width="200"
         WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
         <Style TargetType="Button">
-            <Setter Property="Width" Value="80" />
+            <Setter Property="Width" Value="100" />
             <Setter Property="Height" Value="30" />
             <Setter Property="Foreground" Value="White" />
             <Setter Property="Background" Value="#00008b" />
@@ -39,13 +39,19 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <ComboBox Width="150" HorizontalAlignment="Right"
                   ItemsSource="{Binding DefinedConcreteMatrial}"
                   SelectedItem="{Binding SelectedConcreteMaterial, Mode=TwoWay}"
                   Margin="0 5"/>
-        <CheckBox Grid.Row="1" Content="Columns"  Margin="0 5"/>
-        <Button Grid.Row="2" Content="Import" Command="{Binding PushColumnsToEtabsCommand}"
+
+        <Button Grid.Row="2" Content="Import Columns" Command="{Binding PushColumnsToEtabsCommand}"
+                Margin="0 5"/>
+        <Button Grid.Row="3" Content="Import Beams" Command="{Binding PushColumnsToEtabsCommand}"
+                Margin="0 5"/>
+        <Button Grid.Row="4" Content="Import Walls" Command="{Binding PushColumnsToEtabsCommand}"
                 Margin="0 5"/>
     </Grid>
 </Window>
