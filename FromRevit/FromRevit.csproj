@@ -60,7 +60,6 @@
     <Compile Include="Data\StructuralWallData.cs" />
     <Compile Include="ExportJsonfFile.cs" />
     <Compile Include="Helpers\DoubleExtensions.cs" />
-    <Compile Include="Data\Fixity.cs" />
     <Compile Include="Data\PointData .cs" />
     <Compile Include="JsonHandling\IDataExporter.cs" />
     <Compile Include="JsonHandling\JsonDataExporter.cs" />
