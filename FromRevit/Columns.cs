@@ -35,9 +35,14 @@ namespace FromRevit
 
                     // Get base and top points
                     LocationPoint loc = col.Location as LocationPoint;
-                    XYZ basePoint = loc.Point;
                     double height = col.get_Parameter(BuiltInParameter.INSTANCE_LENGTH_PARAM).AsDouble();
-                    XYZ topPoint = basePoint + new XYZ(0, 0, height);
+                    ElementId baseLevelId = col.get_Parameter(BuiltInParameter.FAMILY_BASE_LEVEL_PARAM).AsElementId();
+                    Level baseLvl = doc.GetElement(baseLevelId) as Level;
+                    double baseZ = baseLvl?.Elevation ?? 0;
+
+                    XYZ basePoint = new XYZ(loc.Point.X, loc.Point.Y, baseZ);
+                    XYZ topPoint = new XYZ(loc.Point.X, loc.Point.Y, baseZ + height);
+
 
                     // Get the column type
                     ElementId typeId = col.GetTypeId();
@@ -45,7 +50,7 @@ namespace FromRevit
 
                     // Get width and length from parameters
                     double width = colType?.LookupParameter("b")?.AsDouble() ?? 0;
-                    double length = colType?.LookupParameter("h")?.AsDouble() ?? 0;
+                    double depth = colType?.LookupParameter("h")?.AsDouble() ?? 0;
 
                     // Calculate slanted angle for non-vertical columns
                     double slantedAngle = 0.0;
@@ -72,17 +77,14 @@ namespace FromRevit
                     string baseLevel = col.get_Parameter(BuiltInParameter.FAMILY_BASE_LEVEL_PARAM).AsValueString();
                     string topLevel = col.get_Parameter(BuiltInParameter.FAMILY_TOP_LEVEL_PARAM).AsValueString();
 
-                    // Get actual fixity conditions
-                    Fixity fixity = Fixity.GetColumnFixity(col);
-
                     // Add column data
                     columnList.Add(new ColumnData
                     {
                         Id = col.Id.IntegerValue.ToString(),
-                        BasePoint = PointData.FromXYZ(basePoint),
-                        TopPoint = PointData.FromXYZ(topPoint),
-                        Width = width,
-                        Length = length,
+                        BasePoint = PointData.FromXYZInMilli(basePoint),
+                        TopPoint = PointData.FromXYZInMilli(topPoint),
+                        Width =UnitUtils.ConvertFromInternalUnits(width, UnitTypeId.Meters) ,
+                        depth = UnitUtils.ConvertFromInternalUnits(depth, UnitTypeId.Meters),
                         SectionName = sectionName,
                         Material = material,
                         Rotation = rotation,
@@ -90,7 +92,6 @@ namespace FromRevit
                         BaseLevel = baseLevel,
                         TopLevel = topLevel,
                         Story = baseLevel,
-                        Fixity = fixity
                     });
                 }
 

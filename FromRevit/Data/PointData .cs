@@ -8,6 +8,16 @@ namespace FromRevit.Data
         public double Y { get; set; }
         public double Z { get; set; }
 
+        public static PointData FromXYZInMilli(XYZ point)
+        {
+            return new PointData
+            {
+                X = UnitUtils.ConvertFromInternalUnits(point.X, UnitTypeId.Millimeters),
+                Y = UnitUtils.ConvertFromInternalUnits(point.Y, UnitTypeId.Millimeters),
+                Z = UnitUtils.ConvertFromInternalUnits(point.Z, UnitTypeId.Millimeters)
+            };
+        }
+
         // Convert XYZ to PointData
         public static PointData FromXYZ(XYZ point)
         {

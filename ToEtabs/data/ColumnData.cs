@@ -1,7 +1,5 @@
-﻿using Autodesk.Revit.DB;
-namespace FromRevit.Data
+﻿namespace ToEtabs.Data
 {
-
     // Helper classes for JSON structure
     public class ColumnData
     {

@@ -5,7 +5,7 @@ VisualStudioVersion = 17.13.35828.75
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FromRevit", "FromRevit\FromRevit.csproj", "{F3B3FABA-5C5C-4F96-9F80-9366CB23AD9D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToEtabs", "ToEtabs\ToEtabs.csproj", "{08D3F55D-E841-4D12-83D0-E7767E3D1510}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToEtabs", "ToEtabs\ToEtabs.csproj", "{527A0FD9-F9D4-40F7-93D8-52454EC629B5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{F3B3FABA-5C5C-4F96-9F80-9366CB23AD9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F3B3FABA-5C5C-4F96-9F80-9366CB23AD9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F3B3FABA-5C5C-4F96-9F80-9366CB23AD9D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{08D3F55D-E841-4D12-83D0-E7767E3D1510}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{08D3F55D-E841-4D12-83D0-E7767E3D1510}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{08D3F55D-E841-4D12-83D0-E7767E3D1510}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{08D3F55D-E841-4D12-83D0-E7767E3D1510}.Release|Any CPU.Build.0 = Release|Any CPU
+		{527A0FD9-F9D4-40F7-93D8-52454EC629B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{527A0FD9-F9D4-40F7-93D8-52454EC629B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{527A0FD9-F9D4-40F7-93D8-52454EC629B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{527A0FD9-F9D4-40F7-93D8-52454EC629B5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
