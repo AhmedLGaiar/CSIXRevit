@@ -7,6 +7,9 @@ using ToEtabs.Utilities;
 using CommunityToolkit.Mvvm.ComponentModel;
 using ToEtabs.Helpers;
 using ToEtabs.Models;
+using ToEtabs.utilities;
+using ToEtabs.data.Beam_Data;
+using System.Windows.Controls;
 
 namespace ToEtabs.ViewModels
 {
@@ -15,6 +18,7 @@ namespace ToEtabs.ViewModels
         private string jsonPath;
         private List<ColumnData> columns;
         private List<ShearWallData> shearWalls;
+        private List<BeamsData> beams;
         private readonly cSapModel _sapModel;
 
         public ObservableCollection<string> DefinedConcreteMatrial { get; private set; }
@@ -24,11 +28,16 @@ namespace ToEtabs.ViewModels
         public MainWindowViewModel(cSapModel SapModel)
         {
             _sapModel = SapModel;
+
             jsonPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "Revit_Columns.json");
             columns = ColumnUtilities.LoadColumnData(jsonPath);
 
             jsonPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "Revit_StructuralWalls.json");
             shearWalls = ShearWallUtilities.LoadShearWallData(jsonPath);
+
+
+            jsonPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "BeamsData.json");
+            beams = BeamUtilities.LoadBeamData(jsonPath);
 
             DefinedConcreteMatrial = new ObservableCollection<string>(MatrialProperties.GetMaterialNames(_sapModel));
         }
@@ -108,5 +117,49 @@ namespace ToEtabs.ViewModels
                 ColNum++;
             }
         }
+
+        [RelayCommand]
+        private void pushBeamsToEtabs() 
+        {
+            int done;
+            int beamNum = 1;
+            foreach (var beam in beams)
+            {
+               var concreteBeams = beam.concreteBeams.Where(b => b.Material.name=="4000si");
+
+                foreach (var concreteBeam in concreteBeams)
+                {
+                    double widthMeters = concreteBeam.Section.width;
+                    double depthMeters = concreteBeam.Section.depth;
+
+                    done = BeamUtilities.DefineBeamSection(_sapModel, $"C {widthMeters}*{depthMeters} H",
+                   SelectedConcreteMaterial
+                   , depthMeters * 1000, widthMeters * 1000);
+
+                    if (done == 0)
+                    {
+                        done = BeamUtilities.DefineBeamSection(_sapModel, $"C {widthMeters}*{depthMeters} V",
+                            SelectedConcreteMaterial
+                            , widthMeters * 1000, depthMeters * 1000);
+                    }
+
+
+
+                    done = BeamUtilities.DrawBeamByCoordinates(_sapModel,
+                   concreteBeam.StartPoint.X, concreteBeam.StartPoint.Y, concreteBeam.StartPoint.Z,
+                   concreteBeam.EndPoint.X, concreteBeam.EndPoint.Y, concreteBeam.EndPoint.Z,
+                   $"B{beamNum}", $"B {widthMeters}*{depthMeters} ");
+
+                    beamNum++;
+                }
+
+            }
+        }
+
+
+
+
+
+
     }
 }
