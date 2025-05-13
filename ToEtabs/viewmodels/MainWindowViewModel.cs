@@ -1,4 +1,4 @@
-﻿using ETABSv1;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.IO;
 using CommunityToolkit.Mvvm.Input;
@@ -7,6 +7,7 @@ using ToEtabs.Utilities;
 using CommunityToolkit.Mvvm.ComponentModel;
 using ToEtabs.Helpers;
 using ToEtabs.Models;
+using ETABSv1;
 
 namespace ToEtabs.ViewModels
 {
@@ -33,79 +34,98 @@ namespace ToEtabs.ViewModels
             DefinedConcreteMatrial = new ObservableCollection<string>(MatrialProperties.GetMaterialNames(_sapModel));
         }
 
+        private const double FeetToMeters = 0.3048;
+
         [RelayCommand]
-        private void PushWallsToEtabs()
+        private void ExportWallsToEtabs()
         {
-            int done;
-            int WallNum = 1;
-            foreach (var wall in shearWalls)
+            try
             {
-                if (!ShearWallHelpers.IsDimensionValid(wall.Thickness) || !ShearWallHelpers.IsDimensionValid(wall.Length))
-                {
-                    continue;
-                }
+                _sapModel.SetPresentUnits(eUnits.kN_m_C); // Set units to kN, meters, Celsius
 
-                done = ShearWallUtilities.DefineShearWallSection(_sapModel, $"SW {wall.Thickness}",
-                    SelectedConcreteMaterial, wall.Thickness);
-                if (done == 0)
+                int wallIndex = 1;
+                foreach (var wall in shearWalls)
                 {
-                    done = ShearWallUtilities.DrawShearWallByCoordinates(_sapModel,
-                        wall.StartX, wall.StartY, wall.StartZ,
-                        wall.EndX, wall.EndY, wall.EndZ,
-                        $"SW{WallNum}", $"SW {wall.Thickness}");
+                    // Convert dimensions to meters
+                    double thicknessMeters = wall.Thickness * FeetToMeters;
+                    double lengthMeters = wall.Length * FeetToMeters;
+
+                    if (!ShearWallHelpers.IsDimensionValid(thicknessMeters) || !ShearWallHelpers.IsDimensionValid(lengthMeters) || !ShearWallHelpers.IsDimensionValid(wall.Height))
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Skipping wall {wall.Id}: Invalid dimensions (Thickness: {thicknessMeters}, Length: {lengthMeters}, Height: {wall.Height})");
+                        continue;
+                    }
+
+                    string sectionName = $"SW {thicknessMeters:F3}m";
+                    ShearWallUtilities.DefineShearWallSection(_sapModel, sectionName, _selectedConcreteMaterial, thicknessMeters);
+
+                    ShearWallUtilities.DrawShearWallByCoordinates(_sapModel, wall, $"SW{wallIndex}", sectionName, FeetToMeters);
+
+                    wallIndex++;
                 }
-                WallNum++;
             }
-
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error exporting walls: {ex.Message}");
+                // Optionally: System.Windows.MessageBox.Show($"Error exporting walls: {ex.Message}");
+            }
         }
 
         [RelayCommand]
         private void PushColumnsToEtabs()
         {
-            int done;
-            int ColNum = 1;
-            foreach (var column in columns)
+            try
             {
-                double widthMeters = column.Width;
-                double depthMeters = column.depth;
+                _sapModel.SetPresentUnits(eUnits.kN_m_C); // Set units to kN, meters, Celsius
 
-                done = ColumnUtilities.DefineColumnSection(_sapModel, $"C {widthMeters}*{depthMeters} H",
-                    SelectedConcreteMaterial
-                    , depthMeters * 1000, widthMeters * 1000);
-                if (done == 0)
+                int done;
+                int ColNum = 1;
+                foreach (var column in columns)
                 {
-                    done = ColumnUtilities.DefineColumnSection(_sapModel, $"C {widthMeters}*{depthMeters} V",
-                        SelectedConcreteMaterial
-                        , widthMeters * 1000, depthMeters * 1000);
+                    double widthMeters = column.Width;
+                    double depthMeters = column.depth;
+
+                    done = ColumnUtilities.DefineColumnSection(_sapModel, $"C {widthMeters}*{depthMeters} H",
+                        _selectedConcreteMaterial, depthMeters * 1000, widthMeters * 1000);
+                    if (done == 0)
+                    {
+                        done = ColumnUtilities.DefineColumnSection(_sapModel, $"C {widthMeters}*{depthMeters} V",
+                            _selectedConcreteMaterial, widthMeters * 1000, depthMeters * 1000);
+                    }
+                }
+                foreach (var column in columns)
+                {
+                    double widthMeters = column.Width;
+                    double depthMeters = column.depth;
+
+                    string orientation;
+                    double rotation = ColumnHelpers.NormalizeAngle(column.Rotation);
+
+                    if (ColumnHelpers.IsApproximately(rotation, 0) || ColumnHelpers.IsApproximately(rotation, 180))
+                    {
+                        orientation = "V";
+                    }
+                    else if (ColumnHelpers.IsApproximately(rotation, 90) || ColumnHelpers.IsApproximately(rotation, 270))
+                    {
+                        orientation = "H";
+                    }
+                    else
+                    {
+                        orientation = "H"; // Default/fallback
+                    }
+
+                    done = ColumnUtilities.DrawColumnByCoordinates(_sapModel,
+                        column.BasePoint.X, column.BasePoint.Y, column.BasePoint.Z,
+                        column.TopPoint.X, column.TopPoint.Y, column.TopPoint.Z,
+                        $"C{ColNum}", $"C {widthMeters}*{depthMeters} {orientation}");
+
+                    ColNum++;
                 }
             }
-            foreach (var column in columns)
+            catch (Exception ex)
             {
-                double widthMeters = column.Width;
-                double depthMeters = column.depth;
-
-                string orientation;
-                double rotation = ColumnHelpers.NormalizeAngle(column.Rotation);
-
-                if (ColumnHelpers.IsApproximately(rotation, 0) || ColumnHelpers.IsApproximately(rotation, 180))
-                {
-                    orientation = "V";
-                }
-                else if (ColumnHelpers.IsApproximately(rotation, 90) || ColumnHelpers.IsApproximately(rotation, 270))
-                {
-                    orientation = "H";
-                }
-                else
-                {
-                    orientation = "H"; // Default/fallback (or you can throw or handle differently)
-                }
-
-                done = ColumnUtilities.DrawColumnByCoordinates(_sapModel,
-                    column.BasePoint.X, column.BasePoint.Y, column.BasePoint.Z,
-                    column.TopPoint.X, column.TopPoint.Y, column.TopPoint.Z,
-                    $"C{ColNum}", $"C {widthMeters}*{depthMeters} {orientation}");
-
-                ColNum++;
+                System.Diagnostics.Debug.WriteLine($"Error exporting columns: {ex.Message}");
+                // Optionally: System.Windows.MessageBox.Show($"Error exporting columns: {ex.Message}");
             }
         }
     }
