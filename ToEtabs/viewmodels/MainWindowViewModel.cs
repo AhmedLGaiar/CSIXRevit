@@ -27,8 +27,8 @@ namespace ToEtabs.ViewModels
             jsonPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "Revit_Columns.json");
             columns = ColumnUtilities.LoadColumnData(jsonPath);
 
-            string shearWallJsonPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "Revit_StructuralWalls.json");
-            shearWalls = ShearWallUtilities.LoadShearWallData(shearWallJsonPath);
+            jsonPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "Revit_StructuralWalls.json");
+            shearWalls = ShearWallUtilities.LoadShearWallData(jsonPath);
 
             DefinedConcreteMatrial = new ObservableCollection<string>(MatrialProperties.GetMaterialNames(_sapModel));
         }
