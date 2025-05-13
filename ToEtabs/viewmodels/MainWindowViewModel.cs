@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Collections.Generic;
+using System.Linq;
 using CommunityToolkit.Mvvm.Input;
 using ToEtabs.Data;
 using ToEtabs.Utilities;
@@ -10,6 +12,7 @@ using ToEtabs.Models;
 using ToEtabs.utilities;
 using ToEtabs.data.Beam_Data;
 using System.Windows.Controls;
+using ETABSv1;
 
 namespace ToEtabs.ViewModels
 {
@@ -34,7 +37,6 @@ namespace ToEtabs.ViewModels
 
             jsonPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "Revit_StructuralWalls.json");
             shearWalls = ShearWallUtilities.LoadShearWallData(jsonPath);
-
 
             jsonPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "BeamsData.json");
             beams = BeamUtilities.LoadBeamData(jsonPath);
@@ -101,6 +103,7 @@ namespace ToEtabs.ViewModels
                             _selectedConcreteMaterial, widthMeters * 1000, depthMeters * 1000);
                     }
                 }
+
                 foreach (var column in columns)
                 {
                     double widthMeters = column.Width;
@@ -127,18 +130,23 @@ namespace ToEtabs.ViewModels
                         column.TopPoint.X, column.TopPoint.Y, column.TopPoint.Z,
                         $"C{ColNum}", $"C {widthMeters}*{depthMeters} {orientation}");
 
-                ColNum++;
+                    ColNum++;
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error exporting columns: {ex.Message}");
             }
         }
 
         [RelayCommand]
-        private void pushBeamsToEtabs() 
+        private void PushBeamsToEtabs()
         {
             int done;
             int beamNum = 1;
             foreach (var beam in beams)
             {
-               var concreteBeams = beam.concreteBeams.Where(b => b.Material.name=="4000si");
+                var concreteBeams = beam.concreteBeams.Where(b => b.Material.name == _selectedConcreteMaterial);
 
                 foreach (var concreteBeam in concreteBeams)
                 {
@@ -146,33 +154,22 @@ namespace ToEtabs.ViewModels
                     double depthMeters = concreteBeam.Section.depth;
 
                     done = BeamUtilities.DefineBeamSection(_sapModel, $"C {widthMeters}*{depthMeters} H",
-                   SelectedConcreteMaterial
-                   , depthMeters * 1000, widthMeters * 1000);
+                        _selectedConcreteMaterial, depthMeters * 1000, widthMeters * 1000);
 
                     if (done == 0)
                     {
                         done = BeamUtilities.DefineBeamSection(_sapModel, $"C {widthMeters}*{depthMeters} V",
-                            SelectedConcreteMaterial
-                            , widthMeters * 1000, depthMeters * 1000);
+                            _selectedConcreteMaterial, widthMeters * 1000, depthMeters * 1000);
                     }
 
-
-
                     done = BeamUtilities.DrawBeamByCoordinates(_sapModel,
-                   concreteBeam.StartPoint.X, concreteBeam.StartPoint.Y, concreteBeam.StartPoint.Z,
-                   concreteBeam.EndPoint.X, concreteBeam.EndPoint.Y, concreteBeam.EndPoint.Z,
-                   $"B{beamNum}", $"B {widthMeters}*{depthMeters} ");
+                        concreteBeam.StartPoint.X, concreteBeam.StartPoint.Y, concreteBeam.StartPoint.Z,
+                        concreteBeam.EndPoint.X, concreteBeam.EndPoint.Y, concreteBeam.EndPoint.Z,
+                        $"B{beamNum}", $"B {widthMeters}*{depthMeters} ");
 
                     beamNum++;
                 }
-
             }
         }
-
-
-
-
-
-
     }
 }
