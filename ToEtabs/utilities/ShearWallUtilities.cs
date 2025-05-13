@@ -28,7 +28,7 @@ namespace ToEtabs.Utilities
                 throw new ArgumentException("Invalid input parameters: name, materialProp, or thickness.");
             }
 
-            eShellType shellType = eShellType.ShellThin; // Adjust based on your needs
+            eShellType shellType = eShellType.ShellThin; // Adjust based on needs
             int ret = sapModel.PropArea.SetWall(name, eWallPropType.Specified, shellType, materialProp, thickness * 1000);
 
             if (ret != 0)
@@ -39,16 +39,44 @@ namespace ToEtabs.Utilities
             return ret;
         }
 
-        public static int DrawShearWallByCoordinates(cSapModel sapModel, double x1, double y1, double z1, double x2, double y2, double z2,
-            string wallName, string sectionName)
+        public static int DrawShearWallByCoordinates(cSapModel sapModel, ShearWallData wall, string wallName, string sectionName, double feetToMeters = 0.3048)
         {
-            string definedName = null;
-            int numPoints = 2;
-            double[] xCoords = new double[] { x1, x2 };
-            double[] yCoords = new double[] { y1, y2 };
-            double[] zCoords = new double[] { z1, z2 };
+            if (wall == null || wall.StartPoint == null || wall.EndPoint == null || wall.Height <= 0)
+            {
+                throw new ArgumentException("Invalid shear wall data: missing points or invalid height.");
+            }
 
+            // Convert coordinates and height from feet to meters
+            double x1 = wall.StartPoint.X * feetToMeters;
+            double y1 = wall.StartPoint.Y * feetToMeters;
+            double z1 = wall.StartPoint.Z * feetToMeters;
+            double x2 = wall.EndPoint.X * feetToMeters;
+            double y2 = wall.EndPoint.Y * feetToMeters;
+            double z2 = wall.EndPoint.Z * feetToMeters;
+            double heightMeters = wall.Height * feetToMeters;
+
+            // Define four points for a rectangular wall (base and top)
+            int numPoints = 4;
+            double[] xCoords = new double[]
+            {
+                x1, x2, x2, x1 // Counter-clockwise: bottom-left, bottom-right, top-right, top-left
+            };
+            double[] yCoords = new double[]
+            {
+                y1, y2, y2, y1
+            };
+            double[] zCoords = new double[]
+            {
+                z1, z2, z2 + heightMeters, z1 + heightMeters
+            };
+
+            string definedName = null;
             int ret = sapModel.AreaObj.AddByCoord(numPoints, ref xCoords, ref yCoords, ref zCoords, ref definedName, sectionName, wallName);
+            if (ret != 0)
+            {
+                throw new Exception($"Failed to draw shear wall '{wallName}' with section '{sectionName}'. Error code: {ret}");
+            }
+
             return ret;
         }
     }
