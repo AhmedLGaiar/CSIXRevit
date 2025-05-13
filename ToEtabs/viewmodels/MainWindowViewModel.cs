@@ -6,6 +6,7 @@ using ToEtabs.Data;
 using ToEtabs.Utilities;
 using CommunityToolkit.Mvvm.ComponentModel;
 using ToEtabs.Helpers;
+using ToEtabs.Models;
 
 namespace ToEtabs.ViewModels
 {
@@ -13,6 +14,7 @@ namespace ToEtabs.ViewModels
     {
         private string jsonPath;
         private List<ColumnData> columns;
+        private List<ShearWallData> shearWalls;
         private readonly cSapModel _sapModel;
 
         public ObservableCollection<string> DefinedConcreteMatrial { get; private set; }
@@ -25,7 +27,36 @@ namespace ToEtabs.ViewModels
             jsonPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "Revit_Columns.json");
             columns = ColumnUtilities.LoadColumnData(jsonPath);
 
+            string shearWallJsonPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "Revit_StructuralWalls.json");
+            shearWalls = ShearWallUtilities.LoadShearWallData(shearWallJsonPath);
+
             DefinedConcreteMatrial = new ObservableCollection<string>(MatrialProperties.GetMaterialNames(_sapModel));
+        }
+
+        [RelayCommand]
+        private void PushWallsToEtabs()
+        {
+            int done;
+            int WallNum = 1;
+            foreach (var wall in shearWalls)
+            {
+                if (!ShearWallHelpers.IsDimensionValid(wall.Thickness) || !ShearWallHelpers.IsDimensionValid(wall.Length))
+                {
+                    continue;
+                }
+
+                done = ShearWallUtilities.DefineShearWallSection(_sapModel, $"SW {wall.Thickness}",
+                    SelectedConcreteMaterial, wall.Thickness);
+                if (done == 0)
+                {
+                    done = ShearWallUtilities.DrawShearWallByCoordinates(_sapModel,
+                        wall.StartX, wall.StartY, wall.StartZ,
+                        wall.EndX, wall.EndY, wall.EndZ,
+                        $"SW{WallNum}", $"SW {wall.Thickness}");
+                }
+                WallNum++;
+            }
+
         }
 
         [RelayCommand]

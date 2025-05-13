@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Data.SqlTypes;
-using System.IO;
+﻿using System.IO;
 using ETABSv1;
 using Newtonsoft.Json;
 using ToEtabs.Data;

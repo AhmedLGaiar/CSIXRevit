@@ -1,4 +1,4 @@
-﻿namespace ExportJsonFileFromRevit
+﻿namespace FromRevit.Data
 {
     public class BeamData
     {
