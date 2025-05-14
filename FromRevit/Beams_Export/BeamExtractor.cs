@@ -2,6 +2,7 @@
 using Autodesk.Revit.DB;
 using ExportJsonFileFromRevit;
 using FromRevit.Data;
+using FromRevit.Data.Beam_data;
 
 namespace FromRevit
 {
@@ -27,7 +28,6 @@ namespace FromRevit
                 Material material = _doc.GetElement(materialId) as Material;
                 if (material == null) continue;
 
-                // شرط: لازم تكون خرسانة
                 if (!material.Name.ToLower().Contains("concrete"))
                     continue;
 
@@ -45,16 +45,17 @@ namespace FromRevit
                 {
                     ApplicationId = beam.UniqueId,
                     Name = beam.Name,
-                    StartPoint = new { x = startPoint.X, y = startPoint.Y, z = startPoint.Z },
-                    EndPoint = new { x = endPoint.X, y = endPoint.Y, z = endPoint.Z },
-                    Material = new { name = material.Name },
-                    Section = new
+                    StartPoint = PointData.FromXYZ(startPoint),
+                    EndPoint = PointData.FromXYZ(endPoint),
+                    Material = new MaterialData { Name = material.Name }, 
+                    Section = new SectionData 
                     {
-                        name = beam.Symbol.Name,
-                        depth,
-                        width
+                        Name = beam.Symbol.Name,
+                        Depth = depth,
+                        Width = width
                     }
                 };
+                ;
             }
         }
 

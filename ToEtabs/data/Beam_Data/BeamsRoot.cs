@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace ToEtabs.data.Beam_Data
 {
-    public class Material
+    public class BeamsRoot
     {
-        public string Materialname { get; set; }
+        public List<BeamData> concreteBeams { get; set; }
     }
 }

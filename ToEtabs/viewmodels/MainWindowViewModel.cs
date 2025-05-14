@@ -13,6 +13,7 @@ using ToEtabs.utilities;
 using ToEtabs.data.Beam_Data;
 using System.Windows.Controls;
 using ETABSv1;
+using Newtonsoft.Json;
 
 namespace ToEtabs.ViewModels
 {
@@ -21,7 +22,7 @@ namespace ToEtabs.ViewModels
         private string jsonPath;
         private List<ColumnData> columns;
         private List<ShearWallData> shearWalls;
-        private List<Beam> beams;
+        private List<BeamData> beams;
         private readonly cSapModel _sapModel;
 
         public ObservableCollection<string> DefinedConcreteMatrial { get; private set; }
@@ -39,8 +40,9 @@ namespace ToEtabs.ViewModels
             shearWalls = ShearWallUtilities.LoadShearWallData(jsonPath);
 
              jsonPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "BeamsData.json");
-            Beam beamsData = BeamUtilities.LoadBeamData(jsonPath);
+            BeamsRoot beamsData = BeamUtilities.LoadBeamData(jsonPath);
 
+            beams = beamsData.concreteBeams;
 
 
             DefinedConcreteMatrial = new ObservableCollection<string>(MatrialProperties.GetMaterialNames(_sapModel));
@@ -88,7 +90,7 @@ namespace ToEtabs.ViewModels
         {
             try
             {
-                _sapModel.SetPresentUnits(eUnits.kN_m_C); // Set units to kN, meters, Celsius
+                _sapModel.SetPresentUnits(eUnits.kN_m_C);   
 
                 int done;
                 int ColNum = 1;
@@ -144,40 +146,67 @@ namespace ToEtabs.ViewModels
         [RelayCommand]
         private void PushBeamsToEtabs()
         {
+            try
+            {
+                _sapModel.SetPresentUnits(eUnits.kN_m_C);
 
-            #region MyRegion
+                if (beams == null || beams.Count == 0)
+                    return;
 
-            //int done;
-            //int beamNum = 1;
-            //foreach (var beam in beams)
-            //{
-            //    var concreteBeams = beam.concreteBeams.Where(b => b.Material.name == _selectedConcreteMaterial);
+                var definedSections = new HashSet<string>();
 
-            //    foreach (var concreteBeam in concreteBeams)
-            //    {
-            //        double widthMeters = concreteBeam.Section.width;
-            //        double depthMeters = concreteBeam.Section.depth;
+                foreach (var beam in beams)
+                {
+                    double widthMM = beam.Section.Width;
+                    double depthMM = beam.Section.Depth;
+                    string sectionName = $"B_{(int)widthMM}x{(int)depthMM}";
 
-            //        done = BeamUtilities.DefineBeamSection(_sapModel, $"C {widthMeters}*{depthMeters} H",
-            //            _selectedConcreteMaterial, depthMeters * 1000, widthMeters * 1000);
+                    if (!definedSections.Contains(sectionName))
+                    {
+                        string materialName = _selectedConcreteMaterial;
 
-            //        if (done == 0)
-            //        {
-            //            done = BeamUtilities.DefineBeamSection(_sapModel, $"C {widthMeters}*{depthMeters} V",
-            //                _selectedConcreteMaterial, widthMeters * 1000, depthMeters * 1000);
-            //        }
+                        int ret = BeamUtilities.DefineBeamSection(_sapModel, sectionName, materialName, depthMM, widthMM);
 
-            //        done = BeamUtilities.DrawBeamByCoordinates(_sapModel,
-            //            concreteBeam.StartPoint.X, concreteBeam.StartPoint.Y, concreteBeam.StartPoint.Z,
-            //            concreteBeam.EndPoint.X, concreteBeam.EndPoint.Y, concreteBeam.EndPoint.Z,
-            //            $"B{beamNum}", $"B {widthMeters}*{depthMeters} ");
+                        if (ret == 0)
+                            BeamUtilities.DefineBeamSection(_sapModel, sectionName, materialName, depthMM, widthMM);
 
-            //        beamNum++;
-            //    }
-            //}
-            #endregion
+                        definedSections.Add(sectionName);
+                    }
+                }
 
+                foreach (var beam in beams)
+                {
+                    double widthMM = beam.Section.Width;
+                    double depthMM = beam.Section.Depth;
+                    string sectionName = $"B_{(int)widthMM}x{(int)depthMM}";
 
+                    double x1 = beam.StartPoint.X * FeetToMeters;
+                    double y1 = beam.StartPoint.Y * FeetToMeters;
+                    double z1 = beam.StartPoint.Z * FeetToMeters;
+
+                    double x2 = beam.EndPoint.X * FeetToMeters;
+                    double y2 = beam.EndPoint.Y * FeetToMeters;
+                    double z2 = beam.EndPoint.Z * FeetToMeters;
+
+                    int ret = BeamUtilities.DrawBeamByCoordinates(_sapModel, x1, y1, z1, x2, y2, z2, beam.Name, sectionName);
+
+                    if (ret == 0)
+                        _sapModel.FrameObj.SetSection(beam.Name, sectionName);
+                }
+
+                _sapModel.View.RefreshView();
+                _sapModel.File.Save();
+            }
+            catch
+            {
+               
+            }
         }
+
+
+
+
+
+
     }
 }

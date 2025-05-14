@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace ToEtabs.data.Beam_Data
 {
-    public class Constraints
+    public class SectionData
     {
-        public string start { get; set; }
-        public string end { get; set; }
+        public string Name { get; set; }
+        public double Depth { get; set; }
+        public double Width { get; set; }
     }
 }

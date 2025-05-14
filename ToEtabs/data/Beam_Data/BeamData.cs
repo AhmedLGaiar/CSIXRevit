@@ -8,14 +8,15 @@ using ToEtabs.Data;
 
 namespace ToEtabs.data.Beam_Data
 {
-    public class Beam
+    public class BeamData
     {
-        public string Type { get; set; }
+        public string Type { get; set; } = "Beam";
         public string ApplicationId { get; set; }
         public string Name { get; set; }
         public PointData StartPoint { get; set; }
         public PointData EndPoint { get; set; }
-        public Material Material { get; set; }
-        public Section Section { get; set; }
+        public MaterialData Material { get; set; }
+        public SectionData Section { get; set; }
+        public object Constraints { get; set; }
     }
 }

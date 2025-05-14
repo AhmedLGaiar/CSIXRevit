@@ -56,8 +56,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Beams_Export\BeamExtractor.cs" />
-    <Compile Include="Data\BeamData.cs" />
+    <Compile Include="Data\Beam_data\BeamData.cs" />
     <Compile Include="Columns.cs" />
+    <Compile Include="Data\Beam_data\MaterialData.cs" />
+    <Compile Include="Data\Beam_data\SectionData.cs" />
     <Compile Include="Data\StructuralWallData.cs" />
     <Compile Include="Beams_Export\ExportJsonfFile.cs" />
     <Compile Include="Helpers\DoubleExtensions.cs" />

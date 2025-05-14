@@ -12,31 +12,28 @@ namespace ToEtabs.utilities
 {
     internal class BeamUtilities
     {
-        public static Beam LoadBeamData(string jsonPath)
+        public static BeamsRoot LoadBeamData(string jsonPath)
         {
             if (!File.Exists(jsonPath))
                 throw new FileNotFoundException($"The file {jsonPath} does not exist.");
 
             string json = File.ReadAllText(jsonPath);
-            Beam data = JsonConvert.DeserializeObject<Beam>(json);
+            BeamsRoot data = JsonConvert.DeserializeObject<BeamsRoot>(json);
 
             return data;
         }
 
-
-
         public static int DefineBeamSection(cSapModel SapModel, string Name, string MatrialProp, double depth, double width)
         {
-            SapModel.PropFrame.SetRectangle(Name, MatrialProp, depth, width);
-            return 0;
+            return SapModel.PropFrame.SetRectangle(Name, MatrialProp, depth, width);
         }
 
         public static int DrawBeamByCoordinates(cSapModel SapModel, double x1, double y1, double z1, double x2, double y2, double z2,
-            string ColName, string SectionName)
+            string BeamName, string SectionName)
         {
             string DefinedName = null;
-            SapModel.FrameObj.AddByCoord(x1, y1, z1, x2, y2, z2, ref DefinedName, SectionName, ColName);
-            return 0;
+            return SapModel.FrameObj.AddByCoord(x1, y1, z1, x2, y2, z2, ref DefinedName, SectionName, BeamName);
         }
     }
+
 }
