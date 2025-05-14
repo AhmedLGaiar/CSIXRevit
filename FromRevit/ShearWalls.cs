@@ -1,13 +1,13 @@
-﻿using Autodesk.Revit.Attributes;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using ExportJsonFileFromRevit;
 using FromRevit.Data;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 
 namespace FromRevit
 {
@@ -45,7 +45,7 @@ namespace FromRevit
                     double wallLength = wallCurve.Length;
 
                     // Get wall thickness
-                    double thickness = wallType.Width; // Use WallType.Width for consistency
+                    double thickness = wallType.Width;
 
                     // Get wall height
                     double height = wall.get_Parameter(BuiltInParameter.WALL_USER_HEIGHT_PARAM)?.AsDouble() ??
@@ -81,7 +81,7 @@ namespace FromRevit
 
                     // Get structural wall specific information
                     string structuralMaterial = wallType.get_Parameter(BuiltInParameter.STRUCTURAL_MATERIAL_PARAM)?.AsValueString() ?? "Unknown";
-                    string loadBearing = wall.get_Parameter(BuiltInParameter.WALL_STRUCTURAL_SIGNIFICANT)?.AsValueString() ?? "Yes"; // Default to "Yes" for structural walls
+                    string loadBearing = wall.get_Parameter(BuiltInParameter.WALL_STRUCTURAL_SIGNIFICANT)?.AsValueString() ?? "Yes";
 
                     // Add structural wall data
                     structuralWallList.Add(new StructuralWallData
@@ -111,16 +111,98 @@ namespace FromRevit
                     throw new Exception("No structural walls found in the model.");
                 }
 
-                // Define file path on desktop
+                // First part: Export to Desktop
                 string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "Revit_StructuralWalls.json");
-
                 IDataExporter<List<StructuralWallData>> exporter = new JsonDataExporter<List<StructuralWallData>>();
                 exporter.Export(structuralWallList, filePath);
 
                 // Show completion dialog
                 TaskDialog.Show("Export Complete", $"Structural walls data has been exported to: \n{filePath}\nFound {structuralWallList.Count} walls.");
+                TaskDialog.Show("Masar", "Thank You For Using Masar Plugin");
 
                 return Result.Succeeded;
+
+                // Second part: Export to Documents\masar with user-named file
+                /*
+                // Check for walls
+                if (structuralWallList.Count == 0)
+                {
+                    throw new Exception("No structural walls found in the model.");
+                }
+
+                // Define the Documents folder path
+                string documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                string masarPath = Path.Combine(documentsPath, "masar");
+
+                // Create 'masar' directory if it doesn't exist
+                if (!Directory.Exists(masarPath))
+                {
+                    Directory.CreateDirectory(masarPath);
+                }
+
+                // Prompt user to select a filename prefix
+                TaskDialog dialog = new TaskDialog("Select Filename");
+                dialog.MainInstruction = "Select a filename prefix for the output file (will end with 'masar')";
+                dialog.CommonButtons = TaskDialogCommonButtons.Cancel;
+                dialog.AddCommandLink(TaskDialogCommandLinkId.CommandLink1, "Project_masar");
+                dialog.AddCommandLink(TaskDialogCommandLinkId.CommandLink2, "Building_masar");
+                dialog.AddCommandLink(TaskDialogCommandLinkId.CommandLink3, "Structure_masar");
+                dialog.AddCommandLink(TaskDialogCommandLinkId.CommandLink4, "WallData_masar");
+
+                string fileName = "";
+                TaskDialogResult result = dialog.Show();
+                if (result == TaskDialogResult.CommandLink1)
+                {
+                    fileName = "Project_masar";
+                }
+                else if (result == TaskDialogResult.CommandLink2)
+                {
+                    fileName = "Building_masar";
+                }
+                else if (result == TaskDialogResult.CommandLink3)
+                {
+                    fileName = "Structure_masar";
+                }
+                else if (result == TaskDialogResult.CommandLink4)
+                {
+                    fileName = "WallData_masar";
+                }
+                else
+                {
+                    return Result.Cancelled;
+                }
+
+                // Ensure .json extension
+                if (!fileName.ToLower().EndsWith(".json"))
+                {
+                    fileName += ".json";
+                }
+
+                // Define full file path
+                string filePath = Path.Combine(masarPath, fileName);
+
+                // Check if file already exists and append counter if necessary
+                int counter = 1;
+                string baseFileName = Path.GetFileNameWithoutExtension(fileName);
+                string extension = Path.GetExtension(fileName);
+                while (File.Exists(filePath))
+                {
+                    fileName = $"{baseFileName}_{counter}{extension}";
+                    filePath = Path.Combine(masarPath, fileName);
+                    counter++;
+                }
+
+                // Export data
+                IDataExporter<List<StructuralWallData>> exporter = new JsonDataExporter<List<StructuralWallData>>();
+                exporter.Export(structuralWallList, filePath);
+
+                // Show completion dialog with wall count
+                TaskDialog.Show("Export Complete",
+                    $"Structural walls data has been exported to: \n{filePath}\nFound {structuralWallList.Count} walls.");
+                TaskDialog.Show("Masar", "Thank You For Using Masar Plugin");
+
+                return Result.Succeeded;
+                */
             }
             catch (Exception ex)
             {
