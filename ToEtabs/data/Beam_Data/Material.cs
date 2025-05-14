@@ -8,6 +8,6 @@ namespace ToEtabs.data.Beam_Data
 {
     public class Material
     {
-        public string name { get; set; }
+        public string Materialname { get; set; }
     }
 }

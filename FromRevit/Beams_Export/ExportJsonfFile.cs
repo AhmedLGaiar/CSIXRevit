@@ -8,7 +8,6 @@ using ExportJsonFileFromRevit;
 
 namespace FromRevit
 {
-
     [Transaction(TransactionMode.ReadOnly)]
     public class ExportJsonfFile : IExternalCommand
     {
@@ -21,18 +20,17 @@ namespace FromRevit
                 Document doc = uiDoc.Document;
 
                 BeamExtractor extractor = new BeamExtractor(doc);
-                var beams = extractor.ExtractBeams().ToList();
+                var concreteBeams = extractor.ExtractConcreteBeams().ToList();
 
-                if (!beams.Any())
+                if (!concreteBeams.Any())
                 {
-                    TaskDialog.Show("Error", "No beams found in the project.");
+                    TaskDialog.Show("Error", "No concrete beams found in the project.");
                     return Result.Failed;
                 }
 
                 var beamsData = new
                 {
-                    steelBeams = beams.Where(b => ((dynamic)b.Material).name.ToLower().Contains("steel")),
-                    concreteBeams = beams.Where(b => ((dynamic)b.Material).name.ToLower().Contains("concrete"))
+                    concreteBeams = concreteBeams
                 };
 
                 string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);

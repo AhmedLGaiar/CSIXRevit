@@ -21,7 +21,7 @@ namespace ToEtabs.ViewModels
         private string jsonPath;
         private List<ColumnData> columns;
         private List<ShearWallData> shearWalls;
-        private List<BeamsData> beams;
+        private List<Beam> beams;
         private readonly cSapModel _sapModel;
 
         public ObservableCollection<string> DefinedConcreteMatrial { get; private set; }
@@ -38,8 +38,10 @@ namespace ToEtabs.ViewModels
             jsonPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "Revit_StructuralWalls.json");
             shearWalls = ShearWallUtilities.LoadShearWallData(jsonPath);
 
-            jsonPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "BeamsData.json");
-            beams = BeamUtilities.LoadBeamData(jsonPath);
+             jsonPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "BeamsData.json");
+            Beam beamsData = BeamUtilities.LoadBeamData(jsonPath);
+
+
 
             DefinedConcreteMatrial = new ObservableCollection<string>(MatrialProperties.GetMaterialNames(_sapModel));
         }
@@ -142,34 +144,40 @@ namespace ToEtabs.ViewModels
         [RelayCommand]
         private void PushBeamsToEtabs()
         {
-            int done;
-            int beamNum = 1;
-            foreach (var beam in beams)
-            {
-                var concreteBeams = beam.concreteBeams.Where(b => b.Material.name == _selectedConcreteMaterial);
 
-                foreach (var concreteBeam in concreteBeams)
-                {
-                    double widthMeters = concreteBeam.Section.width;
-                    double depthMeters = concreteBeam.Section.depth;
+            #region MyRegion
 
-                    done = BeamUtilities.DefineBeamSection(_sapModel, $"C {widthMeters}*{depthMeters} H",
-                        _selectedConcreteMaterial, depthMeters * 1000, widthMeters * 1000);
+            //int done;
+            //int beamNum = 1;
+            //foreach (var beam in beams)
+            //{
+            //    var concreteBeams = beam.concreteBeams.Where(b => b.Material.name == _selectedConcreteMaterial);
 
-                    if (done == 0)
-                    {
-                        done = BeamUtilities.DefineBeamSection(_sapModel, $"C {widthMeters}*{depthMeters} V",
-                            _selectedConcreteMaterial, widthMeters * 1000, depthMeters * 1000);
-                    }
+            //    foreach (var concreteBeam in concreteBeams)
+            //    {
+            //        double widthMeters = concreteBeam.Section.width;
+            //        double depthMeters = concreteBeam.Section.depth;
 
-                    done = BeamUtilities.DrawBeamByCoordinates(_sapModel,
-                        concreteBeam.StartPoint.X, concreteBeam.StartPoint.Y, concreteBeam.StartPoint.Z,
-                        concreteBeam.EndPoint.X, concreteBeam.EndPoint.Y, concreteBeam.EndPoint.Z,
-                        $"B{beamNum}", $"B {widthMeters}*{depthMeters} ");
+            //        done = BeamUtilities.DefineBeamSection(_sapModel, $"C {widthMeters}*{depthMeters} H",
+            //            _selectedConcreteMaterial, depthMeters * 1000, widthMeters * 1000);
 
-                    beamNum++;
-                }
-            }
+            //        if (done == 0)
+            //        {
+            //            done = BeamUtilities.DefineBeamSection(_sapModel, $"C {widthMeters}*{depthMeters} V",
+            //                _selectedConcreteMaterial, widthMeters * 1000, depthMeters * 1000);
+            //        }
+
+            //        done = BeamUtilities.DrawBeamByCoordinates(_sapModel,
+            //            concreteBeam.StartPoint.X, concreteBeam.StartPoint.Y, concreteBeam.StartPoint.Z,
+            //            concreteBeam.EndPoint.X, concreteBeam.EndPoint.Y, concreteBeam.EndPoint.Z,
+            //            $"B{beamNum}", $"B {widthMeters}*{depthMeters} ");
+
+            //        beamNum++;
+            //    }
+            //}
+            #endregion
+
+
         }
     }
 }

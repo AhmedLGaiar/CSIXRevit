@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media.Media3D;
 using ToEtabs.Data;
 
 namespace ToEtabs.data.Beam_Data
@@ -16,6 +17,5 @@ namespace ToEtabs.data.Beam_Data
         public PointData EndPoint { get; set; }
         public Material Material { get; set; }
         public Section Section { get; set; }
-        public Constraints Constraints { get; set; }
     }
 }

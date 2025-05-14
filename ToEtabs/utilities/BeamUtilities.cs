@@ -12,16 +12,18 @@ namespace ToEtabs.utilities
 {
     internal class BeamUtilities
     {
-        public static List<BeamsData> LoadBeamData(string jsonPath)
+        public static Beam LoadBeamData(string jsonPath)
         {
             if (!File.Exists(jsonPath))
                 throw new FileNotFoundException($"The file {jsonPath} does not exist.");
 
             string json = File.ReadAllText(jsonPath);
-            List<BeamsData> BeamsList = JsonConvert.DeserializeObject<List<BeamsData>>(json);
+            Beam data = JsonConvert.DeserializeObject<Beam>(json);
 
-            return BeamsList;
+            return data;
         }
+
+
 
         public static int DefineBeamSection(cSapModel SapModel, string Name, string MatrialProp, double depth, double width)
         {
