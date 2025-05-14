@@ -49,8 +49,8 @@
 
         <Button Grid.Row="2" Content="Import Columns" Command="{Binding PushColumnsToEtabsCommand}"
                 Margin="0 5"/>
-        <!--<Button Grid.Row="3" Content="Import Beams" Command="{Binding PushColumnsToEtabsCommand}"
-                Margin="0 5"/>-->
+        <Button Grid.Row="3" Content="Import Walls" Command="{Binding ExportWallsToEtabsCommand}"
+                Margin="0 5"/>
         <Button Grid.Row="4" Content="Import Beams" Command="{Binding PushBeamsToEtabsCommand}"
                 Margin="0 5"/>
     </Grid>

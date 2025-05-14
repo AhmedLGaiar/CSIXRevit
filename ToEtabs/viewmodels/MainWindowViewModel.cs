@@ -55,8 +55,6 @@ namespace ToEtabs.ViewModels
         {
             try
             {
-                _sapModel.SetPresentUnits(eUnits.kN_m_C); // Set units to kN, meters, Celsius
-
                 int wallIndex = 1;
                 foreach (var wall in shearWalls)
                 {
@@ -90,8 +88,6 @@ namespace ToEtabs.ViewModels
         {
             try
             {
-                _sapModel.SetPresentUnits(eUnits.kN_m_C);   
-
                 int done;
                 int ColNum = 1;
                 foreach (var column in columns)
