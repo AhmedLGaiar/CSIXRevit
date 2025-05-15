@@ -4,7 +4,7 @@
 		<Name>FromRevit_Columns</Name>
 		<Assembly>FromRevit.dll</Assembly>
 		<AddInId>9569A180-074E-456D-ABC9-E319DCD32A0D</AddInId>
-		<FullClassName>FromRevit.Columns</FullClassName>
+		<FullClassName>FromRevit.ElementsCommand.Columns</FullClassName>
 		<Text>Get Columns From Revit</Text>
 		<Description>Get Columns From Revit</Description>
 		<VendorId>ITI</VendorId>
@@ -14,7 +14,7 @@
 		<Name>FromRevit_Walls</Name>
 		<Assembly>FromRevit.dll</Assembly>
 		<AddInId>44068114-6085-4AD0-9497-59AB4D09F4EB</AddInId>
-		<FullClassName>FromRevit.ShearWalls</FullClassName>
+		<FullClassName>FromRevit.ElementsCommand.ShearWalls</FullClassName>
 		<Text>Get ST Walls From Revit</Text>
 		<Description>Get ST Walls From Revit</Description>
 		<VendorId>ITI</VendorId>
@@ -26,7 +26,7 @@
 		<AddInId>
 			51C1D9A6-3B0E-4835-BA56-5A21E8B1CD56
 		</AddInId>
-		<FullClassName>FromRevit.ExportJsonfFile</FullClassName>
+		<FullClassName>FromRevit.ElementsCommand.Beams</FullClassName>
 		<Text>Export Beams to JSON</Text>
 		<Description>Exports structural beam data to JSON format</Description>
 		<VendorId>ITI</VendorId>

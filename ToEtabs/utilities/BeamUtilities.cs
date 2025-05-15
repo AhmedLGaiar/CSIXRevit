@@ -1,26 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
+using ElementsData;
 using ETABSv1;
 using Newtonsoft.Json;
-using ToEtabs.data.Beam_Data;
 
 namespace ToEtabs.utilities
 {
     internal class BeamUtilities
     {
-        public static BeamsRoot LoadBeamData(string jsonPath)
+        public static List<BeamData> LoadBeamData(string jsonPath)
         {
             if (!File.Exists(jsonPath))
                 throw new FileNotFoundException($"The file {jsonPath} does not exist.");
 
             string json = File.ReadAllText(jsonPath);
-            BeamsRoot data = JsonConvert.DeserializeObject<BeamsRoot>(json);
+            List<BeamData> beamsList = JsonConvert.DeserializeObject<List<BeamData>>(json);
 
-            return data;
+            return beamsList;
         }
 
         public static int DefineBeamSection(cSapModel SapModel, string Name, string MatrialProp, double depth, double width)

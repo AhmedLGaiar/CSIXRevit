@@ -55,27 +55,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Beams_Export\BeamExtractor.cs" />
-    <Compile Include="Data\Beam_data\BeamData.cs" />
-    <Compile Include="Columns.cs" />
-    <Compile Include="Data\Beam_data\MaterialData.cs" />
-    <Compile Include="Data\Beam_data\SectionData.cs" />
-    <Compile Include="Data\StructuralWallData.cs" />
-    <Compile Include="Beams_Export\ExportJsonfFile.cs" />
+    <Compile Include="ElementsCommand\Columns.cs" />
+    <Compile Include="ElementsCommand\Beams.cs" />
     <Compile Include="Helpers\DoubleExtensions.cs" />
-    <Compile Include="Data\PointData .cs" />
     <Compile Include="JsonHandling\IDataExporter.cs" />
     <Compile Include="JsonHandling\JsonDataExporter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Data\ColumnData.cs" />
-    <Compile Include="ShearWalls.cs" />
-    <Compile Include="Window.cs" />
+    <Compile Include="ElementsCommand\ShearWalls.cs" />
+    <Compile Include="Utilites\BeamUtilites.cs" />
+    <Compile Include="Utilites\PointUtilites.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.addin">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ElementsData\ElementsData.csproj">
+      <Project>{a392df9f-7518-4421-9081-c704a8691b28}</Project>
+      <Name>ElementsData</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

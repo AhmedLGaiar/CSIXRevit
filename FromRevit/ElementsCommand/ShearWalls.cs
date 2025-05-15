@@ -5,11 +5,11 @@ using System.Linq;
 using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
+using ElementsData;
 using ExportJsonFileFromRevit;
-using FromRevit.Data;
-using Newtonsoft.Json;
+using FromRevit.Utilites;
 
-namespace FromRevit
+namespace FromRevit.ElementsCommand
 {
     [Transaction(TransactionMode.ReadOnly)]
     public class ShearWalls : IExternalCommand
@@ -87,8 +87,8 @@ namespace FromRevit
                     structuralWallList.Add(new StructuralWallData
                     {
                         Id = wall.Id.IntegerValue.ToString(),
-                        StartPoint = PointData.FromXYZ(startPoint),
-                        EndPoint = PointData.FromXYZ(endPoint),
+                        StartPoint = PointUtilites.FromXYZ(startPoint),
+                        EndPoint = PointUtilites.FromXYZ(endPoint),
                         Length = wallLength,
                         Thickness = thickness,
                         Height = height,

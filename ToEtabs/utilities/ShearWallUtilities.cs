@@ -1,22 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using ETABSv1;
 using Newtonsoft.Json;
-using ToEtabs.Data;
-using ToEtabs.Models;
+using ElementsData;
 
 namespace ToEtabs.Utilities
 {
     internal class ShearWallUtilities
     {
-        public static List<ShearWallData> LoadShearWallData(string jsonPath)
+        public static List<StructuralWallData> LoadShearWallData(string jsonPath)
         {
             if (!File.Exists(jsonPath))
                 throw new FileNotFoundException($"The file {jsonPath} does not exist.");
 
             string json = File.ReadAllText(jsonPath);
-            List<ShearWallData> shearWallList = JsonConvert.DeserializeObject<List<ShearWallData>>(json);
+            List<StructuralWallData> shearWallList = JsonConvert.DeserializeObject<List<StructuralWallData>>(json);
 
             return shearWallList;
         }
@@ -39,7 +36,7 @@ namespace ToEtabs.Utilities
             return ret;
         }
 
-        public static int DrawShearWallByCoordinates(cSapModel sapModel, ShearWallData wall, string wallName, string sectionName, double feetToMeters = 0.3048)
+        public static int DrawShearWallByCoordinates(cSapModel sapModel, StructuralWallData wall, string wallName, string sectionName, double feetToMeters = 0.3048)
         {
             if (wall == null || wall.StartPoint == null || wall.EndPoint == null || wall.Height <= 0)
             {

@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ToEtabs.Data;
 
-namespace ToEtabs.Models
+namespace ElementsData
 {
-    public class ShearWallData
+    public class StructuralWallData
     {
         public string Id { get; set; }
         public PointData StartPoint { get; set; } // Start point coordinates in meters

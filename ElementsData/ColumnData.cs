@@ -1,5 +1,6 @@
-﻿namespace ToEtabs.Data
+﻿namespace ElementsData
 {
+
     // Helper classes for JSON structure
     public class ColumnData
     {

@@ -2,15 +2,15 @@
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using ExportJsonFileFromRevit;
-using FromRevit.Data;
 using FromRevit.Helpers;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using ElementsData;
+using FromRevit.Utilites;
 
-namespace FromRevit
+namespace FromRevit.ElementsCommand
 {
     [Transaction(TransactionMode.ReadOnly)]
     public class Columns : IExternalCommand
@@ -81,8 +81,8 @@ namespace FromRevit
                     columnList.Add(new ColumnData
                     {
                         Id = col.Id.IntegerValue.ToString(),
-                        BasePoint = PointData.FromXYZInMilli(basePoint),
-                        TopPoint = PointData.FromXYZInMilli(topPoint),
+                        BasePoint = PointUtilites.FromXYZInMilli(basePoint),
+                        TopPoint = PointUtilites.FromXYZInMilli(topPoint),
                         Width =UnitUtils.ConvertFromInternalUnits(width, UnitTypeId.Meters) ,
                         depth = UnitUtils.ConvertFromInternalUnits(depth, UnitTypeId.Meters),
                         SectionName = sectionName,

@@ -6,15 +6,5 @@
         {
             return value > minValue - tolerance;
         }
-
-        internal static double NormalizeAngle(double angle)
-        {
-            return ((angle % 360) + 360) % 360;
-        }
-
-        internal static bool IsApproximately(double value, double target, double tolerance = 1.0)
-        {
-            return Math.Abs(value - target) < tolerance;
-        }
     }
 }
