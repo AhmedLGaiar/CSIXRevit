@@ -86,7 +86,6 @@ namespace FromRevit.ElementsCommand
                         Width =UnitUtils.ConvertFromInternalUnits(width, UnitTypeId.Meters) ,
                         depth = UnitUtils.ConvertFromInternalUnits(depth, UnitTypeId.Meters),
                         SectionName = sectionName,
-                        Material = material,
                         Rotation = rotation,
                         SlantedAngle = slantedAngle,
                         BaseLevel = baseLevel,

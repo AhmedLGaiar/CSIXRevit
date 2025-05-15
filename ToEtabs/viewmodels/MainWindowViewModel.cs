@@ -41,8 +41,6 @@ namespace ToEtabs.ViewModels
             DefinedConcreteMatrial = new ObservableCollection<string>(MatrialProperties.GetMaterialNames(_sapModel));
         }
 
-        private const double FeetToMeters = 0.3048;
-
         [RelayCommand]
         private void ExportWallsToEtabs()
         {
@@ -50,8 +48,8 @@ namespace ToEtabs.ViewModels
             foreach (var wall in shearWalls)
             {
                 // Convert dimensions to meters
-                double thicknessMeters = wall.Thickness * FeetToMeters;
-                double lengthMeters = wall.Length * FeetToMeters;
+                double thicknessMeters = wall.Thickness ;
+                double lengthMeters = wall.Length ;
 
                 if (!ShearWallHelpers.IsDimensionValid(thicknessMeters) ||
                     !ShearWallHelpers.IsDimensionValid(lengthMeters) ||
@@ -62,12 +60,11 @@ namespace ToEtabs.ViewModels
                     continue;
                 }
 
-                string sectionName = $"SW {thicknessMeters:F3}m";
+                string sectionName = $"SW {thicknessMeters:0.00} m";
                 ShearWallUtilities.DefineShearWallSection(_sapModel, sectionName, SelectedConcreteMaterial,
-                    thicknessMeters);
+                    thicknessMeters*1000);
 
-                ShearWallUtilities.DrawShearWallByCoordinates(_sapModel, wall, $"SW{wallIndex}", sectionName,
-                    FeetToMeters);
+                ShearWallUtilities.DrawShearWallByCoordinates(_sapModel, wall, $"SW {wallIndex}", sectionName);
 
                 wallIndex++;
             }

@@ -26,7 +26,7 @@ namespace ToEtabs.Utilities
             }
 
             eShellType shellType = eShellType.ShellThin; // Adjust based on needs
-            int ret = sapModel.PropArea.SetWall(name, eWallPropType.Specified, shellType, materialProp, thickness * 1000);
+            int ret = sapModel.PropArea.SetWall(name, eWallPropType.Specified, shellType, materialProp, thickness);
 
             if (ret != 0)
             {
@@ -36,7 +36,7 @@ namespace ToEtabs.Utilities
             return ret;
         }
 
-        public static int DrawShearWallByCoordinates(cSapModel sapModel, StructuralWallData wall, string wallName, string sectionName, double feetToMeters = 0.3048)
+        public static int DrawShearWallByCoordinates(cSapModel sapModel, StructuralWallData wall, string wallName, string sectionName)
         {
             if (wall == null || wall.StartPoint == null || wall.EndPoint == null || wall.Height <= 0)
             {
@@ -44,13 +44,13 @@ namespace ToEtabs.Utilities
             }
 
             // Convert coordinates and height from feet to meters
-            double x1 = wall.StartPoint.X * feetToMeters;
-            double y1 = wall.StartPoint.Y * feetToMeters;
-            double z1 = wall.StartPoint.Z * feetToMeters;
-            double x2 = wall.EndPoint.X * feetToMeters;
-            double y2 = wall.EndPoint.Y * feetToMeters;
-            double z2 = wall.EndPoint.Z * feetToMeters;
-            double heightMeters = wall.Height * feetToMeters;
+            double x1 = wall.StartPoint.X ;
+            double y1 = wall.StartPoint.Y ;
+            double z1 = wall.StartPoint.Z ;
+            double x2 = wall.EndPoint.X;
+            double y2 = wall.EndPoint.Y;
+            double z2 = wall.EndPoint.Z;
+            double heightMeters = wall.Height*1000;
 
             // Define four points for a rectangular wall (base and top)
             int numPoints = 4;

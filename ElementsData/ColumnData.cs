@@ -1,7 +1,5 @@
 ﻿namespace ElementsData
 {
-
-    // Helper classes for JSON structure
     public class ColumnData
     {
         public string Id { get; set; }
@@ -10,7 +8,6 @@
         public double Width { get; set; }
         public double depth { get; set; }
         public string SectionName { get; set; }
-        public string Material { get; set; }
         public double Rotation { get; set; }
         public double SlantedAngle { get; set; }
         public string BaseLevel { get; set; }
