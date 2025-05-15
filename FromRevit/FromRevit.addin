@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RevitAddIns>
+	<AddIn Type="Application">
+		<Name>Revit Exporter</Name>
+		<Assembly>FromRevit.dll</Assembly>
+		<FullClassName>FromRevit.Commands.ExternalApplication</FullClassName>
+		<ClientId>
+			5463D3BE-AD6C-4DC7-91FB-9C9096FDE75F
+		</ClientId>
+		<VendorId>ITI Intake 45</VendorId>
+		<VendorDescription>Masar Team From ITI</VendorDescription>
+	</AddIn>
+</RevitAddIns>
