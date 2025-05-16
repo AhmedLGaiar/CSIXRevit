@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElementsData", "ElementsDat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FromRevit", "FromRevit\FromRevit.csproj", "{8DF54D14-376D-4A4F-BE2E-18C33261B207}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Styles", "Styles\Styles.csproj", "{5D4ACAE4-BE30-46A2-8DA4-A360280E892B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{8DF54D14-376D-4A4F-BE2E-18C33261B207}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8DF54D14-376D-4A4F-BE2E-18C33261B207}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8DF54D14-376D-4A4F-BE2E-18C33261B207}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D4ACAE4-BE30-46A2-8DA4-A360280E892B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D4ACAE4-BE30-46A2-8DA4-A360280E892B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D4ACAE4-BE30-46A2-8DA4-A360280E892B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D4ACAE4-BE30-46A2-8DA4-A360280E892B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
