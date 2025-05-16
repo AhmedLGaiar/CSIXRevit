@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using ToEtabs.Importers;
 using ToEtabs.JsonHandler;
 using System.Windows;
+using Microsoft.Win32;
 
 namespace ToEtabs.ViewModels
 {
@@ -66,7 +67,7 @@ namespace ToEtabs.ViewModels
             {
                 _sapModel = SapModel;
 
-                var openFileDialog = new Microsoft.Win32.OpenFileDialog
+                var openFileDialog = new OpenFileDialog
                 {
                     Title = "Select Combined Revit Export JSON File",
                     Filter = "JSON Files (*.json)|*.json"

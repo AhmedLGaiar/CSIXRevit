@@ -1,11 +1,11 @@
 ﻿using System.IO;
 using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
-using System.Windows.Forms;
 using CommunityToolkit.Mvvm.Input;
 using FromRevit.Commands;
 using FromRevit.ElementsCommand;
 using Newtonsoft.Json;
+using Microsoft.Win32;
 
 namespace FromRevit.ViewModels
 {
@@ -47,49 +47,39 @@ namespace FromRevit.ViewModels
         [RelayCommand(CanExecute = nameof(AnyChecked))]
         private void ExportData()
         {
-            using (var folderDialog = new FolderBrowserDialog())
+            var saveDialog = new SaveFileDialog
             {
-                folderDialog.Description = "Select folder to save exported JSON file";
-                folderDialog.ShowNewFolderButton = true;
+                Title = "Export JSON File",
+                Filter = "JSON files (*.json)|*.json",
+                DefaultExt = "json",
+                FileName = "exported_data"
+            };
 
-                DialogResult folderResult = folderDialog.ShowDialog();
-                if (folderResult != DialogResult.OK || string.IsNullOrWhiteSpace(folderDialog.SelectedPath))
-                    return;
+            bool? result = saveDialog.ShowDialog();
+            if (result != true || string.IsNullOrWhiteSpace(saveDialog.FileName))
+                return;
 
-                // Ask user for a file name
-                string fileName = Microsoft.VisualBasic.Interaction.InputBox(
-                    "Enter the file name for the exported JSON (without extension):",
-                    "Export File Name",
-                    "exported_data");
+            // Prepare result object
+            var exportData = new Dictionary<string, object>();
 
-                if (string.IsNullOrWhiteSpace(fileName))
-                    return;
+            if (IsColumnsChecked)
+                exportData["columns"] = Columns.GetColumnData(ExportFromRevit.document);
 
-                // Prepare result object
-                var exportData = new Dictionary<string, object>();
+            if (IsWallsChecked)
+                exportData["walls"] = StructuralWall.GetShearWallData(ExportFromRevit.document);
 
-                if (IsColumnsChecked)
-                    exportData["columns"] = Columns.GetColumnData(ExportFromRevit.document);
+            if (IsBeamsChecked)
+                exportData["beams"] = Beams.GetBeamData(ExportFromRevit.document);
 
-                if (IsWallsChecked)
-                    exportData["walls"] = StructuralWall.GetShearWallData(ExportFromRevit.document);
+            if (IsSlabsChecked)
+                exportData["slabs"] = Slabs.GetSlabData(ExportFromRevit.document);
 
-                if (IsBeamsChecked)
-                    exportData["beams"] = Beams.GetBeamData(ExportFromRevit.document);
+            // Serialize to JSON
+            string json = JsonConvert.SerializeObject(exportData, Formatting.Indented);
+            File.WriteAllText(saveDialog.FileName, json);
 
-                if (IsSlabsChecked)
-                {
-                    // Replace this with your actual slab export
-                    // exportData["slabs"] = Slabs.GetSlabData(ExportFromRevit.document);
-                }
-
-                string json = JsonConvert.SerializeObject(exportData, Formatting.Indented);
-                string fullPath = Path.Combine(folderDialog.SelectedPath, $"{fileName}.json");
-                File.WriteAllText(fullPath, json);
-
-                System.Windows.MessageBox.Show("Export completed successfully!", "Success",
-                    MessageBoxButton.OK, MessageBoxImage.Information);
-            }
+            System.Windows.MessageBox.Show("Export completed successfully!", "Success",
+                MessageBoxButton.OK, MessageBoxImage.Information);
         }
     }
 }
