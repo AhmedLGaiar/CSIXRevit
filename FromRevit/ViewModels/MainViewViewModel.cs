@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System.Windows.Forms;
 using CommunityToolkit.Mvvm.Input;
@@ -29,56 +30,65 @@ namespace FromRevit.ViewModels
             isBeamsChecked = true;
             isSlabsChecked = true;
         }
-        partial void OnIsColumnsCheckedChanged(bool oldValue, bool newValue) => ExportDataCommand.NotifyCanExecuteChanged();
-        partial void OnIsWallsCheckedChanged(bool oldValue, bool newValue) => ExportDataCommand.NotifyCanExecuteChanged();
-        partial void OnIsBeamsCheckedChanged(bool oldValue, bool newValue) => ExportDataCommand.NotifyCanExecuteChanged();
-        partial void OnIsSlabsCheckedChanged(bool oldValue, bool newValue) => ExportDataCommand.NotifyCanExecuteChanged();
+
+        partial void OnIsColumnsCheckedChanged(bool oldValue, bool newValue) =>
+            ExportDataCommand.NotifyCanExecuteChanged();
+
+        partial void OnIsWallsCheckedChanged(bool oldValue, bool newValue) =>
+            ExportDataCommand.NotifyCanExecuteChanged();
+
+        partial void OnIsBeamsCheckedChanged(bool oldValue, bool newValue) =>
+            ExportDataCommand.NotifyCanExecuteChanged();
+
+        partial void OnIsSlabsCheckedChanged(bool oldValue, bool newValue) =>
+            ExportDataCommand.NotifyCanExecuteChanged();
 
 
         [RelayCommand(CanExecute = nameof(AnyChecked))]
         private void ExportData()
         {
-            using (var dialog = new FolderBrowserDialog())
+            using (var folderDialog = new FolderBrowserDialog())
             {
-                dialog.Description = "Select folder to save exported JSON files";
-                dialog.ShowNewFolderButton = true;
+                folderDialog.Description = "Select folder to save exported JSON file";
+                folderDialog.ShowNewFolderButton = true;
 
-                DialogResult result = dialog.ShowDialog();
-                if (result != DialogResult.OK || string.IsNullOrWhiteSpace(dialog.SelectedPath))
+                DialogResult folderResult = folderDialog.ShowDialog();
+                if (folderResult != DialogResult.OK || string.IsNullOrWhiteSpace(folderDialog.SelectedPath))
                     return;
 
-                string folderPath = dialog.SelectedPath;
+                // Ask user for a file name
+                string fileName = Microsoft.VisualBasic.Interaction.InputBox(
+                    "Enter the file name for the exported JSON (without extension):",
+                    "Export File Name",
+                    "exported_data");
+
+                if (string.IsNullOrWhiteSpace(fileName))
+                    return;
+
+                // Prepare result object
+                var exportData = new Dictionary<string, object>();
+
                 if (IsColumnsChecked)
-                {
-                    var columnList = Columns.GetColumnData(ExportFromRevit.document);
-                    string columnJson = JsonConvert.SerializeObject(columnList, Formatting.Indented);
-                    File.WriteAllText(Path.Combine(folderPath, "columns.json"), columnJson);
-                }
+                    exportData["columns"] = Columns.GetColumnData(ExportFromRevit.document);
 
                 if (IsWallsChecked)
-                {
-                    var wallList = StructuralWall.GetShearWallData(ExportFromRevit.document);
-                    string wallJson = JsonConvert.SerializeObject(wallList, Formatting.Indented);
-                    File.WriteAllText(Path.Combine(folderPath, "walls.json"), wallJson);
-                }
+                    exportData["walls"] = StructuralWall.GetShearWallData(ExportFromRevit.document);
 
                 if (IsBeamsChecked)
-                {
-                    var beamList = Beams.GetBeamData(ExportFromRevit.document);
-                    string beamJson = JsonConvert.SerializeObject(beamList, Formatting.Indented);
-                    File.WriteAllText(Path.Combine(folderPath, "beams.json"), beamJson);
-                }
+                    exportData["beams"] = Beams.GetBeamData(ExportFromRevit.document);
 
                 if (IsSlabsChecked)
                 {
-                    //Example slab export placeholder
-                    //var slabList = Slabs.GetSlabData(ExportFromRevit.document); // You define this
-                    //string slabJson = JsonConvert.SerializeObject(slabList, Formatting.Indented);
-                    //File.WriteAllText(Path.Combine(folderPath, "slabs.json"), slabJson);
+                    // Replace this with your actual slab export
+                    // exportData["slabs"] = Slabs.GetSlabData(ExportFromRevit.document);
                 }
 
+                string json = JsonConvert.SerializeObject(exportData, Formatting.Indented);
+                string fullPath = Path.Combine(folderDialog.SelectedPath, $"{fileName}.json");
+                File.WriteAllText(fullPath, json);
+
                 System.Windows.MessageBox.Show("Export completed successfully!", "Success",
-                    System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Information);
+                    MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
     }

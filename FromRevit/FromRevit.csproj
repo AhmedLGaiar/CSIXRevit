@@ -20,6 +20,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Reference Include="Microsoft.VisualBasic" />
 	  <Reference Include="RevitAPI">
 	    <HintPath>..\..\..\..\Program Files\Autodesk\Revit 2022\RevitAPI.dll</HintPath>
 	    <Private>False</Private>

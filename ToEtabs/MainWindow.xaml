@@ -11,12 +11,17 @@
         WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
+        <Style TargetType="CheckBox">
+            <Setter Property="Margin" Value="0 2.5" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+        </Style>
         <Style TargetType="Button">
             <Setter Property="Width" Value="100" />
             <Setter Property="Height" Value="30" />
             <Setter Property="Foreground" Value="White" />
             <Setter Property="Background" Value="#00008b" />
-            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontWeight" Value="SemiBold" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
@@ -29,6 +34,10 @@
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
                     <Setter Property="Background" Value="#2875b9" />
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="Gray" />
+                    <Setter Property="Foreground" Value="LightGray" />
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -45,13 +54,16 @@
         <ComboBox Width="150" HorizontalAlignment="Right"
                   ItemsSource="{Binding DefinedConcreteMatrial}"
                   SelectedItem="{Binding SelectedConcreteMaterial, Mode=TwoWay}"
-                  Margin="0 5"/>
+                  Margin="0 5" />
 
-        <Button Grid.Row="2" Content="Import Columns" Command="{Binding PushColumnsToEtabsCommand}"
-                Margin="0 5"/>
-        <Button Grid.Row="3" Content="Import Walls" Command="{Binding ExportWallsToEtabsCommand}"
-                Margin="0 5"/>
-        <Button Grid.Row="4" Content="Import Beams" Command="{Binding PushBeamsToEtabsCommand}"
-                Margin="0 5"/>
+        <StackPanel Grid.Row="1">
+            <CheckBox Content="Columns" IsChecked="{Binding IsColumnsChecked}" />
+            <CheckBox Content="Walls" IsChecked="{Binding IsWallsChecked}" />
+            <CheckBox Content="Beams" IsChecked="{Binding IsBeamsChecked}" />
+            <CheckBox Content="Slabs" IsChecked="{Binding IsSlabsChecked}" />
+        </StackPanel>
+
+        <Button Grid.Row="2" Content="Import Elements" Command="{Binding ExportElementsCommand}"
+                Margin="0 5" />
     </Grid>
 </Window>
