@@ -12,15 +12,18 @@ namespace ETABSDataExtraction
         private readonly cSapModel _etabsModel;
         private readonly string _jsonOutputPath;
 
-        public ETABSDataExtractor(cSapModel etabsModel, string modelName = null)
+        public ETABSDataExtractor(cSapModel etabsModel, string outputPath)
         {
             _etabsModel = etabsModel ?? throw new ArgumentNullException(nameof(etabsModel));
-            // Set output path to desktop with a related name
-            string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            string fileName = !string.IsNullOrEmpty(modelName)
-                ? $"ETABSData_{SanitizeFileName(modelName)}.json"
-                : $"ETABSData_{DateTime.Now:yyyyMMdd_HHmmss}.json";
-            _jsonOutputPath = Path.Combine(desktopPath, fileName);
+            if (string.IsNullOrWhiteSpace(outputPath))
+                throw new ArgumentException("Output path must not be null or empty.", nameof(outputPath));
+
+            // Sanitize the file name part only
+            string directory = Path.GetDirectoryName(outputPath);
+            string fileName = Path.GetFileName(outputPath);
+            string sanitizedFileName = SanitizeFileName(fileName);
+
+            _jsonOutputPath = Path.Combine(directory ?? "", sanitizedFileName);
         }
 
         public void Execute()
@@ -270,13 +273,14 @@ namespace ETABSDataExtraction
         }
 
         // Helper method to sanitize file names (remove invalid characters)
-        private string SanitizeFileName(string fileName)
+
+        private string SanitizeFileName(string name)
         {
             foreach (char c in Path.GetInvalidFileNameChars())
             {
-                fileName = fileName.Replace(c, '_');
+                name = name.Replace(c, '_');
             }
-            return fileName;
+            return name;
         }
     }
 }
