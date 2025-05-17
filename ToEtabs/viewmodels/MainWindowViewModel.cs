@@ -55,6 +55,7 @@ namespace ToEtabs.ViewModels
         private List<ColumnData> columns;
         private List<StructuralWallData> shearWalls;
         private List<BeamData> beams;
+        private List<SlabData> slabs;
         private readonly cSapModel _sapModel;
 
         public ObservableCollection<string> DefinedConcreteMatrial { get; private set; }
@@ -92,6 +93,7 @@ namespace ToEtabs.ViewModels
                 columns = combinedData.Columns ?? new List<ColumnData>();
                 shearWalls = combinedData.Walls ?? new List<StructuralWallData>();
                 beams = combinedData.Beams ?? new List<BeamData>();
+                slabs= combinedData.Slabs ?? new List<SlabData>();
 
                 DefinedConcreteMatrial = new ObservableCollection<string>(
                     MatrialProperties.GetMaterialNames(_sapModel));
@@ -124,8 +126,7 @@ namespace ToEtabs.ViewModels
 
             if (IsSlabsChecked)
             {
-                // TODO: Implement ImportSlab if needed
-                // ImportSlab.ImportSlabs(slabs, _sapModel, SelectedConcreteMaterial);
+                 ImportSlab.ImportSlabs(slabs, _sapModel, SelectedConcreteMaterial);
             }
 
             _sapModel.View.RefreshView();
