@@ -1,11 +1,14 @@
 ﻿using ETABSDataExtraction;
 using ETABSv1;
+using Microsoft.Win32;
 using System;
+using System.Windows.Forms;
 
 namespace FromEtabs
 {
     public class cPlugin : cPluginContract
     {
+
         public void Main(ref cSapModel SapModel, ref cPluginCallback ISapPlugin)
         {
             try
@@ -22,14 +25,32 @@ namespace FromEtabs
 
                 ETABSv1.cSapModel sapModel = etabsObject.SapModel;
 
-                var extractor = new ETABSDataExtractor(sapModel, "MyModel");
+                // Show file dialog to select JSON file location
+                System.Windows.Forms.SaveFileDialog saveFileDialog = new System.Windows.Forms.SaveFileDialog
+                {
+                    Filter = "JSON files (*.json)|*.json",
+                    Title = "Save ETABS Data As",
+                    FileName = "ETABSData.json"
+                };
+
+                if (saveFileDialog.ShowDialog() != DialogResult.OK)
+                {
+                    Console.WriteLine("Export cancelled.");
+                    return;
+                }
+
+                string outputPath = saveFileDialog.FileName;
+
+                // Create an instance of the data extractor and execute the export
+                var extractor = new ETABSDataExtractor(sapModel, outputPath);
                 extractor.Execute();
 
-                Console.WriteLine("Done!");
+                // Show success message
+                Console.WriteLine($"JSON exported successfully to:\n{outputPath}");
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error connecting to ETABS: " + ex.Message);
+                Console.WriteLine(" Error connecting to ETABS: " + ex.Message);
             }
         }
 
