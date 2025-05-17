@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:hc="https://handyorg.github.io/handycontrol">
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="CheckBox.xaml" />
         <ResourceDictionary Source="Button.xaml" />
+        <ResourceDictionary Source="CheckBox.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

@@ -27,14 +27,13 @@
                   ItemsSource="{Binding DefinedConcreteMatrial}"
                   SelectedItem="{Binding SelectedConcreteMaterial, Mode=TwoWay}"
                   Margin="0 5" />
-
-        <StackPanel Grid.Row="1" Margin="2.5 2.5">
-            <CheckBox Content="Columns" IsChecked="{Binding IsColumnsChecked}" />
+        <StackPanel Grid.Row="1" Margin="2.5">
+            <CheckBox Content="Columns" IsChecked="{Binding IsColumnsChecked}"  />
             <CheckBox Content="Walls" IsChecked="{Binding IsWallsChecked}" />
             <CheckBox Content="Beams" IsChecked="{Binding IsBeamsChecked}" />
             <CheckBox Content="Slabs" IsChecked="{Binding IsSlabsChecked}" />
         </StackPanel>
-
-        <Button Grid.Row="2" Content="Import Elements" Command="{Binding ExportElementsCommand}" />
+        <Button  Grid.Row="2" Content="Import Elements"
+                Command="{Binding ExportElementsCommand}" />
     </Grid>
 </Window>

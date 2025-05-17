@@ -36,8 +36,26 @@
 		</None>
 	</ItemGroup>
 
-	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
-		<Exec Command="Copy &quot;$(TargetDir)&quot;.&quot;&quot; &quot;$(AppData)\Autodesk\Revit\Addins\2022\&quot;&#xD;&#xA;" />
-	</Target>
+	<PropertyGroup>
+		<RevitAddinFolder>$(AppData)\Autodesk\Revit\Addins\2022</RevitAddinFolder>
+		<PluginFolder>$(RevitAddinFolder)\$(AssemblyName)</PluginFolder>
+	</PropertyGroup>
 
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+		<!-- Create plugin folder if not exists -->
+		<MakeDir Directories="$(PluginFolder)" />
+
+		<!-- Copy all output DLLs to subfolder -->
+		<ItemGroup>
+			<PluginFiles Include="$(TargetDir)*.*" />
+		</ItemGroup>
+		<Copy SourceFiles="@(PluginFiles)"
+		      DestinationFolder="$(PluginFolder)\%(RecursiveDir)"
+		      SkipUnchangedFiles="true" />
+
+		<!-- Copy .addin manifest to root Addins folder -->
+		<Copy SourceFiles="FromRevit.addin"
+		      DestinationFolder="$(RevitAddinFolder)"
+		      SkipUnchangedFiles="true" />
+	</Target>
 </Project>
