@@ -11,34 +11,33 @@
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'" />
 
 	<ItemGroup>
-	  <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-	  <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\ElementsData\ElementsData.csproj" />
-	  <ProjectReference Include="..\Styles\Styles.csproj" />
+		<ProjectReference Include="..\ElementsData\ElementsData.csproj" />
+		<ProjectReference Include="..\Styles\Styles.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Reference Include="RevitAPI">
-	    <HintPath>..\..\..\..\..\..\..\Program Files\Autodesk\Revit 2022\RevitAPI.dll</HintPath>
-	    <Private>False</Private>
-	  </Reference>
-	  <Reference Include="RevitAPIUI">
-	    <HintPath>..\..\..\..\..\..\..\Program Files\Autodesk\Revit 2022\RevitAPIUI.dll</HintPath>
-	    <Private>False</Private>
-	  </Reference>
+		<Reference Include="RevitAPI">
+			<HintPath>..\..\..\..\Program Files\Autodesk\Revit 2022\RevitAPI.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="RevitAPIUI">
+			<HintPath>..\..\..\..\Program Files\Autodesk\Revit 2022\RevitAPIUI.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
 	</ItemGroup>
-
 	<ItemGroup>
-	  <None Update="FromRevit.addin">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
+		<None Update="FromRevit.addin">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
 	</ItemGroup>
 
 	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
-	  <Exec Command="Copy &quot;$(TargetDir)&quot;.&quot;&quot; &quot;$(AppData)\Autodesk\Revit\Addins\2022\&quot;&#xD;&#xA;" />
+		<Exec Command="Copy &quot;$(TargetDir)&quot;.&quot;&quot; &quot;$(AppData)\Autodesk\Revit\Addins\2022\&quot;&#xD;&#xA;" />
 	</Target>
-	
+
 </Project>
