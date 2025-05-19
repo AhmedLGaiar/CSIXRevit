@@ -125,9 +125,7 @@ namespace ToEtabs.ViewModels
                 ImportBeam.ImportBeams(beams, _sapModel, SelectedConcreteMaterial);
 
             if (IsSlabsChecked)
-            {
                  ImportSlab.ImportSlabs(slabs, _sapModel, SelectedConcreteMaterial);
-            }
 
             _sapModel.View.RefreshView();
             MessageBox.Show("Import to ETABS completed successfully.", "Success",
