@@ -30,5 +30,20 @@ namespace FromRevit.Utilites
                 Z = point.Z
             };
         }
+
+
+
+        public static PointData FromXYZInMilli(XYZ point, double thikness)
+        {
+            double thiknessMilli = UnitUtils.ConvertFromInternalUnits(thikness, UnitTypeId.Millimeters);
+
+            return new PointData
+            {
+                X = UnitUtils.ConvertFromInternalUnits(point.X, UnitTypeId.Millimeters),
+                Y = UnitUtils.ConvertFromInternalUnits(point.Y, UnitTypeId.Millimeters),
+                Z = UnitUtils.ConvertFromInternalUnits(point.Z, UnitTypeId.Millimeters) + (thiknessMilli)
+            };
+        }
+
     }
 }

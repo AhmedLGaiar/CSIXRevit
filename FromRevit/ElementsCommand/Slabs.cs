@@ -55,7 +55,7 @@ namespace FromRevit.ElementsCommand
                         {
                             EdgeArray loop = edgeLoops.get_Item(i);
                             List<PointData> loopPoints = loop.Cast<Edge>()
-                                .Select(e => PointUtilites.FromXYZInMilli(e.AsCurve().GetEndPoint(0)))
+                                .Select(e => PointUtilites.FromXYZInMilli(e.AsCurve().GetEndPoint(0),thickness))
                                 .ToList();
 
                             if (i == 0)
