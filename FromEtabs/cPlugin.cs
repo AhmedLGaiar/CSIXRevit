@@ -2,6 +2,7 @@
 using ETABSv1;
 using Microsoft.Win32;
 using System;
+using System.Windows;
 using System.Windows.Forms;
 
 namespace FromEtabs
@@ -46,7 +47,9 @@ namespace FromEtabs
                 extractor.Execute();
 
                 // Show success message
-                Console.WriteLine($"JSON exported successfully to:\n{outputPath}");
+                //Console.WriteLine($"JSON exported successfully to:\n{outputPath}");
+                System.Windows.MessageBox.Show("Import to ETABS completed successfully.", "Success",
+               MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)
             {
@@ -57,7 +60,7 @@ namespace FromEtabs
 
         public int Info(ref string Text)
         {
-           Text = "from Etabs Plugin to revit";
+            Text = "from Etabs Plugin to revit";
             return 0;
         }
     }

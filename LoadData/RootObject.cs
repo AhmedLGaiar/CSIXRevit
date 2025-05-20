@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace LoadData
 {
-    public class JsonExport
+    public class RootObject
     {
         public List<LoadDefinition> LoadDefinitions { get; set; }
         public List<LoadCombination> LoadCombinations { get; set; }
-        public List<StructuralElement> Elements { get; set; }
-        public List<LoadAssignment> LoadAssigned { get; set; }
     }
 }
