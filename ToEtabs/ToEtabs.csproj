@@ -16,6 +16,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\ElementsData\ElementsData.csproj" />
+	  <ProjectReference Include="..\FromEtabs\FromEtabs.csproj" />
 	  <ProjectReference Include="..\LoadData\LoadData.csproj" />
 	  <ProjectReference Include="..\Styles\Styles.csproj" />
 	</ItemGroup>

@@ -46,7 +46,6 @@
     <Compile Include="LoadCombinationFactor.cs" />
     <Compile Include="LoadDefinition.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RootObject.cs" />
     <Compile Include="StructuralElement.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

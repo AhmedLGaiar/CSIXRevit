@@ -46,7 +46,7 @@
 
         <Button Grid.Row="3" Content="Browse File"
                 Command="{Binding BrowseFileCommand}" Margin="0 5" />
-        <Button Grid.Row="4" Content="Import All"
+        <Button Grid.Row="4" Content="Import selected"
                 Command="{Binding ExportElementsCommand}" Margin="0 5" />
         <TextBlock Grid.Row="5" Text="{Binding SelectedFilePath}" Margin="0 5" />
     </Grid>

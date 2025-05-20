@@ -18,5 +18,7 @@ namespace LoadData
         public double? EndDistance { get; set; }
         public string RelativeDistance { get; set; }
 
+        
+
     }
 }
