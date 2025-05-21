@@ -8,7 +8,7 @@
         xmlns:local="clr-namespace:FromRevit.Views"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="RevitExporter" Height="200" Width="200">
+        Title="RevitExporter" Height="200" Width="250">
 
     <Window.Resources>
         <ResourceDictionary Source="pack://application:,,,/Styles;component/MasterStyles.xaml" />
