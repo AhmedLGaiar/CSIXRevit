@@ -13,7 +13,13 @@
     <Window.Resources>
         <ResourceDictionary Source="pack://application:,,,/Styles;component/MasterStyles.xaml" />
     </Window.Resources>
-
+    
+    <Window.InputBindings>
+        <KeyBinding Key="A"
+                    Modifiers="Control"
+                    Command="{Binding SelectAllCommand}" />
+    </Window.InputBindings>
+    
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -24,7 +30,7 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <ComboBox  Grid.Row="1" ItemsSource="{Binding DefinedConcreteMatrial}"
+        <ComboBox Grid.Row="1" ItemsSource="{Binding DefinedConcreteMatrial}"
                   SelectedItem="{Binding SelectedConcreteMaterial, Mode=TwoWay}"
                   Tag="Select concrete Matrial ..."
                   Style="{StaticResource ModernComboBoxWithPlaceholderStyle}"/>
