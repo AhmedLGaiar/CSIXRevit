@@ -7,13 +7,13 @@ namespace ToEtabs.Utilities
 {
     internal class ColumnUtilities
     {
-        public static List<ColumnData> LoadColumnData(string jsonPath)
+        public static List<ColumnGeometryData> LoadColumnGeometryData(string jsonPath)
         {
             if (!File.Exists(jsonPath))
                 throw new FileNotFoundException($"The file {jsonPath} does not exist.");
 
             string json = File.ReadAllText(jsonPath);
-            List<ColumnData> columnList = JsonConvert.DeserializeObject<List<ColumnData>>(json);
+            List<ColumnGeometryData> columnList = JsonConvert.DeserializeObject<List<ColumnGeometryData>>(json);
 
             return columnList;
         }

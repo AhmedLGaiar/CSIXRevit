@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+	  <LangVersion>latest</LangVersion>   
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ElementsData\ElementsData.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="ETABSv1">
+      <HintPath>..\..\..\..\Program Files\Computers and Structures\ETABS 22\ETABSv1.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+
+</Project>

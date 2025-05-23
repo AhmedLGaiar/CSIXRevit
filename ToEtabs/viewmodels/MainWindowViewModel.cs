@@ -57,7 +57,7 @@ namespace ToEtabs.ViewModels
 
         private string jsonPath;
         private JsonExport loadData;
-        private List<ColumnData> columns;
+        private List<ColumnGeometryData> columns;
         private List<StructuralWallData> shearWalls;
         private List<BeamData> beams;
         private List<SlabData> slabs;
@@ -74,7 +74,7 @@ namespace ToEtabs.ViewModels
                 _sapModel = sapModel ?? throw new ArgumentNullException(nameof(sapModel));
                 DefinedConcreteMatrial = new ObservableCollection<string>(
                     MatrialProperties.GetMaterialNames(_sapModel));
-                columns = new List<ColumnData>();
+                columns = new List<ColumnGeometryData>();
                 shearWalls = new List<StructuralWallData>();
                 beams = new List<BeamData>();
                 slabs = new List<SlabData>();
@@ -119,7 +119,7 @@ namespace ToEtabs.ViewModels
                 }
 
                 // Assign lists with correct types
-                columns = combinedData.Columns ?? new List<ColumnData>();
+                columns = combinedData.Columns ?? new List<ColumnGeometryData>();
                 shearWalls = combinedData.Walls ?? new List<StructuralWallData>();
                 beams = combinedData.Beams ?? new List<BeamData>();
                 slabs = combinedData.Slabs ?? new List<SlabData>();
@@ -153,7 +153,7 @@ namespace ToEtabs.ViewModels
                 MessageBox.Show($"Failed to load file:\n{ex.Message}", "Error",
                     MessageBoxButton.OK, MessageBoxImage.Error);
                 loadData = null;
-                columns = new List<ColumnData>();
+                columns = new List<ColumnGeometryData>();
                 shearWalls = new List<StructuralWallData>();
                 beams = new List<BeamData>();
                 slabs = new List<SlabData>();

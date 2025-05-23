@@ -63,7 +63,7 @@ namespace FromRevit.ViewModels
             var exportData = new Dictionary<string, object>();
 
             if (IsColumnsChecked)
-                exportData["columns"] = Columns.GetColumnData(ExportFromRevit.document);
+                exportData["columns"] = Columns.GetColumnGeometryData(ExportFromRevit.document);
 
             if (IsWallsChecked)
                 exportData["walls"] = StructuralWall.GetShearWallData(ExportFromRevit.document);

@@ -1,6 +1,6 @@
 ﻿namespace ElementsData
 {
-    public class ColumnData
+    public class ColumnGeometryData
     {
         public string Id { get; set; }
         public PointData BasePoint { get; set; }

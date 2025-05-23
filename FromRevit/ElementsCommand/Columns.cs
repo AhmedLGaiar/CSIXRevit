@@ -7,7 +7,7 @@ namespace FromRevit.ElementsCommand
 {
     public class Columns
     {
-        public static List<ColumnData> GetColumnData(Document doc)
+        public static List<ColumnGeometryData> GetColumnGeometryData(Document doc)
         {
             IEnumerable<FamilyInstance> colCollector = new FilteredElementCollector(doc)
                 .OfClass(typeof(FamilyInstance))
@@ -15,7 +15,7 @@ namespace FromRevit.ElementsCommand
                 .WhereElementIsNotElementType()
                 .Cast<FamilyInstance>();
 
-            List<ColumnData> columnList = new List<ColumnData>();
+            List<ColumnGeometryData> columnList = new List<ColumnGeometryData>();
 
             foreach (var col in colCollector)
             {
@@ -65,7 +65,7 @@ namespace FromRevit.ElementsCommand
                 string topLevel = col.get_Parameter(BuiltInParameter.FAMILY_TOP_LEVEL_PARAM).AsValueString();
 
                 // Add column data
-                columnList.Add(new ColumnData
+                columnList.Add(new ColumnGeometryData
                 {
                     Id = col.Id.IntegerValue.ToString(),
                     BasePoint = PointUtilites.FromXYZInMilli(basePoint),

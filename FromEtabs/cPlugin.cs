@@ -1,6 +1,5 @@
 ﻿using ETABSDataExtraction;
 using ETABSv1;
-using Microsoft.Win32;
 using System;
 using System.Windows;
 using System.Windows.Forms;
@@ -15,8 +14,8 @@ namespace FromEtabs
             try
             {
                 // Attach to the running ETABS instance
-                ETABSv1.cHelper myHelper = new ETABSv1.Helper();
-                ETABSv1.cOAPI etabsObject = myHelper.GetObject("CSI.ETABS.API.ETABSObject");
+                cHelper myHelper = new Helper();
+                cOAPI etabsObject = myHelper.GetObject("CSI.ETABS.API.ETABSObject");
 
                 if (etabsObject == null)
                 {
@@ -24,10 +23,10 @@ namespace FromEtabs
                     return;
                 }
 
-                ETABSv1.cSapModel sapModel = etabsObject.SapModel;
+                cSapModel sapModel = etabsObject.SapModel;
 
                 // Show file dialog to select JSON file location
-                System.Windows.Forms.SaveFileDialog saveFileDialog = new System.Windows.Forms.SaveFileDialog
+                SaveFileDialog saveFileDialog = new SaveFileDialog
                 {
                     Filter = "JSON files (*.json)|*.json",
                     Title = "Save ETABS Data As",

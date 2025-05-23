@@ -7,7 +7,7 @@ namespace ToEtabs.Importers
 {
     public class ImportColumn
     {
-        public static void ImportColumns(List<ColumnData> columns, cSapModel _sapModel,string SelectedConcreteMaterial)
+        public static void ImportColumns(List<ColumnGeometryData> columns, cSapModel _sapModel,string SelectedConcreteMaterial)
         {
             int done;
             int ColNum = 1;
