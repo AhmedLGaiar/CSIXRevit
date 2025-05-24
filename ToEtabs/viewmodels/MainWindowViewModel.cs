@@ -64,7 +64,7 @@ namespace ToEtabs.ViewModels
         private List<SlabData> slabs;
         private readonly cSapModel _sapModel;
 
-        public ObservableCollection<string> DefinedConcreteMatrial { get; private set; }
+        public ObservableCollection<string> DefinedConcreteMaterial { get; private set; }
 
         [ObservableProperty]
         private string selectedConcreteMaterial;
@@ -72,7 +72,7 @@ namespace ToEtabs.ViewModels
         public MainWindowViewModel(cSapModel sapModel)
         {
             _sapModel=sapModel;
-            DefinedConcreteMatrial = new ObservableCollection<string>(
+            DefinedConcreteMaterial = new ObservableCollection<string>(
                                MatrialProperties.GetMaterialNames(_sapModel));
         }
 

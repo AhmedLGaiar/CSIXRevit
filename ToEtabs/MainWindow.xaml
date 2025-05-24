@@ -27,9 +27,9 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <ComboBox ItemsSource="{Binding DefinedConcreteMatrial}"
+        <ComboBox ItemsSource="{Binding DefinedConcreteMaterial}"
                   SelectedItem="{Binding SelectedConcreteMaterial, Mode=TwoWay}"
-                  Tag="Select concrete Matrial ..."
+                  Tag="Select concrete Material ..."
                   Style="{StaticResource ModernComboBoxWithPlaceholderStyle}"/>
 
         <GroupBox Grid.Row="1" Header="Elements" Margin="0 5">
