@@ -16,11 +16,11 @@ namespace ToEtabs.Importers
             {
                 double widthMeters = column.Width;
                 double depthMeters = column.depth;
-                done = ColumnUtilities.DefineColumnSection(_sapModel, $"C {widthMeters}*{depthMeters} H",
+                done = ColumnUtilities.DefineColumnSection(_sapModel, $"C {widthMeters:0.00}*{depthMeters:0.00} H",
                     SelectedConcreteMaterial, depthMeters * 1000, widthMeters * 1000);
                 if (done == 0)
                 {
-                    done = ColumnUtilities.DefineColumnSection(_sapModel, $"C {widthMeters}*{depthMeters} V",
+                    done = ColumnUtilities.DefineColumnSection(_sapModel, $"C {widthMeters:0.00}*{depthMeters:0.00} V",
                         SelectedConcreteMaterial, widthMeters * 1000, depthMeters * 1000);
                 }
             }
@@ -50,7 +50,7 @@ namespace ToEtabs.Importers
                 done = ColumnUtilities.DrawColumnByCoordinates(_sapModel,
                     column.BasePoint.X, column.BasePoint.Y, column.BasePoint.Z,
                     column.TopPoint.X, column.TopPoint.Y, column.TopPoint.Z,
-                    $"C{ColNum}", $"C {widthMeters}*{depthMeters} {orientation}");
+                    $"C{ColNum}", $"C {widthMeters:0.00}*{depthMeters:0.00} {orientation}");
 
                 ColNum++;
             }

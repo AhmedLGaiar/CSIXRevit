@@ -15,15 +15,15 @@ namespace ToEtabs.Importers
 
             foreach (var beam in beams)
             {
-                double widthMM = beam.Width;
-                double depthMM = beam.Depth;
-                string sectionName = $"B {widthMM}x{depthMM}";
+                double widthM = beam.Width;
+                double depthM = beam.Depth;
+                string sectionName = $"B {widthM:0.00}x{depthM:0.00}";
 
                 if (!definedSections.Contains(sectionName))
                 {
                     int ret = BeamUtilities.DefineBeamSection(_sapModel, sectionName, SelectedConcreteMaterial,
-                        depthMM * 1000,
-                        widthMM * 1000);
+                        depthM * 1000,
+                        widthM * 1000);
 
                     definedSections.Add(sectionName);
                 }
@@ -31,9 +31,9 @@ namespace ToEtabs.Importers
 
             foreach (var beam in beams)
             {
-                double widthMM = beam.Width;
-                double depthMM = beam.Depth;
-                string sectionName = $"B {widthMM}x{depthMM}";
+                double widthM = beam.Width;
+                double depthM = beam.Depth;
+                string sectionName = $"B {widthM:0.00}x{depthM:0.00}";
 
                 double x1 = beam.StartPoint.X;
                 double y1 = beam.StartPoint.Y;
@@ -43,11 +43,8 @@ namespace ToEtabs.Importers
                 double y2 = beam.EndPoint.Y;
                 double z2 = beam.EndPoint.Z;
 
-                int ret = BeamUtilities.DrawBeamByCoordinates(_sapModel, x1, y1, z1, x2, y2, z2, beam.Name,
-                    sectionName);
-
-                if (ret == 0)
-                    _sapModel.FrameObj.SetSection(beam.Name, sectionName);
+                int ret = BeamUtilities.DrawBeamByCoordinates(_sapModel, x1, y1, z1
+                    , x2, y2, z2, sectionName);
             }
         }
     }

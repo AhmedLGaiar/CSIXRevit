@@ -56,7 +56,6 @@ namespace ToEtabs.Importers
                 {
                     Console.WriteLine($"Failed to import slab: {name}");
                 }
-
             }
         }
     }

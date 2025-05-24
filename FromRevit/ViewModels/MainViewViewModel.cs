@@ -11,13 +11,17 @@ namespace FromRevit.ViewModels
 {
     public partial class MainViewViewModel : ObservableObject
     {
-        [ObservableProperty] private bool isColumnsChecked;
+        [ObservableProperty]
+        private bool isColumnsChecked;
 
-        [ObservableProperty] private bool isWallsChecked;
+        [ObservableProperty] 
+        private bool isWallsChecked;
 
-        [ObservableProperty] private bool isBeamsChecked;
+        [ObservableProperty]
+        private bool isBeamsChecked;
 
-        [ObservableProperty] private bool isSlabsChecked;
+        [ObservableProperty]
+        private bool isSlabsChecked;
 
         public bool AnyChecked() =>
             IsColumnsChecked || IsWallsChecked || IsBeamsChecked || IsSlabsChecked;
@@ -25,10 +29,10 @@ namespace FromRevit.ViewModels
         [RelayCommand]
         private void SelectAll()
         {
-            isColumnsChecked = true;
-            isWallsChecked = true;
-            isBeamsChecked = true;
-            isSlabsChecked = true;
+            IsBeamsChecked = true;
+            IsColumnsChecked = true;
+            IsWallsChecked = true;
+            IsSlabsChecked = true;
         }
 
         partial void OnIsColumnsCheckedChanged(bool oldValue, bool newValue) =>

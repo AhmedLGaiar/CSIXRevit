@@ -71,6 +71,7 @@ namespace ToEtabs.ViewModels
 
         public MainWindowViewModel(cSapModel sapModel)
         {
+            _sapModel=sapModel;
             DefinedConcreteMatrial = new ObservableCollection<string>(
                                MatrialProperties.GetMaterialNames(_sapModel));
         }
