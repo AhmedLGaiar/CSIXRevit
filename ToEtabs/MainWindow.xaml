@@ -7,7 +7,7 @@
         d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel, IsDesignTimeCreatable=False}"
         xmlns:local="clr-namespace:ToEtabs"
         mc:Ignorable="d"
-        Title="From Revit To Etabs" Height="400" Width="250"
+        Title="From Revit To Etabs" Height="300" Width="250"
         WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
@@ -25,35 +25,23 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <ComboBox Grid.Row="1" ItemsSource="{Binding DefinedConcreteMatrial}"
+        <ComboBox ItemsSource="{Binding DefinedConcreteMatrial}"
                   SelectedItem="{Binding SelectedConcreteMaterial, Mode=TwoWay}"
                   Tag="Select concrete Matrial ..."
                   Style="{StaticResource ModernComboBoxWithPlaceholderStyle}"/>
 
-        <GroupBox Grid.Row="2" Header="Elements" Margin="0 5">
+        <GroupBox Grid.Row="1" Header="Elements" Margin="0 5">
             <StackPanel Margin="2.5">
-                <CheckBox Content="Columns" IsChecked="{Binding IsColumnsChecked}" Margin="0 2" />
-                <CheckBox Content="Walls" IsChecked="{Binding IsWallsChecked}" Margin="0 2" />
-                <CheckBox Content="Beams" IsChecked="{Binding IsBeamsChecked}" Margin="0 2" />
-                <CheckBox Content="Slabs" IsChecked="{Binding IsSlabsChecked}" Margin="0 2" />
+                <CheckBox Content="Columns" IsChecked="{Binding IsColumnsChecked}" />
+                <CheckBox Content="Walls" IsChecked="{Binding IsWallsChecked}"  />
+                <CheckBox Content="Beams" IsChecked="{Binding IsBeamsChecked}"  />
+                <CheckBox Content="Slabs" IsChecked="{Binding IsSlabsChecked}"  />
             </StackPanel>
         </GroupBox>
-
-        <GroupBox Grid.Row="3" Header="Loads" Margin="0 5">
-            <StackPanel Margin="2.5">
-                <CheckBox Content="Loads" IsChecked="{Binding IsLoadsChecked}" Margin="0 2" />
-            </StackPanel>
-        </GroupBox>
-
-        <Button Grid.Row="4" Content="Browse File"
-                Command="{Binding BrowseFileCommand}" />
-        <Button Grid.Row="5" Content="Import selected"
-                Command="{Binding ExportElementsCommand}" />
-        <TextBlock Grid.Row="6" Text="{Binding SelectedFilePath}" />
+       
+        <Button Grid.Row="2" Content="Import Elemnts"
+                Command="{Binding ImportElementsCommand}" />
     </Grid>
 </Window>

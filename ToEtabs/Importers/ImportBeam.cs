@@ -6,7 +6,7 @@ namespace ToEtabs.Importers
 {
     internal class ImportBeam
     {
-        public static void ImportBeams(List<BeamData> beams, cSapModel _sapModel, string SelectedConcreteMaterial)
+        public static void ImportBeams(List<BeamGeometryData> beams, cSapModel _sapModel, string SelectedConcreteMaterial)
         {
             if (beams == null || beams.Count == 0)
                 return;

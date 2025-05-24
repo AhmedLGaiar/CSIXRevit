@@ -7,13 +7,13 @@ namespace ToEtabs.utilities
 {
     internal class BeamUtilities
     {
-        public static List<BeamData> LoadBeamData(string jsonPath)
+        public static List<BeamGeometryData> LoadBeamGeometryData(string jsonPath)
         {
             if (!File.Exists(jsonPath))
                 throw new FileNotFoundException($"The file {jsonPath} does not exist.");
 
             string json = File.ReadAllText(jsonPath);
-            List<BeamData> beamsList = JsonConvert.DeserializeObject<List<BeamData>>(json);
+            List<BeamGeometryData> beamsList = JsonConvert.DeserializeObject<List<BeamGeometryData>>(json);
 
             return beamsList;
         }

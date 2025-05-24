@@ -1,8 +1,6 @@
 ﻿using ElementsData;
 using ETABSv1;
 using Newtonsoft.Json;
-using System.Collections.Generic;
-using System.IO;
 using System.Windows.Forms;
 
 namespace ReinforcementFromEtab
@@ -12,7 +10,7 @@ namespace ReinforcementFromEtab
         public void Main(ref cSapModel SapModel, ref cPluginCallback ISapPlugin)
         {
             // Get data
-            List<ColumnRCData> columns = ReinforcementOfConcreteColumns.GetConcreteColumns(SapModel);
+            List<FrameRCData> Frames = ReinforcementOfConcrete.GetRCFrames(SapModel);
 
             // Show save file dialog
             var saveDialog = new SaveFileDialog
@@ -29,7 +27,7 @@ namespace ReinforcementFromEtab
                 return;
 
             // Save to selected path
-            string json = JsonConvert.SerializeObject(columns, Formatting.Indented);
+            string json = JsonConvert.SerializeObject(Frames, Formatting.Indented);
             File.WriteAllText(saveDialog.FileName, json);
 
             // Finish plugin

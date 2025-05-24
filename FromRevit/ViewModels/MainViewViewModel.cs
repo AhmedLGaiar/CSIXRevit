@@ -60,7 +60,7 @@ namespace FromRevit.ViewModels
                 return;
 
             // Prepare result object
-            var exportData = new Dictionary<string, object>();
+            Dictionary<string, object> exportData = new Dictionary<string, object>();
 
             if (IsColumnsChecked)
                 exportData["columns"] = Columns.GetColumnGeometryData(ExportFromRevit.document);
@@ -69,7 +69,7 @@ namespace FromRevit.ViewModels
                 exportData["walls"] = StructuralWall.GetShearWallData(ExportFromRevit.document);
 
             if (IsBeamsChecked)
-                exportData["beams"] = Beams.GetBeamData(ExportFromRevit.document);
+                exportData["beams"] = Beams.GetBeamGeometryData(ExportFromRevit.document);
 
             if (IsSlabsChecked)
                 exportData["slabs"] = Slabs.GetSlabData(ExportFromRevit.document);
@@ -78,7 +78,7 @@ namespace FromRevit.ViewModels
             string json = JsonConvert.SerializeObject(exportData, Formatting.Indented);
             File.WriteAllText(saveDialog.FileName, json);
 
-            System.Windows.MessageBox.Show("Export completed successfully!", "Success",
+            MessageBox.Show("Export completed successfully!", "Success",
                 MessageBoxButton.OK, MessageBoxImage.Information);
         }
     }

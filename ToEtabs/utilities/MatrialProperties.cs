@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using ETABSv1;
+﻿using ETABSv1;
 
 namespace ToEtabs.Utilities
 {

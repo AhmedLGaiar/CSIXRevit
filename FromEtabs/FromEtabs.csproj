@@ -56,12 +56,6 @@
     <Compile Include="ETABSDataExtractor.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LoadData\LoadData.csproj">
-      <Project>{fd733650-1349-409e-8a11-90d4e7c24bd5}</Project>
-      <Name>LoadData</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

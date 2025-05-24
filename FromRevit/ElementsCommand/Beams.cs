@@ -6,7 +6,7 @@ namespace FromRevit.ElementsCommand
 {
     public class Beams
     {
-        public static List<BeamData> GetBeamData(Document doc)
+        public static List<BeamGeometryData> GetBeamGeometryData(Document doc)
         {
             IEnumerable<FamilyInstance> beamsElementCollector = new FilteredElementCollector(doc)
                 .OfClass(typeof(FamilyInstance))
@@ -14,7 +14,7 @@ namespace FromRevit.ElementsCommand
                 .WhereElementIsNotElementType()
                 .Cast<FamilyInstance>();
 
-            List<BeamData> BeamList = new List<BeamData>();
+            List<BeamGeometryData> BeamList = new List<BeamGeometryData>();
             foreach (FamilyInstance beam in beamsElementCollector)
             {
                 ElementId materialId = beam.StructuralMaterialId;
@@ -37,7 +37,7 @@ namespace FromRevit.ElementsCommand
                 string BeamName = beam.Name;
                 string BeamId = beam.UniqueId;
 
-                BeamList.Add(new BeamData
+                BeamList.Add(new BeamGeometryData
                 {
                     ApplicationId = BeamId,
                     Name = BeamName,

@@ -1,7 +1,7 @@
 ﻿
 namespace ElementsData
 {
-    public class BeamData
+    public class BeamGeometryData
     {
         public string ApplicationId { get; set; }
         public string Name { get; set; }
