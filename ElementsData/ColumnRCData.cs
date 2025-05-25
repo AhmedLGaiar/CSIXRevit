@@ -3,6 +3,8 @@ namespace ElementsData
 {
     public class ColumnRCData
     {
+        public double Width { get; set; }
+        public double Depth { get; set; }
         public string SectionName { get; set; }
         public bool IsRectangle { get; set; }
         public bool ToBeDesign { get; set; }

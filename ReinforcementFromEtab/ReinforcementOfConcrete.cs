@@ -5,10 +5,9 @@ namespace ReinforcementFromEtab
 {
     internal class ReinforcementOfConcrete
     {
-        public static List<FrameRCData> GetRCFrames(cSapModel SapModel)
+        public static FrameRCData GetRCFrames(cSapModel SapModel)
         {
             HashSet<string> addedSections = new();
-            List<FrameRCData> frameRCDatas = new();
             List<ColumnRCData> columns = new();
             List<BeamRCData> beams = new();
             int ret;
@@ -75,7 +74,9 @@ namespace ReinforcementFromEtab
                     // to be sure it column not beam
                     if (uniqueName == frameNames[0])
                     {
-                        columns.Add(ColumnSteel.GetRCColumns(SapModel, SectionName, addedSections, myOption, pmmArea));
+                        var column = ColumnSteel.GetRCColumns(SapModel, SectionName, addedSections, myOption, pmmArea);
+                        if (column != null)
+                            columns.Add(column);
                     }
                     else
                     {
@@ -97,12 +98,17 @@ namespace ReinforcementFromEtab
                                                                             ref warningSummary,
                                                                             eItemType.Objects
                         );
+                        beams.Add(BeamSteel.GetRCBeam(SapModel, SectionName,
+                                      TopArea.Concat(BotArea).Max()
+                                    , frameNames.First(), vMajorArea.Max()));
                     }
                 }
             }
-            //frameRCDatas.columnRCDatas = columns;
-            //frameRCDatas.beamRCDatas = beams;
-            return frameRCDatas;
+            return new FrameRCData
+            {
+                columnRCDatas = columns,
+                beamRCDatas = beams
+            };
         }
     }
 }

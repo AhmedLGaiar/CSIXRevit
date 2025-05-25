@@ -4,6 +4,9 @@ namespace ElementsData
     public class BeamRCData
     {
         public string SectionName { get; set; }
+        public string uniqueName { get; set; }
+        public double Width { get; set; }
+        public double Depth { get; set; }
         public double Cover { get; set; }
         public int RebarSize { get; set; }
         public int BotBars { get; set; }

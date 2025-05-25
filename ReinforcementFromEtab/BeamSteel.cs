@@ -1,47 +1,65 @@
-﻿//using ElementsData;
-//using ETABSv1;
+﻿using ElementsData;
+using ETABSv1;
 
-//namespace ReinforcementFromEtab
-//{
-//    public class BeamSteel
-//    {
-//        public static BeamRCData GetRCBeam(cSapModel SapModel, string SectionName)
-                                                            
-//        {
-//            int ret;
-//            #region ParameterForBeamRebar
-//            string MatPropLing = null;
-//            string MatPropConfine = null;
-//            double CoverTop = 0;
-//            double CoverBot = 0;
-//            double TopLeftArea = 0;
-//            double TopRightArea = 0;
-//            double BotLeftArea = 0;
-//            double BotRightArea = 0;
-//            #endregion
-//            #region GetSectionData
-//            ret = SapModel.PropFrame.GetRebarBeam(
-//                SectionName,
-//                ref MatPropLing,
-//                ref MatPropConfine,
-//                ref CoverTop,
-//                ref CoverBot,
-//                ref TopLeftArea,
-//                ref TopRightArea,
-//                ref BotLeftArea,
-//                ref BotRightArea
-//            );
-//            #endregion
-//            return new BeamRCData
-//            {
-//                SectionName = SectionName,
-//                Cover = CoverTop, 
-//                RebarSize = int.Parse(TopCombo[0]), // Assuming the first combo is the rebar size
-//                BotBars = TopArea.Length > 0 ? TopArea[0] > 0 ? (int)(TopArea[0] / 16) : 0 : 0, // Assuming a bar diameter of 16mm
-//                TopBars = BotArea.Length > 0 ? BotArea[0] > 0 ? (int)(BotArea[0] / 16) : 0 : 0, // Assuming a bar diameter of 16mm
-//                TieSize = int.Parse(TLCombo[0]), // Assuming the first combo is the tie size
-//                TieSpacingLongit = TLArea.Length > 0 ? TLArea[0] : 200 // Default spacing if not available
-//            };
-//        }
-//    }
-//}
+namespace ReinforcementFromEtab
+{
+    public class BeamSteel
+    {
+        public static BeamRCData GetRCBeam(cSapModel SapModel, string SectionName, double maxareasteel
+                                                             , string frameNames, double vmajorarea)
+
+        {
+            int ret;
+            #region ParameterForBeamRebar
+            string MatPropLing = null;
+            string MatPropConfine = null;
+            double CoverTop = 0;
+            double CoverBot = 0;
+            double TopLeftArea = 0;
+            double TopRightArea = 0;
+            double BotLeftArea = 0;
+            double BotRightArea = 0;
+            #endregion
+            #region GetSectionData
+            string FileName = null;
+            string MatProp = null;
+            double width = 0;
+            double depth = 0;
+            int Color = 0;
+            string Notes = null;
+            string GUID = null;
+            ret = SapModel.PropFrame.GetRectangle(SectionName, ref FileName
+                                      , ref MatProp, ref depth, ref width,
+                                      ref Color, ref Notes, ref GUID);
+
+            ret = SapModel.PropFrame.GetRebarBeam(SectionName,
+                ref MatPropLing,
+                ref MatPropConfine,
+                ref CoverTop,
+                ref CoverBot,
+                ref TopLeftArea,
+                ref TopRightArea,
+                ref BotLeftArea,
+                ref BotRightArea
+            );
+
+            double barArea = Math.PI * 12 * 12 / 4.0;
+            #endregion
+            return new BeamRCData
+            {
+                Width = width,
+                Depth = depth,
+                SectionName = SectionName,
+                uniqueName = frameNames,
+                Cover = CoverTop,
+                RebarSize = 12,
+
+                BotBars = Math.Max(2, (int)Math.Ceiling(maxareasteel / barArea)),
+                TopBars = Math.Max(2, (int)Math.Ceiling(maxareasteel / barArea)),
+
+                TieSize = 10,
+                TieSpacingLongit = 150,
+            };
+        }
+    }
+}
