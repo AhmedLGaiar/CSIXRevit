@@ -4,6 +4,7 @@
         <Setter Property="Foreground" Value="Black"/>
         <Setter Property="Background" Value="White"/>
         <Setter Property="Width" Value="200"/>
+        <Setter Property="MinWidth" Value="200"/>
         <Setter Property="Height" Value="35"/>
         <Setter Property="HorizontalAlignment" Value="Left"/>
         <Setter Property="Padding" Value="4,2"/>

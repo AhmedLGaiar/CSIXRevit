@@ -7,7 +7,7 @@
         d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel, IsDesignTimeCreatable=False}"
         xmlns:local="clr-namespace:ToEtabs"
         mc:Ignorable="d"
-        Title="From Revit To Etabs" Height="300" Width="250"
+        Title="Revit ↔ ETABS" Height="350" Width="300"
         WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
@@ -20,28 +20,34 @@
                     Command="{Binding SelectAllCommand}" />
     </Window.InputBindings>
     
-    <Grid Margin="10">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
+    <DockPanel>
+        <Border Background="#186bff" Height="40" DockPanel.Dock="Top">
+            <TextBlock Text="Revit to ETABS Exporter" HorizontalAlignment="Center"
+                       Style="{StaticResource TitleBlock}"/>
+        </Border>
+        <Grid Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
 
-        <ComboBox ItemsSource="{Binding DefinedConcreteMaterial}"
-                  SelectedItem="{Binding SelectedConcreteMaterial, Mode=TwoWay}"
-                  Tag="Select concrete Material ..."
-                  Style="{StaticResource ModernComboBoxWithPlaceholderStyle}"/>
+            <ComboBox ItemsSource="{Binding DefinedConcreteMaterial}"
+                      SelectedItem="{Binding SelectedConcreteMaterial, Mode=TwoWay}"
+                      Tag="Select concrete Material ..."
+                      Style="{StaticResource ModernComboBoxWithPlaceholderStyle}"/>
 
-        <GroupBox Grid.Row="1" Header="Elements" Margin="0 5">
-            <StackPanel Margin="2.5">
-                <CheckBox Content="Columns" IsChecked="{Binding IsColumnsChecked}" />
-                <CheckBox Content="Walls" IsChecked="{Binding IsWallsChecked}"  />
-                <CheckBox Content="Beams" IsChecked="{Binding IsBeamsChecked}"  />
-                <CheckBox Content="Slabs" IsChecked="{Binding IsSlabsChecked}"  />
-            </StackPanel>
-        </GroupBox>
-       
-        <Button Grid.Row="2" Content="Import Elemnts"
-                Command="{Binding ImportElementsCommand}" />
-    </Grid>
+            <GroupBox Grid.Row="1" Header="Structural Elements" Margin="0 5">
+                <StackPanel Margin="2.5">
+                    <CheckBox Content="Columns" IsChecked="{Binding IsColumnsChecked}" />
+                    <CheckBox Content="Walls" IsChecked="{Binding IsWallsChecked}"  />
+                    <CheckBox Content="Beams" IsChecked="{Binding IsBeamsChecked}"  />
+                    <CheckBox Content="Slabs" IsChecked="{Binding IsSlabsChecked}"  />
+                </StackPanel>
+            </GroupBox>
+           
+            <Button Grid.Row="2" Content="Import Elemnts"
+                    Command="{Binding ImportElementsCommand}" />
+        </Grid>
+    </DockPanel>
 </Window>

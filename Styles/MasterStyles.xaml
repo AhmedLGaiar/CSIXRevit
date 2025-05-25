@@ -3,6 +3,7 @@
                     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="Button.xaml" />
+        <ResourceDictionary Source="Header.xaml" />
         <ResourceDictionary Source="CheckBox.xaml" />
         <ResourceDictionary Source="TextBox.xaml" />
         <ResourceDictionary Source="ComboBox.xaml" />
