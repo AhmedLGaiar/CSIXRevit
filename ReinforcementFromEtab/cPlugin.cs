@@ -10,7 +10,7 @@ namespace ReinforcementFromEtab
         public void Main(ref cSapModel SapModel, ref cPluginCallback ISapPlugin)
         {
             // Get data
-            List<FrameRCData> Frames = ReinforcementOfConcrete.GetRCFrames(SapModel);
+            FrameRCData Frames = ReinforcementOfConcrete.GetRCFrames(SapModel);
 
             // Show save file dialog
             var saveDialog = new SaveFileDialog

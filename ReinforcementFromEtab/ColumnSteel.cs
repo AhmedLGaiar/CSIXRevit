@@ -44,6 +44,16 @@ namespace ReinforcementFromEtab
                ref Number3DirTieBars,
                ref ToBeDesigned
            );
+            string FileName = null;
+            string MatProp = null;
+            double width = 0;
+            double depth = 0;
+            int Color = 0;
+            string Notes = null;
+            string GUID = null;
+            ret = SapModel.PropFrame.GetRectangle(SectionName, ref FileName
+                                     , ref MatProp, ref depth, ref width,
+                                     ref Color, ref Notes, ref GUID);
             #endregion
             // ToBeCheck
             if (myOption[0] == 1)
@@ -63,34 +73,23 @@ namespace ReinforcementFromEtab
                         TieSpacingLongit = TieSpacingLongit,
                         Number2DirTieBars = Number2DirTieBars,
                         Number3DirTieBars = Number3DirTieBars,
-
+                        Width = width,
+                        Depth = depth
                     };
                 }
+                return null; // if already exists, return null
             }
             // ToBeDesign not working yet
-            if (myOption[0] == 2)
+            else if (myOption[0] == 2)
             {
                 if (addedSections.Add(SectionName)) // returns false if already exists
                 {
-                    int NumberOfRebars = (int)Math.Ceiling(pmmArea.Max() / 16);
-                    string fileName = null;
-                    string matrialProp = null;
-                    double T3 = 0;
-                    double T2 = 0;
-                    int color = 0;
-                    string notes = null;
-                    string Guid = null;
-                    SapModel.PropFrame.GetRectangle(SectionName
-                                                 , ref fileName
-                                                 , ref matrialProp
-                                                 , ref T3
-                                                 , ref T2
-                                                 , ref color
-                                                 , ref notes
-                                                 , ref Guid);
+                    double barArea = Math.PI * 16 * 16 / 4.0;
+
+                    int NumberOfRebars = Math.Max((int)Math.Ceiling(pmmArea.Max() / barArea), 4);
 
                     ACIBarLayout dis = ACIBarDistributor.DistributeBars(NumberOfRebars
-                        , T3, T2);
+                        , depth, width);
                     return new ColumnRCData
                     {
                         SectionName = SectionName,
@@ -104,11 +103,14 @@ namespace ReinforcementFromEtab
                         TieSpacingLongit = TieSpacingLongit,
                         Number2DirTieBars = Number2DirTieBars,
                         Number3DirTieBars = Number3DirTieBars,
-
+                        Width = width,
+                        Depth = depth
                     };
                 }
             }
+
             return null;
+
         }
     }
 }

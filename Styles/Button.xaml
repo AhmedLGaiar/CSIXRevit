@@ -5,7 +5,7 @@
         <Setter Property="Width" Value="100" />
         <Setter Property="Height" Value="30" />
         <Setter Property="Foreground" Value="White" />
-        <Setter Property="Background" Value="#00008b" />
+        <Setter Property="Background" Value="#186bff" />
         <Setter Property="FontWeight" Value="SemiBold" />
         <Setter Property="Margin" Value="0 5" />
         <Setter Property="Template">

@@ -7,8 +7,9 @@
         d:DataContext="{d:DesignInstance Type=viewModels:MainViewViewModel, IsDesignTimeCreatable=False}"
         xmlns:local="clr-namespace:FromRevit.Views"
         mc:Ignorable="d"
-        WindowStartupLocation="CenterScreen"
-        Title="RevitExporter" Height="250" Width="250">
+        WindowStartupLocation="Manual"
+        Top="40"
+        Title="Revit ↔ ETABS" Height="300" Width="300">
 
     <Window.Resources>
         <ResourceDictionary Source="pack://application:,,,/Styles;component/MasterStyles.xaml" />
@@ -19,23 +20,29 @@
                     Modifiers="Control"
                     Command="{Binding SelectAllCommand}" />
     </Window.InputBindings>
-
-    <Grid Margin="10">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-        <GroupBox  Header="Elements" Margin="0 5">
-            <StackPanel Margin="2.5">
-                <CheckBox Content="Columns" IsChecked="{Binding IsColumnsChecked}" />
-                <CheckBox Content="Walls" IsChecked="{Binding IsWallsChecked}" />
-                <CheckBox Content="Beams" IsChecked="{Binding IsBeamsChecked}" />
-                <CheckBox Content="Slabs" IsChecked="{Binding IsSlabsChecked}" />
-            </StackPanel>
-        </GroupBox>
-        <Button Grid.Row="1" Content="Export"
+    <DockPanel>
+        <!-- Header -->
+        <Border Background="#186bff" Height="40" DockPanel.Dock="Top">
+            <TextBlock Text="Revit to ETABS Exporter" HorizontalAlignment="Center"
+                       Style="{StaticResource TitleBlock}"/>
+        </Border>
+        <Grid Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <GroupBox  Header="Structural Elements" Margin="0 5">
+                <StackPanel Margin="2.5">
+                    <CheckBox Content="Columns" IsChecked="{Binding IsColumnsChecked}" />
+                    <CheckBox Content="Walls" IsChecked="{Binding IsWallsChecked}" />
+                    <CheckBox Content="Beams" IsChecked="{Binding IsBeamsChecked}" />
+                    <CheckBox Content="Slabs" IsChecked="{Binding IsSlabsChecked}" />
+                </StackPanel>
+            </GroupBox>
+            <Button Grid.Row="1" Content="Export"
                 Command="{Binding ExportDataCommand}" />
-    </Grid>
+        </Grid>
+    </DockPanel>
 </Window>

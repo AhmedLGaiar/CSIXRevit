@@ -28,5 +28,14 @@ namespace FromRevit.Views
             DataContext= _mv;
             InitializeComponent();
         }
+        protected override void OnContentRendered(EventArgs e)
+        {
+            base.OnContentRendered(e);
+
+            var screenWidth = SystemParameters.PrimaryScreenWidth;
+            var windowWidth = this.Width;
+
+            this.Left = screenWidth - windowWidth-30;
+        }
     }
 }
