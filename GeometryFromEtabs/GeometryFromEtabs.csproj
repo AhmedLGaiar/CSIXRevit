@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="Extractors\BeamExtractor.cs" />
     <Compile Include="Extractors\IElementExtractor.cs" />
+    <Compile Include="HelperClasses\HelperData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

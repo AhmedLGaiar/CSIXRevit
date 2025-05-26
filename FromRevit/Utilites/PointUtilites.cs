@@ -47,17 +47,18 @@ namespace FromRevit.Utilites
         }
 
 
-        public static PointData FromXYZInMilli(double x, double y , double z )
+        public static PointData FromEtabs(PointData point)
         {
-            
-
             return new PointData
             {
-                X = UnitUtils.ConvertFromInternalUnits(x, UnitTypeId.Millimeters),
-                Y = UnitUtils.ConvertFromInternalUnits(y, UnitTypeId.Millimeters),
-                Z = UnitUtils.ConvertFromInternalUnits(z, UnitTypeId.Millimeters) 
+                X = point.X,
+                Y = point.Y, 
+                Z = point.Z,
             };
         }
+
+
+
 
     }
 }
