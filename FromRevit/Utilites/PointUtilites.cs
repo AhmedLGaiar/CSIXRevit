@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 
 namespace FromRevit.Utilites
 {
-    internal class PointUtilites
+    public class PointUtilites
     {
+
         public static PointData FromXYZInMilli(XYZ point)
         {
             return new PointData
@@ -42,6 +43,19 @@ namespace FromRevit.Utilites
                 X = UnitUtils.ConvertFromInternalUnits(point.X, UnitTypeId.Millimeters),
                 Y = UnitUtils.ConvertFromInternalUnits(point.Y, UnitTypeId.Millimeters),
                 Z = UnitUtils.ConvertFromInternalUnits(point.Z, UnitTypeId.Millimeters) + (thiknessMilli)
+            };
+        }
+
+
+        public static PointData FromXYZInMilli(double x, double y , double z )
+        {
+            
+
+            return new PointData
+            {
+                X = UnitUtils.ConvertFromInternalUnits(x, UnitTypeId.Millimeters),
+                Y = UnitUtils.ConvertFromInternalUnits(y, UnitTypeId.Millimeters),
+                Z = UnitUtils.ConvertFromInternalUnits(z, UnitTypeId.Millimeters) 
             };
         }
 
