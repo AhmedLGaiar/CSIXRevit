@@ -1,17 +1,5 @@
 ﻿using FromRevit.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace FromRevit.Views
 {
@@ -25,7 +13,7 @@ namespace FromRevit.Views
         public MainView(MainViewViewModel mv)
         {
             _mv = mv;
-            DataContext= _mv;
+            DataContext = _mv;
             InitializeComponent();
         }
         protected override void OnContentRendered(EventArgs e)
@@ -35,7 +23,7 @@ namespace FromRevit.Views
             var screenWidth = SystemParameters.PrimaryScreenWidth;
             var windowWidth = this.Width;
 
-            this.Left = screenWidth - windowWidth-30;
+            this.Left = screenWidth - windowWidth - 30;
         }
     }
 }
