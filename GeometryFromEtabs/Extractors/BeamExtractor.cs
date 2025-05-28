@@ -28,8 +28,8 @@ namespace GeometryFromEtabs.Extractors
                 beams.Add(new BeamGeometryData
                 {
                     Name = $"{width} x {height}",
-                    StartPoint = PointUtilites.FromEtabs(startPoint),
-                    EndPoint = PointUtilites.FromEtabs(endPoint),
+                    StartPoint = PointUtilities.FromEtabs(startPoint),
+                    EndPoint = PointUtilities.FromEtabs(endPoint),
                     Width = width/1000,
                     Depth = height/1000
                 });

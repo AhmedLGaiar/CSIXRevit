@@ -42,8 +42,8 @@ namespace FromRevit.ElementsCommand
                 {
                     ApplicationId = BeamId,
                     Name = BeamName,
-                    StartPoint = PointUtilites.FromXYZInMilli(startPoint),
-                    EndPoint = PointUtilites.FromXYZInMilli(endPoint),
+                    StartPoint = PointUtilities.FromXYZInMilli(startPoint),
+                    EndPoint = PointUtilities.FromXYZInMilli(endPoint),
                     Depth = UnitUtils.ConvertFromInternalUnits(depth, UnitTypeId.Meters),
                     Width = UnitUtils.ConvertFromInternalUnits(width, UnitTypeId.Meters),
                 });

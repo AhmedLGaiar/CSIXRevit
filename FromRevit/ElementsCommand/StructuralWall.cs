@@ -79,8 +79,8 @@ namespace FromRevit.ElementsCommand
                 structuralWallList.Add(new StructuralWallData
                 {
                     Id = wall.Id.IntegerValue.ToString(),
-                    StartPoint = PointUtilites.FromXYZInMilli(startPoint),
-                    EndPoint = PointUtilites.FromXYZInMilli(endPoint),
+                    StartPoint = PointUtilities.FromXYZInMilli(startPoint),
+                    EndPoint = PointUtilities.FromXYZInMilli(endPoint),
                     Length = UnitUtils.ConvertFromInternalUnits(wallLength, UnitTypeId.Meters),
                     Thickness = UnitUtils.ConvertFromInternalUnits(thickness, UnitTypeId.Meters),
                     Height = UnitUtils.ConvertFromInternalUnits(height, UnitTypeId.Meters),

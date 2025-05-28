@@ -68,8 +68,8 @@ namespace FromRevit.ElementsCommand
                 columnList.Add(new ColumnGeometryData
                 {
                     Id = col.Id.IntegerValue.ToString(),
-                    BasePoint = PointUtilites.FromXYZInMilli(basePoint),
-                    TopPoint = PointUtilites.FromXYZInMilli(topPoint),
+                    BasePoint = PointUtilities.FromXYZInMilli(basePoint),
+                    TopPoint = PointUtilities.FromXYZInMilli(topPoint),
                     Width = UnitUtils.ConvertFromInternalUnits(width, UnitTypeId.Meters),
                     depth = UnitUtils.ConvertFromInternalUnits(depth, UnitTypeId.Meters),
                     SectionName = sectionName,
