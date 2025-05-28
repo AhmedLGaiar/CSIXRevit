@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 
 namespace FromRevit.Utilites
 {
-    internal class PointUtilites
+    public class PointUtilites
     {
+
         public static PointData FromXYZInMilli(XYZ point)
         {
             return new PointData
@@ -44,6 +45,20 @@ namespace FromRevit.Utilites
                 Z = UnitUtils.ConvertFromInternalUnits(point.Z, UnitTypeId.Millimeters) + (thiknessMilli)
             };
         }
+
+
+        public static PointData FromEtabs(PointData point)
+        {
+            return new PointData
+            {
+                X = point.X,
+                Y = point.Y, 
+                Z = point.Z,
+            };
+        }
+
+
+
 
     }
 }

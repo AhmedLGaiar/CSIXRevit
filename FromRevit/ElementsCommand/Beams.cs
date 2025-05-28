@@ -37,6 +37,7 @@ namespace FromRevit.ElementsCommand
                 string BeamName = beam.Name;
                 string BeamId = beam.UniqueId;
 
+
                 BeamList.Add(new BeamGeometryData
                 {
                     ApplicationId = BeamId,
