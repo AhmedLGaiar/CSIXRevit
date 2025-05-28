@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ETABSv1;
 using ElementsData;
-using FromRevit.Utilites;
+using FromRevit.Utilities;
 
 namespace GeometryFromEtabs.Extractors
 {

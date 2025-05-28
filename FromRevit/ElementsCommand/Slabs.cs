@@ -1,6 +1,6 @@
 ﻿using ElementsData;
 using Autodesk.Revit.DB;
-using FromRevit.Utilites;
+using FromRevit.Utilities;
 
 namespace FromRevit.ElementsCommand
 {

@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FromRevit.Utilites
+namespace FromRevit.Utilities
 {
-    public class PointUtilites
+    public class PointUtilities
     {
 
         public static PointData FromXYZInMilli(XYZ point)

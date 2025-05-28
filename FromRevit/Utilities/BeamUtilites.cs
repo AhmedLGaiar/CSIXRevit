@@ -1,6 +1,6 @@
 ﻿using Autodesk.Revit.DB;
 
-namespace FromRevit.Utilites
+namespace FromRevit.Utilities
 {
     internal class BeamUtilities
     {
