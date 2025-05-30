@@ -8,6 +8,7 @@ namespace ElementsData
         public double Width { get; set; }
         public double Depth { get; set; }
         public double Cover { get; set; }
+        public int NumOfLegs { get; set; }
         public int RebarSize { get; set; }
         public int BotBars { get; set; }
         public int TopBars { get; set; }

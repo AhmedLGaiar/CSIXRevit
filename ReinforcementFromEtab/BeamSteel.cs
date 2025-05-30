@@ -6,7 +6,7 @@ namespace ReinforcementFromEtab
     public class BeamSteel
     {
         public static BeamRCData GetRCBeam(cSapModel SapModel, string SectionName, double maxareasteel
-                                                             , string frameNames, double vmajorarea)
+                                                             , string frameNames, double Transverse)
 
         {
             int ret;
@@ -42,23 +42,29 @@ namespace ReinforcementFromEtab
                 ref BotLeftArea,
                 ref BotRightArea
             );
+            double TransArea = Transverse*1000;
+            double barArea = Math.PI * 16 * 16 / 4.0;
+            double areaPerBar = Math.PI * Math.Pow(10, 2) / 4.0;
+            double areaPerStirrup = 4 * areaPerBar;
+            double stirrupsPerMeter = Math.Ceiling(TransArea / areaPerStirrup);
 
-            double barArea = Math.PI * 12 * 12 / 4.0;
+
             #endregion
             return new BeamRCData
-            {
+            {   
                 Width = width,
                 Depth = depth,
                 SectionName = SectionName,
                 uniqueName = frameNames,
                 Cover = CoverTop,
-                RebarSize = 12,
+                RebarSize = 16,
 
                 BotBars = Math.Max(2, (int)Math.Ceiling(maxareasteel / barArea)),
                 TopBars = Math.Max(2, (int)Math.Ceiling(maxareasteel / barArea)),
 
+                NumOfLegs=4,
                 TieSize = 10,
-                TieSpacingLongit = 150,
+                TieSpacingLongit = 1000.0 / stirrupsPerMeter
             };
         }
     }

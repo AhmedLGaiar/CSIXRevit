@@ -100,7 +100,7 @@ namespace ReinforcementFromEtab
                         );
                         beams.Add(BeamSteel.GetRCBeam(SapModel, SectionName,
                                       TopArea.Concat(BotArea).Max()
-                                    , frameNames.First(), vMajorArea.Max()));
+                                    , frameNames.First(), vMajorArea.Max()+TTArea.Max()*2));
                     }
                 }
             }
