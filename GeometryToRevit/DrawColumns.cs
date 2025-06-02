@@ -1,20 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Autodesk.Revit.Attributes;
+﻿using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.DB.Structure;
 using Autodesk.Revit.UI;
-using Newtonsoft.Json;
 using ElementsData.Geometry;
 using GeometryToRevit.ExistingInfo;
 using GeometryToRevit.Utilities;
+using Newtonsoft.Json;
+using System.IO;
 
 namespace ExportJsonFileFromRevit
 {
     [Transaction(TransactionMode.Manual)]
-    public partial class DrawColumns : IExternalCommand
+    public class DrawColumns : IExternalCommand
     {
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
@@ -43,7 +40,7 @@ namespace ExportJsonFileFromRevit
                 TaskDialog.Show("Warning", "No column data found in JSON file.");
                 return Result.Succeeded;
             }
-               List<ExistingColumnInfo> existingColumns = GetExistingColumns(doc);
+            List<ExistingColumnInfo> existingColumns = GetExistingColumns(doc);
 
 
 
@@ -162,23 +159,6 @@ namespace ExportJsonFileFromRevit
 
             return Result.Succeeded;
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         private List<ExistingColumnInfo> GetExistingColumns(Document doc)
         {
             var existingColumns = new List<ExistingColumnInfo>();
@@ -233,11 +213,6 @@ namespace ExportJsonFileFromRevit
 
             return existingColumns;
         }
-
-
-
-
-
         private DuplicateCheckResult CheckForDuplicates(List<ExistingColumnInfo> existingColumns, XYZ newBase, ColumnGeometryData newColumn)
         {
             var result = new DuplicateCheckResult();
@@ -284,28 +259,6 @@ namespace ExportJsonFileFromRevit
 
             return result;
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         private DuplicateAction ShowLocationConflictDialog(ColumnGeometryData newColumn, List<ExistingColumnInfo> conflictingColumns)
         {
             double newWidthMM = newColumn.Width * 1000;
@@ -348,16 +301,6 @@ namespace ExportJsonFileFromRevit
                     return DuplicateAction.Skip;
             }
         }
-
-
-
-
-
-
-
-
-
-
         private void ShowFinalSummary(int created, int skipped, int replaced)
         {
             string summary = $"Column processing completed:\n\n" +
@@ -368,9 +311,6 @@ namespace ExportJsonFileFromRevit
 
             TaskDialog.Show("Completed", summary);
         }
-
-
-
         private FamilySymbol GetOrCreateColumnType(Document doc, ColumnGeometryData column)
         {
             // Try to find existing FamilySymbol
@@ -395,7 +335,6 @@ namespace ExportJsonFileFromRevit
 
             return null;
         }
-
         private Level GetClosestLevel(Document doc, double elevationFeet)
         {
             Level closest = null;
