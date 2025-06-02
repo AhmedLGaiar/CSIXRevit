@@ -16,6 +16,7 @@ namespace ElementsData
         public double TieSpacingLongit { get; set; }
         public int Number2DirTieBars { get; set; }
         public int Number3DirTieBars { get; set; }
+        public int SectionCount { get; set; }
 
     }
 }

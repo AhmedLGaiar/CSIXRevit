@@ -10,6 +10,7 @@ namespace ReinforcementFromEtab
                                                                      , double[] pmmArea)
         {
             int ret;
+            int count = 0;
             #region GetSectionData
             string MatPropLong = null;
             string MatPropConfine = null;
@@ -58,6 +59,7 @@ namespace ReinforcementFromEtab
             // ToBeCheck
             if (myOption[0] == 1)
             {
+
                 if (addedSections.Add(SectionName)) // returns false if already exists
                 {
                     return new ColumnRCData
@@ -74,7 +76,8 @@ namespace ReinforcementFromEtab
                         Number2DirTieBars = Number2DirTieBars,
                         Number3DirTieBars = Number3DirTieBars,
                         Width = width,
-                        Depth = depth
+                        Depth = depth,
+                        SectionCount = CountColumnsWithSection(SapModel, SectionName)
                     };
                 }
                 return null; // if already exists, return null
@@ -111,6 +114,50 @@ namespace ReinforcementFromEtab
 
             return null;
 
+        }
+        public static int CountColumnsWithSection(cSapModel SapModel, string targetSectionName)
+        {
+            int count = 0;
+            int numberItems = 0;
+            string[] frameNames = null;
+
+            // Get all frame object names
+            int ret = SapModel.FrameObj.GetNameList(ref numberItems, ref frameNames);
+            if (ret != 0 || frameNames == null) return 0;
+
+            for (int i = 0; i < numberItems; i++)
+            {
+                string name = frameNames[i];
+
+                // Get section name
+                string sectionName = null;
+                string SAuto = null;
+                ret = SapModel.FrameObj.GetSection(name, ref sectionName, ref SAuto);
+                if (ret != 0) continue;
+
+                if (sectionName != targetSectionName)
+                    continue;
+
+                // Get points of the frame
+                string point1 = null, point2 = null;
+                ret = SapModel.FrameObj.GetPoints(name, ref point1, ref point2);
+                if (ret != 0) continue;
+
+                double x1 = 0, y1 = 0, z1 = 0;
+                double x2 = 0, y2 = 0, z2 = 0;
+
+                // Get coordinates of both ends
+                SapModel.PointObj.GetCoordCartesian(point1, ref x1, ref y1, ref z1);
+                SapModel.PointObj.GetCoordCartesian(point2, ref x2, ref y2, ref z2);
+
+                // Check if vertical (difference in Z)
+                if (Math.Abs(z2 - z1) > 0.01)
+                {
+                    count++;
+                }
+            }
+
+            return count;
         }
     }
 }
