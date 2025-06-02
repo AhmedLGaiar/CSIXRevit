@@ -1,5 +1,5 @@
 ﻿using System.IO;
-using ElementsData;
+using ElementsData.Geometry;
 using ETABSv1;
 using Newtonsoft.Json;
 

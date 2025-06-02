@@ -1,4 +1,4 @@
-﻿using ElementsData;
+﻿using ElementsData.Geometry;
 using ETABSv1;
 using Newtonsoft.Json;
 using System.IO;

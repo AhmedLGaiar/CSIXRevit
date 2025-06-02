@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using ETABSv1;
 using Newtonsoft.Json;
-using ElementsData;
+using ElementsData.Geometry;
 
 namespace ToEtabs.Utilities
 {

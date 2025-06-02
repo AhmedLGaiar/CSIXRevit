@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using ElementsData;
+using ElementsData.Geometry;
 using ETABSv1;
 using Microsoft.Win32;
 using Newtonsoft.Json;

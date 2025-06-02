@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ETABSv1;
-using ElementsData;
 using FromRevit.Utilities;
+using ElementsData.Geometry;
 
 namespace GeometryFromEtabs.Extractors
 {

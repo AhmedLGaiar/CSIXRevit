@@ -1,4 +1,4 @@
-﻿using ElementsData;
+﻿using ElementsData.Geometry;
 using ETABSv1;
 
 namespace ToEtabs.Importers

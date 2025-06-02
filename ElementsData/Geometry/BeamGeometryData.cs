@@ -1,5 +1,4 @@
-﻿
-namespace ElementsData
+﻿namespace ElementsData.Geometry
 {
     public class BeamGeometryData
     {

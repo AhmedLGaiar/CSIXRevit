@@ -1,7 +1,7 @@
 ﻿using Autodesk.Revit.DB;
 using FromRevit.Helpers;
-using ElementsData;
 using FromRevit.Utilities;
+using ElementsData.Geometry;
 
 namespace FromRevit.ElementsCommand
 {
@@ -71,7 +71,7 @@ namespace FromRevit.ElementsCommand
                     BasePoint = PointUtilities.FromXYZInMilli(basePoint),
                     TopPoint = PointUtilities.FromXYZInMilli(topPoint),
                     Width = UnitUtils.ConvertFromInternalUnits(width, UnitTypeId.Meters),
-                    depth = UnitUtils.ConvertFromInternalUnits(depth, UnitTypeId.Meters),
+                    Depth = UnitUtils.ConvertFromInternalUnits(depth, UnitTypeId.Meters),
                     SectionName = sectionName,
                     Rotation = rotation,
                     SlantedAngle = slantedAngle,

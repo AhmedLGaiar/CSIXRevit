@@ -1,7 +1,7 @@
 ﻿using ETABSv1;
-using ElementsData;
 using ToEtabs.Helpers;
 using ToEtabs.Utilities;
+using ElementsData.Geometry;
 
 namespace ToEtabs.Importers
 {
@@ -15,7 +15,7 @@ namespace ToEtabs.Importers
             foreach (var column in columns)
             {
                 double widthMeters = column.Width;
-                double depthMeters = column.depth;
+                double depthMeters = column.Depth;
                 done = ColumnUtilities.DefineColumnSection(_sapModel, $"C {widthMeters:0.00}*{depthMeters:0.00} H",
                     SelectedConcreteMaterial, depthMeters * 1000, widthMeters * 1000);
                 if (done == 0)
@@ -28,7 +28,7 @@ namespace ToEtabs.Importers
             foreach (var column in columns)
             {
                 double widthMeters = column.Width;
-                double depthMeters = column.depth;
+                double depthMeters = column.Depth;
 
                 string orientation;
                 double rotation = ColumnHelpers.NormalizeAngle(column.Rotation);

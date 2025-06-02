@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ElementsData
+namespace ElementsData.Geometry
 {
     public class PointData
     {

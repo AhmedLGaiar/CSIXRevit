@@ -1,5 +1,4 @@
-﻿
-namespace ElementsData
+﻿namespace ElementsData.Steel
 {
     public class FrameRCData
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ElementsData;
+using ElementsData.Geometry;
 using ETABSv1;
 
 namespace GeometryFromEtabs

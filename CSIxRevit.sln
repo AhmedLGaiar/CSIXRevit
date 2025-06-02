@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReinforcementFromEtab", "Re
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeometryFromEtabs", "GeometryFromEtabs\GeometryFromEtabs.csproj", "{CD580912-801A-43DF-B387-0575C76ED231}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeometryToRevit", "GeometryToRevit\GeometryToRevit.csproj", "{1AA64797-7558-47BE-9824-A56D1996070B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{CD580912-801A-43DF-B387-0575C76ED231}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CD580912-801A-43DF-B387-0575C76ED231}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CD580912-801A-43DF-B387-0575C76ED231}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1AA64797-7558-47BE-9824-A56D1996070B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1AA64797-7558-47BE-9824-A56D1996070B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1AA64797-7558-47BE-9824-A56D1996070B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1AA64797-7558-47BE-9824-A56D1996070B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
