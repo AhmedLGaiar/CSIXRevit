@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RevitAddIns>
+    <AddIn Type="Application">
+        <Name>StructLink_X</Name>
+        <Assembly>C:\Users\ts\Source\Repos\CSIXRevitX\StructLink_X.0\bin\Debug\StructLink_X.0.dll</Assembly>
+        <AddInId>E20259B6-8AA8-4730-98C0-567FF0D39696</AddInId>
+        <FullClassName>StructLink_X._0.ribbon.StructLinkXApplication</FullClassName>
+        <Text>StructLink_X</Text>
+        <Description>StructLink_X for Structural Analysis</Description>
+        <VendorId>Yara M.</VendorId>
+        <VendorDescription>StructLink_X for Structural Analysis</VendorDescription>
+    </AddIn>
+</RevitAddIns>
