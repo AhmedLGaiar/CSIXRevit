@@ -2,7 +2,7 @@
 <RevitAddIns>
     <AddIn Type="Application">
         <Name>StructLink_X</Name>
-        <Assembly>C:\Users\ts\Source\Repos\CSIXRevitX\StructLink_X.0\bin\Debug\StructLink_X.0.dll</Assembly>
+        <Assembly>.\StructLink_X.0\StructLink_X.0.dll</Assembly>
         <AddInId>E20259B6-8AA8-4730-98C0-567FF0D39696</AddInId>
         <FullClassName>StructLink_X._0.ribbon.StructLinkXApplication</FullClassName>
         <Text>StructLink_X</Text>
