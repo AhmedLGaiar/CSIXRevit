@@ -6,7 +6,7 @@
        xmlns:local="clr-namespace:StructLink_X._0.Converters"  
        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"  
        Title="StructLink-X - Rebar &amp; Concrete Analysis Suite"  
-       Width="1400" Height="900"  
+       Width="1200" Height="750"  
        MinWidth="1200" MinHeight="800"  
        Background="#F8FAFC"  
        WindowStartupLocation="CenterScreen">
