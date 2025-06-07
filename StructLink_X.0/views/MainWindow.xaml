@@ -3,139 +3,29 @@
        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"  
        xmlns:hx="http://helix-toolkit.org/wpf"  
        xmlns:viewmodels="clr-namespace:StructLink_X._0.ViewModels"  
-       xmlns:local="clr-namespace:StructLink_X._0.Converters"  
+       xmlns:local="clr-namespace:StructLink_X._0.converters"  
        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"  
        Title="StructLink-X - Rebar &amp; Concrete Analysis Suite"  
        Width="1200" Height="750"  
        MinWidth="1200" MinHeight="800"  
        Background="#F8FAFC"  
+        
        WindowStartupLocation="CenterScreen">
-
+    
     <Window.Resources>
-        <!-- Converters -->
-        <local:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-        <local:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
-        <local:ViewModeToVisibilityConverter x:Key="ViewModeToVisibilityConverter" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Styles;component/MasterStyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
 
-        <!-- Color Resources -->
-        <SolidColorBrush x:Key="SeaBlue" Color="#2563EB"/>
-        <SolidColorBrush x:Key="DarkSeaBlue" Color="#1D4ED8"/>
-        <SolidColorBrush x:Key="LightSeaBlue" Color="#DBEAFE"/>
-        <SolidColorBrush x:Key="AccentRed" Color="#DC2626"/>
-        <SolidColorBrush x:Key="PureWhite" Color="#FFFFFF"/>
-        <SolidColorBrush x:Key="LightGray" Color="#F1F5F9"/>
-        <SolidColorBrush x:Key="BorderGray" Color="#E2E8F0"/>
-        <SolidColorBrush x:Key="TextPrimary" Color="#1E293B"/>
-        <SolidColorBrush x:Key="TextSecondary" Color="#64748B"/>
-
-        <!-- Button Style -->
-        <Style x:Key="ModernButton" TargetType="Button">
-            <Setter Property="Background" Value="{StaticResource SeaBlue}"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Padding" Value="16,10"/>
-            <Setter Property="Margin" Value="4"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="FontSize" Value="12"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" 
-                               CornerRadius="8"
-                               BorderThickness="{TemplateBinding BorderThickness}"
-                               BorderBrush="{TemplateBinding BorderBrush}">
-                            <ContentPresenter HorizontalAlignment="Center" 
-                                           VerticalAlignment="Center"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="{StaticResource DarkSeaBlue}"/>
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" Value="#1E40AF"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <!-- Accent Button Style -->
-        <Style x:Key="AccentButton" TargetType="Button" BasedOn="{StaticResource ModernButton}">
-            <Setter Property="Background" Value="{StaticResource AccentRed}"/>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#B91C1C"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-
-        <!-- TextBox Style -->
-        <Style x:Key="ModernTextBox" TargetType="TextBox">
-            <Setter Property="Padding" Value="12,10"/>
-            <Setter Property="BorderThickness" Value="2"/>
-            <Setter Property="BorderBrush" Value="{StaticResource BorderGray}"/>
-            <Setter Property="Background" Value="White"/>
-            <Setter Property="FontSize" Value="13"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="TextBox">
-                        <Border Background="{TemplateBinding Background}"
-                               BorderBrush="{TemplateBinding BorderBrush}"
-                               BorderThickness="{TemplateBinding BorderThickness}"
-                               CornerRadius="6">
-                            <ScrollViewer x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsFocused" Value="True">
-                                <Setter Property="BorderBrush" Value="{StaticResource SeaBlue}"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <!-- ComboBox Style -->
-        <Style x:Key="ModernComboBox" TargetType="ComboBox">
-            <Setter Property="Padding" Value="12,10"/>
-            <Setter Property="BorderThickness" Value="2"/>
-            <Setter Property="BorderBrush" Value="{StaticResource BorderGray}"/>
-            <Setter Property="Background" Value="White"/>
-            <Setter Property="FontSize" Value="13"/>
-        </Style>
-
-        <!-- DataGrid Style -->
-        <Style x:Key="ModernDataGrid" TargetType="DataGrid">
-            <Setter Property="Background" Value="White"/>
-            <Setter Property="BorderBrush" Value="{StaticResource BorderGray}"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="GridLinesVisibility" Value="Horizontal"/>
-            <Setter Property="HorizontalGridLinesBrush" Value="{StaticResource BorderGray}"/>
-            <Setter Property="AlternatingRowBackground" Value="#F8FAFC"/>
-            <Setter Property="HeadersVisibility" Value="Column"/>
-            <Setter Property="FontSize" Value="12"/>
-            <Setter Property="RowHeight" Value="32"/>
-        </Style>
-
-        <!-- Header Style -->
-        <Style x:Key="HeaderStyle" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="18"/>
-            <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
-            <Setter Property="Margin" Value="0,0,0,12"/>
-        </Style>
-
-        <!-- Section Header Style -->
-        <Style x:Key="SectionHeaderStyle" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="Foreground" Value="{StaticResource TextSecondary}"/>
-            <Setter Property="Margin" Value="0,0,0,8"/>
-        </Style>
+            <!-- الـ Converters جوا نفس الـ ResourceDictionary -->
+            <local:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+            <local:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
+            <local:ViewModeToVisibilityConverter x:Key="ViewModeToVisibilityConverter" />
+        </ResourceDictionary>
     </Window.Resources>
-
+    
+    
     <!-- Main Container -->
     <Grid Margin="16">
         <Grid.RowDefinitions>

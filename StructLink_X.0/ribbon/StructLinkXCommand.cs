@@ -2,6 +2,7 @@
 using Autodesk.Revit.UI;
 using StructLink_X._0.Views;
 using System;
+using System.IO;
 using System.Reflection;
 
 namespace StructLink_X._0.ribbon
@@ -45,6 +46,14 @@ namespace StructLink_X._0.ribbon
                 message = $"An unexpected error occurred:\n{ex.Message}\n\nAdditional details:\n{ex.StackTrace}";
                 return Result.Failed;
             }
+        }
+        private static Assembly ResolveStyleLibrary(object sender, ResolveEventArgs args)
+        {
+            var requestedAssembly = new AssemblyName(args.Name).Name + ".dll";
+            var pluginDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            var fullPath = Path.Combine(pluginDir, requestedAssembly);
+
+            return File.Exists(fullPath) ? Assembly.LoadFrom(fullPath) : null;
         }
     }
 }

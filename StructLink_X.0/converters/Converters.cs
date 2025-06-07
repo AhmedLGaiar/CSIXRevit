@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
-namespace StructLink_X._0.Converters
+namespace StructLink_X._0.converters
 {
  
     public enum ViewMode
@@ -142,3 +142,4 @@ namespace StructLink_X._0.Converters
         }
     }
 }
+

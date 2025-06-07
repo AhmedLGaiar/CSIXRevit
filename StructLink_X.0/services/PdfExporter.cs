@@ -75,7 +75,7 @@ namespace StructLink_X._0.Services
                     if (column.MainBarDiameter <= 0) throw new ArgumentException("MainBarDiameter must be positive for column.");
                     if (column.TieSpacing <= 0) throw new ArgumentException("TieSpacing must be positive for column.");
 
-                    double tieCount = Math.Ceiling(column.Height / (column.TieSpacing / 1000));
+                    //double tieCount = Math.Ceiling(column.Height / (column.TieSpacing / 1000));
                     int tieBarDiameter = column.TieBarDiameter > 0 ? column.TieBarDiameter : 8;
                     double rebarLength = RebarCalculator.CalculateColumnRebarLength(column);
                     double tieLength = RebarCalculator.CalculateColumnTieLength(column);

@@ -79,7 +79,7 @@ namespace StructLink_X._0.Services
                     foreach (var column in columns)
                     {
                         ws.Cells[row, 1].Value = column.SectionName ?? "N/A";
-                        ws.Cells[row, 2].Value = $"{column.Width}x{column.Depth}x{column.Height * 1000}";
+                        //ws.Cells[row, 2].Value = $"{column.Width}x{column.Depth}x{column.Height * 1000}";
                         double concreteVolume = RebarCalculator.CalculateColumnConcreteVolume(column);
                         ws.Cells[row, 3].Value = concreteVolume.ToString("F2");
                         ws.Cells[row, 4].Value = $"{column.NumBarsDir3 + column.NumBarsDir2}T{column.MainBarDiameter}";
