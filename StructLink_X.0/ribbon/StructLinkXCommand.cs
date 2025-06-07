@@ -6,8 +6,26 @@ using System.IO;
 using System.Reflection;
 
 namespace StructLink_X._0.ribbon
+
+
+/* 
+ * 
+ 
+ ازيك يا جوجو معلش هتعبك معايا 
+   
+
+    لما تيجي تبداء تصلحه ابعتلي ندخل ميتنج
+ 
+ 
+ 
+ 
+ كل الحب --- للوولوووووووووو
+ 
+ 
+ 
+ */
 {
-    
+
     [Autodesk.Revit.Attributes.Transaction(Autodesk.Revit.Attributes.TransactionMode.Manual)]
     public class StructLinkXCommand : IExternalCommand
     {
@@ -30,6 +48,7 @@ namespace StructLink_X._0.ribbon
                     return Result.Failed;
                 }
 
+                AppDomain.CurrentDomain.AssemblyResolve += ResolveStyleLibrary;
                 // Open the main WPF window
                 MainWindow mainWindow = new MainWindow(doc);
                 mainWindow.ShowDialog();

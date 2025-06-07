@@ -49,7 +49,7 @@ namespace StructLink_X._0.Views
             catch (Exception ex)
             {
                 // Log error but don't crash the application
-                _viewModel?.UpdateStatusMessage($"خطأ في تحميل العرض ثلاثي الأبعاد: {ex.Message}");
+                _viewModel?.UpdateStatusMessage($"خطأ في تحميل العرض الثري دي: {ex.Message}");
             }
         }
 
