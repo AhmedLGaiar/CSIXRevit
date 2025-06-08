@@ -1,0 +1,182 @@
+﻿<Window x:Class="ToEtabs.Views.UnifiedView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Revit ↔ ETABS Integration" Height="600" Width="500"
+        WindowStartupLocation="CenterScreen">
+
+    <DockPanel>
+        <!-- Header -->
+        <Border Background="#186bff" Height="50" DockPanel.Dock="Top">
+            <TextBlock Text="Revit ↔ ETABS Integration" HorizontalAlignment="Center"
+                       VerticalAlignment="Center" Foreground="White" FontSize="16" FontWeight="SemiBold"/>
+        </Border>
+
+        <!-- Main Content -->
+        <Grid Margin="15">
+            <TabControl>
+                <!-- Elements Import Tab -->
+                <TabItem Header="Elements">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <StackPanel Margin="10">
+                            <!-- File Selection for Elements -->
+                            <GroupBox Header="JSON File Selection" Margin="0,0,0,15">
+                                <Grid Margin="5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Text="{Binding ImportFilePath}" 
+                                            IsReadOnly="True" Height="30"
+                                            VerticalContentAlignment="Center"/>
+                                    <Button Grid.Column="1" Content="Browse" 
+                                           Click="BrowseElementsButton_Click"
+                                           Height="30" Width="80" Margin="5,0,0,0"
+                                           Background="#186bff" Foreground="White"/>
+                                </Grid>
+                            </GroupBox>
+
+                            <!-- Material Selection -->
+                            <GroupBox Header="Material Selection" Margin="0,0,0,15">
+                                <ComboBox ItemsSource="{Binding DefinedConcreteMaterial}" 
+                                         SelectedItem="{Binding SelectedConcreteMaterial, Mode=TwoWay}"
+                                         Height="35" Margin="5"/>
+                            </GroupBox>
+
+                            <!-- Element Types -->
+                            <GroupBox Header="Structural Elements" Margin="0,0,0,15">
+                                <StackPanel Margin="10">
+                                    <CheckBox Content="Columns" IsChecked="{Binding IsColumnsChecked}" Margin="0,5"/>
+                                    <CheckBox Content="Walls" IsChecked="{Binding IsWallsChecked}" Margin="0,5"/>
+                                    <CheckBox Content="Beams" IsChecked="{Binding IsBeamsChecked}" Margin="0,5"/>
+                                    <CheckBox Content="Slabs" IsChecked="{Binding IsSlabsChecked}" Margin="0,5"/>
+                                </StackPanel>
+                            </GroupBox>
+
+                            <!-- Status -->
+                            <TextBlock Text="{Binding ElementsStatusMessage}" 
+                                      TextWrapping="Wrap" Margin="0,10"
+                                      HorizontalAlignment="Center" FontWeight="SemiBold"/>
+
+                            <!-- Import Button -->
+                            <Button Content="Import Elements from JSON" 
+                                   Click="ImportElementsButton_Click"
+                                   Height="35" Margin="5" Background="#186bff" Foreground="White"/>
+                        </StackPanel>
+                    </ScrollViewer>
+                </TabItem>
+
+                <!-- Load Import Tab -->
+                <TabItem Header="Import Loads">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <StackPanel Margin="10">
+                            <!-- File Selection -->
+                            <GroupBox Header="Load File Selection" Margin="0,0,0,15">
+                                <Grid Margin="5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Text="{Binding ImportFilePath}" 
+                                            IsReadOnly="True" Height="30"
+                                            VerticalContentAlignment="Center"/>
+                                    <Button Grid.Column="1" Content="Browse" 
+                                           Click="BrowseImportButton_Click"
+                                           Height="30" Width="80" Margin="5,0,0,0"
+                                           Background="#186bff" Foreground="White"/>
+                                </Grid>
+                            </GroupBox>
+
+                            <!-- Load Types -->
+                            <GroupBox Header="Load Types to Import" Margin="0,0,0,15">
+                                <StackPanel Margin="10">
+                                    <CheckBox Content="Point Loads" IsChecked="{Binding IsImportPointLoadsChecked}" Margin="0,5"/>
+                                    <CheckBox Content="Linear Loads" IsChecked="{Binding IsImportLinearLoadsChecked}" Margin="0,5"/>
+                                    <CheckBox Content="Uniform Loads" IsChecked="{Binding IsImportUniformLoadsChecked}" Margin="0,5"/>
+                                </StackPanel>
+                            </GroupBox>
+
+                            <!-- Import Options -->
+                            <GroupBox Header="Import Options" Margin="0,0,0,15">
+                                <StackPanel Margin="10">
+                                    <CheckBox Content="Replace existing loads" IsChecked="{Binding ReplaceExistingLoads}" Margin="0,5"/>
+                                    <CheckBox Content="Create missing load patterns" IsChecked="{Binding CreateMissingLoadPatterns}" Margin="0,5"/>
+                                    <CheckBox Content="Show summary after import" IsChecked="{Binding ShowSummaryAfterImport}" Margin="0,5"/>
+                                </StackPanel>
+                            </GroupBox>
+
+                            <!-- Load Preview - Always Visible -->
+                            <Border Name="LoadPreviewBorder" BorderBrush="#DDDDDD" BorderThickness="1" 
+                                   Margin="0,0,0,15" MaxHeight="120">
+                                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                    <TextBlock Text="{Binding ImportLoadSummary}" 
+                                              TextWrapping="Wrap" Margin="10"
+                                              FontSize="12"/>
+                                </ScrollViewer>
+                            </Border>
+
+                            <!-- Status -->
+                            <TextBlock Text="{Binding ImportStatusMessage}" 
+                                      TextWrapping="Wrap" Margin="0,10"
+                                      HorizontalAlignment="Center" FontWeight="SemiBold"/>
+
+                            <!-- Import Button -->
+                            <Button Content="Import Loads to ETABS" 
+                                   Click="ImportLoadsButton_Click"
+                                   Height="35" Margin="5" Background="#186bff" Foreground="White"/>
+                        </StackPanel>
+                    </ScrollViewer>
+                </TabItem>
+
+                <!-- Load Export Tab -->
+                <TabItem Header="Export Loads">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto">
+                            <StackPanel Margin="10">
+                                <!-- File Selection -->
+                                <GroupBox Header="Export Location" Margin="0,0,0,15">
+                                    <Grid Margin="5">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBox Text="{Binding ExportFilePath}" 
+                                                Height="30" VerticalContentAlignment="Center"/>
+                                        <Button Grid.Column="1" Content="Browse" 
+                                               Command="{Binding BrowseExportFileCommand}"
+                                               Height="30" Width="80" Margin="5,0,0,0"
+                                               Background="#186bff" Foreground="White"/>
+                                    </Grid>
+                                </GroupBox>
+
+                                <!-- Load Types -->
+                                <GroupBox Header="Load Types to Export" Margin="0,0,0,15">
+                                    <StackPanel Margin="10">
+                                        <CheckBox Content="Point Loads" IsChecked="{Binding IsExportPointLoadsChecked}" Margin="0,5"/>
+                                        <CheckBox Content="Linear Loads" IsChecked="{Binding IsExportLinearLoadsChecked}" Margin="0,5"/>
+                                        <CheckBox Content="Uniform Loads" IsChecked="{Binding IsExportUniformLoadsChecked}" Margin="0,5"/>
+                                    </StackPanel>
+                                </GroupBox>
+
+                                <!-- Status -->
+                                <TextBlock Text="{Binding ExportStatusMessage}" 
+                                          TextWrapping="Wrap" Margin="0,10"
+                                          HorizontalAlignment="Center" FontWeight="SemiBold"/>
+                            </StackPanel>
+                        </ScrollViewer>
+
+                        <!-- Export Button - Always Visible at Bottom -->
+                        <Button Grid.Row="1" Content="Export Loads to JSON" 
+                               Click="ExportButton_Click"
+                               Height="40" Margin="10" Background="#186bff" Foreground="White"
+                               FontWeight="SemiBold" FontSize="14"/>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+        </Grid>
+    </DockPanel>
+</Window>

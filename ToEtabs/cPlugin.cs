@@ -1,7 +1,9 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using System.Windows;
 using ETABSv1;
 using System.Reflection;
-using ToEtabs.ViewModels;
+using ToEtabs.Views;
 
 namespace ToEtabs
 {
@@ -9,20 +11,35 @@ namespace ToEtabs
     {
         public void Main(ref cSapModel SapModel, ref cPluginCallback ISapPlugin)
         {
-            AppDomain.CurrentDomain.AssemblyResolve += ResolveStyleLibrary;
+            try
+            {
+                // Register assembly resolver for loading WPF libraries
+                AppDomain.CurrentDomain.AssemblyResolve += ResolveStyleLibrary;
 
-            MainWindowViewModel ViewModel = new MainWindowViewModel(SapModel);
-            MainWindow mainWindow = new MainWindow(ViewModel);
-            mainWindow.ShowDialog();
+                // Store the SapModel in a local variable to avoid using ref in lambdas
+                cSapModel etabsModel = SapModel;
 
-            ISapPlugin.Finish(0);
+                // Create and show the unified view directly
+                var unifiedView = new UnifiedView(etabsModel);
+                unifiedView.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error in plugin: {ex.Message}\n\n{ex.StackTrace}", "Plugin Error",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally
+            {
+                ISapPlugin.Finish(0);
+            }
         }
 
         public int Info(ref string Text)
         {
-           Text = "ToEtabs Plugin From ELGaiar";
+            Text = "Revit-ETABS Integration Plugin - Unified Interface";
             return 0;
         }
+
         private static Assembly ResolveStyleLibrary(object sender, ResolveEventArgs args)
         {
             var requestedAssembly = new AssemblyName(args.Name).Name + ".dll";
