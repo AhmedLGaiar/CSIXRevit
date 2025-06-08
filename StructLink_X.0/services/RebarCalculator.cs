@@ -1,7 +1,7 @@
-﻿using StructLink_X._0.Models;
+﻿using StructLink_X.Models;
 using System;
 
-namespace StructLink_X._0.Services
+namespace StructLink_X.Services
 {
     public class RebarCalculator
     {

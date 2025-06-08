@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StructLink_X._0.ViewModels
+namespace StructLink_X.ViewModels
 {
     public class ViewModelBase : INotifyPropertyChanged
     {

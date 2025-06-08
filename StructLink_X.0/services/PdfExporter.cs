@@ -1,12 +1,12 @@
 ﻿using iTextSharp.text;
 using iTextSharp.text.pdf;
-using StructLink_X._0.Models;
+using StructLink_X.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace StructLink_X._0.Services
+namespace StructLink_X.Services
 {
     public class PdfExporter
     {

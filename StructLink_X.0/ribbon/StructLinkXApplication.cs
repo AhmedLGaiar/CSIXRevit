@@ -1,5 +1,5 @@
 ﻿using Autodesk.Revit.UI;
-using StructLink_X._0.ribbon;
+using StructLink_X.ribbon;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 
-namespace StructLink_X._0.ribbon
+namespace StructLink_X.ribbon
 {
     public class StructLinkXApplication : IExternalApplication
     {
@@ -45,7 +45,7 @@ namespace StructLink_X._0.ribbon
 
             // Load and set the icon
             System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
-            string resourceName = "StructLink_X._0.resources.icon.png"; // Adjust based on your namespace and folder structure
+            string resourceName = "StructLink_X.resources.icon.png"; // Adjust based on your namespace and folder structure
             using (var stream = assembly.GetManifestResourceStream(resourceName))
             {
                 if (stream != null)

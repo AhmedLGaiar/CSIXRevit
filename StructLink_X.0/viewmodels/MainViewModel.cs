@@ -1,5 +1,5 @@
-﻿using StructLink_X._0.Models;
-using StructLink_X._0.Services;
+﻿using StructLink_X.Models;
+using StructLink_X.Services;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -14,10 +14,10 @@ using System.Linq;
 using System;
 using System.Threading.Tasks;
 using System.Windows.Threading;
-using StructLink_X._0.Views;
+using StructLink_X.Views;
 using OfficeOpenXml;
 
-namespace StructLink_X._0.ViewModels
+namespace StructLink_X.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {

@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
-using StructLink_X._0.ViewModels;
+using StructLink_X.ViewModels;
 
-namespace StructLink_X._0.Models
+namespace StructLink_X.Models
 {
     public class BeamRCData : ViewModelBase
     {

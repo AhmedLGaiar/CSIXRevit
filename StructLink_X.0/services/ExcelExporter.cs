@@ -1,10 +1,10 @@
 ﻿using OfficeOpenXml;
-using StructLink_X._0.Models;
+using StructLink_X.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace StructLink_X._0.Services
+namespace StructLink_X.Services
 {
     public class ExcelExporter
     {

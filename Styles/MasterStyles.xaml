@@ -14,6 +14,5 @@
         <ResourceDictionary Source="STColor.xaml" />
         <ResourceDictionary Source="ST_TextBox.xaml" />
         <ResourceDictionary Source="STDataGrid.xaml" />
-        
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

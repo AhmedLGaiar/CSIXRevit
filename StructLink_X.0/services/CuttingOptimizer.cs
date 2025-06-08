@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace StructLink_X._0.Services
+namespace StructLink_X.Services
 {
     public class CuttingOptimizer
     {

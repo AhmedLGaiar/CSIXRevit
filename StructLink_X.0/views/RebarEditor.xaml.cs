@@ -1,5 +1,5 @@
-﻿using StructLink_X._0.Models;
-using StructLink_X._0.ViewModels;
+﻿using StructLink_X.Models;
+using StructLink_X.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace StructLink_X._0.Views
+namespace StructLink_X.Views
 {
     /// <summary>
     /// Interaction logic for RebarEditor.xaml

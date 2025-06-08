@@ -1,11 +1,12 @@
-﻿using Autodesk.Revit.DB;
+﻿using Autodesk.Revit.Attributes;
+using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
-using StructLink_X._0.Views;
+using StructLink_X.Views;
 using System;
 using System.IO;
 using System.Reflection;
 
-namespace StructLink_X._0.ribbon
+namespace StructLink_X.ribbon
 
 
 /* 
@@ -26,7 +27,7 @@ namespace StructLink_X._0.ribbon
  */
 {
 
-    [Autodesk.Revit.Attributes.Transaction(Autodesk.Revit.Attributes.TransactionMode.Manual)]
+    [Transaction(TransactionMode.Manual)]
     public class StructLinkXCommand : IExternalCommand
     {
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StructLink_X._0.Models
+namespace StructLink_X.Models
 {
     public class CodeRules
     {

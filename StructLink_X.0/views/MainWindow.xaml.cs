@@ -1,10 +1,10 @@
 ﻿using Autodesk.Revit.DB;
-using StructLink_X._0.ViewModels;
+using StructLink_X.ViewModels;
 using System;
 using System.Windows;
 using HelixToolkit.Wpf;
 
-namespace StructLink_X._0.Views
+namespace StructLink_X.Views
 {
     public partial class MainWindow : Window
     {

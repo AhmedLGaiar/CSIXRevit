@@ -3,7 +3,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 
-namespace StructLink_X._0.Models
+namespace StructLink_X.Models
 {
     public class DataLoader
     {

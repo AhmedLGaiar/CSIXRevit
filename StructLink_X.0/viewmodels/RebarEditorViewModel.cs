@@ -1,12 +1,12 @@
-﻿using StructLink_X._0.Models;
-using StructLink_X._0.ViewModels;
+﻿using StructLink_X.Models;
+using StructLink_X.ViewModels;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
 using System;
 
-namespace StructLink_X._0.ViewModels
+namespace StructLink_X.ViewModels
 {
     public class RebarEditorViewModel : ViewModelBase
     {

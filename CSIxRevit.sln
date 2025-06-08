@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Styles", "Styles\Styles.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReinforcementFromEtab", "ReinforcementFromEtab\ReinforcementFromEtab.csproj", "{27E99CA1-2877-4D14-9DD3-8B1A085CD1C4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StructLink_X.0", "StructLink_X.0\StructLink_X.0.csproj", "{696B820C-338E-4B4F-B01C-C62FCA624082}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StructLink_X", "StructLink_X.0\StructLink_X.csproj", "{696B820C-338E-4B4F-B01C-C62FCA624082}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

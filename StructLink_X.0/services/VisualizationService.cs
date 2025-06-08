@@ -1,5 +1,5 @@
 ﻿using HelixToolkit.Wpf;
-using StructLink_X._0.Models;
+using StructLink_X.Models;
 using System;
 using System.Collections.Generic;
 using System.Windows;
@@ -8,7 +8,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
 using System.Linq;
 
-namespace StructLink_X._0.Services
+namespace StructLink_X.Services
 {
     public class VisualizationService
     {
