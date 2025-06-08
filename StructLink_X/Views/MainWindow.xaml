@@ -41,8 +41,8 @@
         </Grid.RowDefinitions>
 
         <!-- Header with Logo -->
-        <Border Grid.Row="0" Background="{StaticResource PureWhite}" 
-               BorderBrush="{StaticResource SeaBlue}" BorderThickness="0,0,0,4" 
+        <Border Grid.Row="0" Background="#FFFFFF"
+               BorderBrush="#2563EB" BorderThickness="0,0,0,4" 
                CornerRadius="12,12,0,0" Margin="0,0,0,12">
             <Grid Margin="20,16">
                 <Grid.ColumnDefinitions>
@@ -53,17 +53,17 @@
 
                 <!-- Logo -->
                 <Border Grid.Column="0" Width="56" Height="56" 
-                       Background="{StaticResource SeaBlue}"
+                       Background="#2563EB"
                        CornerRadius="28" VerticalAlignment="Center">
                     <Grid>
-                        <Ellipse Fill="{StaticResource PureWhite}" Width="40" Height="40"/>
-                        <Rectangle Fill="{StaticResource SeaBlue}" Width="22" Height="3" 
+                        <Ellipse Fill="#FFFFFF" Width="40" Height="40"/>
+                        <Rectangle Fill="#2563EB" Width="22" Height="3" 
                                 VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,-8,0,0"/>
-                        <Rectangle Fill="{StaticResource SeaBlue}" Width="22" Height="3" 
+                        <Rectangle Fill="#2563EB" Width="22" Height="3" 
                                 VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                        <Rectangle Fill="{StaticResource SeaBlue}" Width="22" Height="3" 
+                        <Rectangle Fill="#2563EB" Width="22" Height="3" 
                                 VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,8,0,0"/>
-                        <Rectangle Fill="{StaticResource AccentRed}" Width="4" Height="28" 
+                        <Rectangle Fill="#DC2626" Width="4" Height="28" 
                                 VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,0,0,0"/>
                     </Grid>
                 </Border>
@@ -71,22 +71,22 @@
                 <!-- Title -->
                 <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="20,0">
                     <TextBlock Text="StructLink-X" FontSize="28" FontWeight="Bold" 
-                            Foreground="{StaticResource TextPrimary}"/>
+                            Foreground="#1E293B"/>
                     <TextBlock Text="Professional Rebar &amp; Concrete Analysis Suite" 
-                            FontSize="13" Foreground="{StaticResource TextSecondary}"/>
+                            FontSize="13" Foreground="#64748B"/>
                 </StackPanel>
 
                 <!-- Status Indicator -->
-                <Border Grid.Column="2" Background="{StaticResource LightSeaBlue}" 
+                <Border Grid.Column="2" Background="#DBEAFE" 
                        CornerRadius="20" Padding="16,8" VerticalAlignment="Center">
-                    <TextBlock Text="● System Ready" Foreground="{StaticResource DarkSeaBlue}" 
+                    <TextBlock Text="● System Ready" Foreground="#1D4ED8" 
                             FontWeight="SemiBold" FontSize="12"/>
                 </Border>
             </Grid>
         </Border>
 
         <!-- Toolbar -->
-        <Border Grid.Row="1" Background="{StaticResource PureWhite}" 
+        <Border Grid.Row="1" Background="#FFFFFF" 
                BorderBrush="{StaticResource BorderGray}" BorderThickness="1" 
                CornerRadius="10" Margin="0,0,0,12" Padding="16,12">
             <WrapPanel Orientation="Horizontal">
@@ -98,7 +98,7 @@
         </Border>
 
         <!-- Search and Filters -->
-        <Border Grid.Row="2" Background="{StaticResource PureWhite}" 
+        <Border Grid.Row="2" Background="#FFFFFF" 
                BorderBrush="{StaticResource BorderGray}" BorderThickness="1" 
                CornerRadius="10" Margin="0,0,0,12" Padding="20,16">
             <Grid>
@@ -129,7 +129,7 @@
             </Grid.ColumnDefinitions>
 
             <!-- Data Tables Section -->
-            <Border Grid.Column="0" Background="{StaticResource PureWhite}" 
+            <Border Grid.Column="0" Background="#FFFFFF" 
                    BorderBrush="{StaticResource BorderGray}" BorderThickness="1" 
                    CornerRadius="12" Padding="20">
                 <Grid>
@@ -188,7 +188,7 @@
             </Border>
 
             <!-- Visualization Panel -->
-            <Border Grid.Column="2" Background="{StaticResource PureWhite}" 
+            <Border Grid.Column="2" Background="#FFFFFF" 
                    BorderBrush="{StaticResource BorderGray}" BorderThickness="1" 
                    CornerRadius="12" Padding="20">
                 <Grid>
@@ -221,7 +221,7 @@
                             <hx:HelixViewport3D x:Name="Viewport3D" Background="#FAFAFA"   
                                              DataContext="{Binding}"   
                                              Loaded="Viewport3D_Loaded"/>
-                            <Border Background="{StaticResource SeaBlue}" 
+                            <Border Background="#2563EB"
                                    CornerRadius="0,0,6,0" 
                                    HorizontalAlignment="Left" 
                                    VerticalAlignment="Top"
@@ -241,7 +241,7 @@
                            Visibility="{Binding Is2DViewVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
                         <Grid>
                             <Image Source="{Binding SectionImage}" Stretch="Uniform" Margin="16"/>
-                            <Border Background="{StaticResource AccentRed}" 
+                            <Border Background="#DC2626"
                                    CornerRadius="0,0,6,0" 
                                    HorizontalAlignment="Left" 
                                    VerticalAlignment="Top"
@@ -251,7 +251,7 @@
                                         Foreground="White" 
                                         FontSize="11"/>
                             </Border>
-                            <Border Background="{StaticResource LightGray}" 
+                            <Border Background="#F1F5F9"
                                    CornerRadius="8" 
                                    Padding="24"
                                    HorizontalAlignment="Center" 
@@ -260,15 +260,15 @@
                                 <StackPanel HorizontalAlignment="Center">
                                     <TextBlock Text="📋" FontSize="36" 
                                             HorizontalAlignment="Center" 
-                                            Foreground="{StaticResource TextSecondary}"/>
+                                            Foreground="#64748B"/>
                                     <TextBlock Text="No Section Selected" 
                                             FontSize="15" 
                                             FontWeight="SemiBold"
-                                            Foreground="{StaticResource TextPrimary}" 
+                                            Foreground="#1E293B"
                                             HorizontalAlignment="Center"/>
                                     <TextBlock Text="Select a column or beam to view its cross-section" 
                                             FontSize="12" 
-                                            Foreground="{StaticResource TextSecondary}" 
+                                            Foreground="#64748B"
                                             HorizontalAlignment="Center" 
                                             TextAlignment="Center"
                                             Margin="0,6,0,0"/>
@@ -279,12 +279,12 @@
 
                     <!-- Status Message -->
                     <Border Grid.Row="5"
-                           Background="{StaticResource LightSeaBlue}" 
+                           Background="#DBEAFE"
                            CornerRadius="8" 
                            Padding="16,10" 
                            Margin="0,16,0,0">
                         <TextBlock Text="{Binding StatusMessage}" 
-                                Foreground="{StaticResource DarkSeaBlue}" 
+                                Foreground="#1D4ED8" 
                                 FontWeight="SemiBold" 
                                 FontSize="12"
                                 TextWrapping="Wrap"/>

@@ -11,7 +11,6 @@
         <ResourceDictionary Source="STComboBox.xaml" />
         <ResourceDictionary Source="STHeader.xaml" />
         <ResourceDictionary Source="STButtons.xaml" />
-        <ResourceDictionary Source="STColor.xaml" />
         <ResourceDictionary Source="ST_TextBox.xaml" />
         <ResourceDictionary Source="STDataGrid.xaml" />
     </ResourceDictionary.MergedDictionaries>
