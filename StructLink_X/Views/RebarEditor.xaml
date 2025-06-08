@@ -6,9 +6,9 @@
         Title="StructLink-X - Edit Rebar Data"
         Width="1000" Height="600"
         MinWidth="800" MinHeight="500"
-        Background="#F0F8FF"
+        Background="#DBEAFE"
         WindowStartupLocation="CenterScreen">
-    
+
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -20,7 +20,6 @@
         </ResourceDictionary>
     </Window.Resources>
 
-
     <Grid Margin="12">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -29,8 +28,8 @@
         </Grid.RowDefinitions>
 
         <!-- Header -->
-        <Border Grid.Row="0" Background="{StaticResource PureWhite}" 
-                BorderBrush="{StaticResource SeaBlue}" BorderThickness="0,0,0,3" 
+        <Border Grid.Row="0" Background="#FFFFFF" 
+                BorderBrush="#2563EB" BorderThickness="0,0,0,3" 
                 CornerRadius="8,8,0,0" Margin="0,0,0,8">
             <StackPanel Margin="15,10" Orientation="Horizontal">
                 <TextBlock Text="✏️ Edit Rebar Data" Style="{StaticResource HeaderStyle}"/>
@@ -38,9 +37,9 @@
         </Border>
 
         <!-- Tab Control -->
-        <TabControl Grid.Row="1" BorderBrush="{StaticResource BorderGray}" 
-                    Background="{StaticResource PureWhite}" Margin="0,0,0,8">
-            <TabItem Header="Columns" FontSize="14" Foreground="{StaticResource DarkSeaBlue}">
+        <TabControl Grid.Row="1" BorderBrush="#E2E8F0" 
+                    Background="#FFFFFF" Margin="0,0,0,8">
+            <TabItem Header="Columns" FontSize="14" Foreground="#1D4ED8">
                 <DataGrid ItemsSource="{Binding Columns}" AutoGenerateColumns="False"
                           Style="{StaticResource ModernDataGrid}"
                           CanUserAddRows="False" CanUserDeleteRows="False" SelectionMode="Single">
@@ -147,7 +146,7 @@
                     </DataGrid.Columns>
                 </DataGrid>
             </TabItem>
-            <TabItem Header="Beams" FontSize="14" Foreground="{StaticResource DarkSeaBlue}">
+            <TabItem Header="Beams" FontSize="14" Foreground="#1D4ED8">
                 <DataGrid ItemsSource="{Binding Beams}" AutoGenerateColumns="False"
                           Style="{StaticResource ModernDataGrid}"
                           CanUserAddRows="False" CanUserDeleteRows="False" SelectionMode="Single">

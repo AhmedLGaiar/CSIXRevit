@@ -1,18 +1,18 @@
 ﻿<Window x:Class="StructLink_X.Views.MainWindow"  
-       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"  
-       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"  
-       xmlns:hx="http://helix-toolkit.org/wpf"  
-       xmlns:viewmodels="clr-namespace:StructLink_X.ViewModels"  
-       xmlns:local="clr-namespace:StructLink_X.Views"  
-       xmlns:converters="clr-namespace:StructLink_X.Converters"  
-       d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel, IsDesignTimeCreatable=False}"
-       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"  
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"  
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"  
+        xmlns:hx="http://helix-toolkit.org/wpf"  
+        xmlns:viewmodels="clr-namespace:StructLink_X.ViewModels"  
+        xmlns:local="clr-namespace:StructLink_X.Views"  
+        xmlns:converters="clr-namespace:StructLink_X.Converters"  
+        d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel, IsDesignTimeCreatable=False}"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"  
        Title="StructLink-X - Rebar &amp; Concrete Analysis Suite"  
-       Width="1200" Height="750"  
-       MinWidth="1200" MinHeight="800"  
-       Background="#F8FAFC"  
-       WindowStartupLocation="CenterScreen">
-    
+        Width="1200" Height="750"  
+        MinWidth="1200" MinHeight="800"  
+        Background="#F1F5F9"  
+        WindowStartupLocation="CenterScreen">
+
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -25,8 +25,7 @@
             <converters:ViewModeToVisibilityConverter x:Key="ViewModeToVisibilityConverter" />
         </ResourceDictionary>
     </Window.Resources>
-    
-    
+
     <!-- Main Container -->
     <Grid Margin="16">
         <Grid.RowDefinitions>
@@ -42,8 +41,8 @@
 
         <!-- Header with Logo -->
         <Border Grid.Row="0" Background="#FFFFFF"
-               BorderBrush="#2563EB" BorderThickness="0,0,0,4" 
-               CornerRadius="12,12,0,0" Margin="0,0,0,12">
+                BorderBrush="#2563EB" BorderThickness="0,0,0,4" 
+                CornerRadius="12,12,0,0" Margin="0,0,0,12">
             <Grid Margin="20,16">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -53,42 +52,42 @@
 
                 <!-- Logo -->
                 <Border Grid.Column="0" Width="56" Height="56" 
-                       Background="#2563EB"
-                       CornerRadius="28" VerticalAlignment="Center">
+                        Background="#2563EB"
+                        CornerRadius="28" VerticalAlignment="Center">
                     <Grid>
                         <Ellipse Fill="#FFFFFF" Width="40" Height="40"/>
                         <Rectangle Fill="#2563EB" Width="22" Height="3" 
-                                VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,-8,0,0"/>
+                                   VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,-8,0,0"/>
                         <Rectangle Fill="#2563EB" Width="22" Height="3" 
-                                VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                   VerticalAlignment="Center" HorizontalAlignment="Center"/>
                         <Rectangle Fill="#2563EB" Width="22" Height="3" 
-                                VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,8,0,0"/>
+                                   VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,8,0,0"/>
                         <Rectangle Fill="#DC2626" Width="4" Height="28" 
-                                VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,0,0,0"/>
+                                   VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,0,0,0"/>
                     </Grid>
                 </Border>
 
                 <!-- Title -->
                 <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="20,0">
                     <TextBlock Text="StructLink-X" FontSize="28" FontWeight="Bold" 
-                            Foreground="#1E293B"/>
+                               Foreground="#1E293B"/>
                     <TextBlock Text="Professional Rebar &amp; Concrete Analysis Suite" 
-                            FontSize="13" Foreground="#64748B"/>
+                               FontSize="13" Foreground="#64748B"/>
                 </StackPanel>
 
                 <!-- Status Indicator -->
                 <Border Grid.Column="2" Background="#DBEAFE" 
-                       CornerRadius="20" Padding="16,8" VerticalAlignment="Center">
+                        CornerRadius="20" Padding="16,8" VerticalAlignment="Center">
                     <TextBlock Text="● System Ready" Foreground="#1D4ED8" 
-                            FontWeight="SemiBold" FontSize="12"/>
+                               FontWeight="SemiBold" FontSize="12"/>
                 </Border>
             </Grid>
         </Border>
 
         <!-- Toolbar -->
         <Border Grid.Row="1" Background="#FFFFFF" 
-               BorderBrush="{StaticResource BorderGray}" BorderThickness="1" 
-               CornerRadius="10" Margin="0,0,0,12" Padding="16,12">
+                BorderBrush="#E2E8F0" BorderThickness="1" 
+                CornerRadius="10" Margin="0,0,0,12" Padding="16,12">
             <WrapPanel Orientation="Horizontal">
                 <Button Content="📁 Load JSON" Command="{Binding LoadJsonCommand}" Style="{StaticResource ModernButton}" Height="26" Width="87"/>
                 <Button Content="📄 Export PDF" Command="{Binding ExportToPdfCommand}" Style="{StaticResource ModernButton}" Width="96"/>
@@ -99,8 +98,8 @@
 
         <!-- Search and Filters -->
         <Border Grid.Row="2" Background="#FFFFFF" 
-               BorderBrush="{StaticResource BorderGray}" BorderThickness="1" 
-               CornerRadius="10" Margin="0,0,0,12" Padding="20,16">
+                BorderBrush="#E2E8F0" BorderThickness="1" 
+                CornerRadius="10" Margin="0,0,0,12" Padding="20,16">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -111,12 +110,12 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Grid.Column="0" Text="🔍 Search:" VerticalAlignment="Center" 
-                        Margin="0,0,12,0" FontWeight="SemiBold" FontSize="13"
-                        Foreground="{StaticResource TextPrimary}"/>
+                           Margin="0,0,12,0" FontWeight="SemiBold" FontSize="13"
+                           Foreground="#1E293B"/>
                 <TextBox Grid.Column="1" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" 
-                      Style="{StaticResource ModernTextBox}" Margin="0,0,158,0"/>
+                         Style="{StaticResource ModernTextBox}" Margin="0,0,158,0"/>
                 <Button Grid.Column="1" Content="🗑️ Clear" Command="{Binding ClearSearchCommand}" 
-                     Style="{StaticResource ModernButton}" Margin="1121,0,12,0" Grid.ColumnSpan="2"/>
+                        Style="{StaticResource ModernButton}" Margin="1121,0,12,0" Grid.ColumnSpan="2"/>
             </Grid>
         </Border>
 
@@ -130,8 +129,8 @@
 
             <!-- Data Tables Section -->
             <Border Grid.Column="0" Background="#FFFFFF" 
-                   BorderBrush="{StaticResource BorderGray}" BorderThickness="1" 
-                   CornerRadius="12" Padding="20">
+                    BorderBrush="#E2E8F0" BorderThickness="1" 
+                    CornerRadius="12" Padding="20">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -144,11 +143,11 @@
                     <!-- Columns Section -->
                     <TextBlock Grid.Row="0" Text="🏛️ COLUMNS DATA" Style="{StaticResource HeaderStyle}"/>
                     <DataGrid Grid.Row="1" 
-                            ItemsSource="{Binding FilteredColumns}" 
-                            SelectedItem="{Binding SelectedColumn}"   
-                            AutoGenerateColumns="False" 
-                            Style="{StaticResource ModernDataGrid}"
-                            IsReadOnly="True">
+                              ItemsSource="{Binding FilteredColumns}" 
+                              SelectedItem="{Binding SelectedColumn}"   
+                              AutoGenerateColumns="False" 
+                              Style="{StaticResource ModernDataGrid}"
+                              IsReadOnly="True">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Section" Binding="{Binding SectionName}" Width="80"/>
                             <DataGridTextColumn Header="Count" Binding="{Binding SectionCount}" Width="60"/>
@@ -168,11 +167,11 @@
                     <!-- Beams Section -->
                     <TextBlock Grid.Row="3" Text="🏗️ BEAMS DATA" Style="{StaticResource HeaderStyle}"/>
                     <DataGrid Grid.Row="4" 
-                            ItemsSource="{Binding FilteredBeams}" 
-                            SelectedItem="{Binding SelectedBeam}"   
-                            AutoGenerateColumns="False" 
-                            Style="{StaticResource ModernDataGrid}"
-                            IsReadOnly="True">
+                              ItemsSource="{Binding FilteredBeams}" 
+                              SelectedItem="{Binding SelectedBeam}"   
+                              AutoGenerateColumns="False" 
+                              Style="{StaticResource ModernDataGrid}"
+                              IsReadOnly="True">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Section" Binding="{Binding SectionName}" Width="80"/>
                             <DataGridTextColumn Header="Unique Name" Binding="{Binding UniqueName}" Width="*"/>
@@ -189,8 +188,8 @@
 
             <!-- Visualization Panel -->
             <Border Grid.Column="2" Background="#FFFFFF" 
-                   BorderBrush="{StaticResource BorderGray}" BorderThickness="1" 
-                   CornerRadius="12" Padding="20">
+                    BorderBrush="#E2E8F0" BorderThickness="1" 
+                    CornerRadius="12" Padding="20">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -206,72 +205,72 @@
 
                     <!-- View Mode Selector -->
                     <ComboBox Grid.Row="1" 
-                           ItemsSource="{Binding ViewModes}" 
-                           SelectedItem="{Binding CurrentViewMode}"   
-                           HorizontalAlignment="Stretch" 
-                           Style="{StaticResource ModernComboBox}" 
-                           Margin="0,0,0,16"/>
+                              ItemsSource="{Binding ViewModes}" 
+                              SelectedItem="{Binding CurrentViewMode}"   
+                              HorizontalAlignment="Stretch" 
+                              Style="{StaticResource ModernComboBox}" 
+                              Margin="0,0,0,16"/>
 
                     <!-- 3D Visualization -->
                     <Border Grid.Row="2" 
-                           BorderBrush="{StaticResource BorderGray}" BorderThickness="2" 
-                           CornerRadius="8"
-                           Visibility="{Binding Is3DViewVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            BorderBrush="#E2E8F0" BorderThickness="2" 
+                            CornerRadius="8"
+                            Visibility="{Binding Is3DViewVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
                         <Grid>
                             <hx:HelixViewport3D x:Name="Viewport3D" Background="#FAFAFA"   
-                                             DataContext="{Binding}"   
-                                             Loaded="Viewport3D_Loaded"/>
+                                                DataContext="{Binding}"   
+                                                Loaded="Viewport3D_Loaded"/>
                             <Border Background="#2563EB"
-                                   CornerRadius="0,0,6,0" 
-                                   HorizontalAlignment="Left" 
-                                   VerticalAlignment="Top"
-                                   Padding="12,6">
+                                    CornerRadius="0,0,6,0" 
+                                    HorizontalAlignment="Left" 
+                                    VerticalAlignment="Top"
+                                    Padding="12,6">
                                 <TextBlock Text="🎯 3D VIEW" 
-                                        FontWeight="Bold" 
-                                        Foreground="White" 
-                                        FontSize="11"/>
+                                           FontWeight="Bold" 
+                                           Foreground="#FFFFFF" 
+                                           FontSize="11"/>
                             </Border>
                         </Grid>
                     </Border>
 
                     <!-- 2D Section View -->
                     <Border Grid.Row="4" 
-                           BorderBrush="{StaticResource BorderGray}" BorderThickness="2" 
-                           CornerRadius="8"
-                           Visibility="{Binding Is2DViewVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            BorderBrush="#E2E8F0" BorderThickness="2" 
+                            CornerRadius="8"
+                            Visibility="{Binding Is2DViewVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
                         <Grid>
                             <Image Source="{Binding SectionImage}" Stretch="Uniform" Margin="16"/>
                             <Border Background="#DC2626"
-                                   CornerRadius="0,0,6,0" 
-                                   HorizontalAlignment="Left" 
-                                   VerticalAlignment="Top"
-                                   Padding="12,6">
+                                    CornerRadius="0,0,6,0" 
+                                    HorizontalAlignment="Left" 
+                                    VerticalAlignment="Top"
+                                    Padding="12,6">
                                 <TextBlock Text="📐 SECTION" 
-                                        FontWeight="Bold" 
-                                        Foreground="White" 
-                                        FontSize="11"/>
+                                           FontWeight="Bold" 
+                                           Foreground="#FFFFFF" 
+                                           FontSize="11"/>
                             </Border>
                             <Border Background="#F1F5F9"
-                                   CornerRadius="8" 
-                                   Padding="24"
-                                   HorizontalAlignment="Center" 
-                                   VerticalAlignment="Center"  
-                                   Visibility="{Binding SectionImage, Converter={StaticResource NullToVisibilityConverter}}">
+                                    CornerRadius="8" 
+                                    Padding="24"
+                                    HorizontalAlignment="Center" 
+                                    VerticalAlignment="Center"  
+                                    Visibility="{Binding SectionImage, Converter={StaticResource NullToVisibilityConverter}}">
                                 <StackPanel HorizontalAlignment="Center">
                                     <TextBlock Text="📋" FontSize="36" 
-                                            HorizontalAlignment="Center" 
-                                            Foreground="#64748B"/>
+                                               HorizontalAlignment="Center" 
+                                               Foreground="#64748B"/>
                                     <TextBlock Text="No Section Selected" 
-                                            FontSize="15" 
-                                            FontWeight="SemiBold"
-                                            Foreground="#1E293B"
-                                            HorizontalAlignment="Center"/>
+                                               FontSize="15" 
+                                               FontWeight="SemiBold"
+                                               Foreground="#1E293B"
+                                               HorizontalAlignment="Center"/>
                                     <TextBlock Text="Select a column or beam to view its cross-section" 
-                                            FontSize="12" 
-                                            Foreground="#64748B"
-                                            HorizontalAlignment="Center" 
-                                            TextAlignment="Center"
-                                            Margin="0,6,0,0"/>
+                                               FontSize="12" 
+                                               Foreground="#64748B"
+                                               HorizontalAlignment="Center" 
+                                               TextAlignment="Center"
+                                               Margin="0,6,0,0"/>
                                 </StackPanel>
                             </Border>
                         </Grid>
@@ -279,15 +278,15 @@
 
                     <!-- Status Message -->
                     <Border Grid.Row="5"
-                           Background="#DBEAFE"
-                           CornerRadius="8" 
-                           Padding="16,10" 
-                           Margin="0,16,0,0">
+                            Background="#DBEAFE"
+                            CornerRadius="8" 
+                            Padding="16,10" 
+                            Margin="0,16,0,0">
                         <TextBlock Text="{Binding StatusMessage}" 
-                                Foreground="#1D4ED8" 
-                                FontWeight="SemiBold" 
-                                FontSize="12"
-                                TextWrapping="Wrap"/>
+                                   Foreground="#1D4ED8" 
+                                   FontWeight="SemiBold" 
+                                   FontSize="12"
+                                   TextWrapping="Wrap"/>
                     </Border>
                 </Grid>
             </Border>
