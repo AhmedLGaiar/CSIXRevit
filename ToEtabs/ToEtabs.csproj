@@ -16,12 +16,13 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\ElementsData\ElementsData.csproj" />
+	  <ProjectReference Include="..\LoadDatas\LoadData.csproj" />
 	  <ProjectReference Include="..\Styles\Styles.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <Reference Include="ETABSv1">
-	    <HintPath>..\..\..\..\..\..\..\Program Files\Computers and Structures\ETABS 22\ETABSv1.dll</HintPath>
+	    <HintPath>..\..\..\..\..\..\..\Program Files\ETABS 22\ETABSv1.dll</HintPath>
 	    <Private>False</Private>
 	  </Reference>
 	</ItemGroup>
