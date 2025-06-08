@@ -2,31 +2,11 @@
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using StructLink_X.Views;
-using System;
 using System.IO;
 using System.Reflection;
 
-namespace StructLink_X.ribbon
-
-
-/* 
- * 
- 
- ازيك يا جوجو معلش هتعبك معايا 
-   
-
-    لما تيجي تبداء تصلحه ابعتلي ندخل ميتنج
- 
- 
- 
- 
- كل الحب --- للوولوووووووووو
- 
- 
- 
- */
+namespace StructLink_X.Ribbon
 {
-
     [Transaction(TransactionMode.Manual)]
     public class StructLinkXCommand : IExternalCommand
     {

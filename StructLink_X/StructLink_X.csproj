@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
-    <RootNamespace>StructLink_X._0</RootNamespace>
+    <RootNamespace>StructLink_X</RootNamespace>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
 	<LangVersion>latest</LangVersion>
@@ -55,7 +55,7 @@
 		<Copy SourceFiles="@(PluginFiles)" DestinationFolder="$(PluginFolder)\%(RecursiveDir)" SkipUnchangedFiles="true" />
 
 		<!-- Copy .addin manifest to root Addins folder -->
-		<Copy SourceFiles="StructLink_X.0.addin" DestinationFolder="$(RevitAddinFolder)" SkipUnchangedFiles="true" />
+		<Copy SourceFiles="StructLink_X.addin" DestinationFolder="$(RevitAddinFolder)" SkipUnchangedFiles="true" />
 	</Target>
 	
 </Project>

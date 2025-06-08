@@ -1,14 +1,8 @@
 ﻿using Autodesk.Revit.UI;
-using StructLink_X.ribbon;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 
-namespace StructLink_X.ribbon
+namespace StructLink_X.Ribbon
 {
     public class StructLinkXApplication : IExternalApplication
     {
@@ -44,7 +38,7 @@ namespace StructLink_X.ribbon
             createButton.ToolTip = "StructLink_X for Structural Analysis";
 
             // Load and set the icon
-            System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
+            Assembly assembly = Assembly.GetExecutingAssembly();
             string resourceName = "StructLink_X.resources.icon.png"; // Adjust based on your namespace and folder structure
             using (var stream = assembly.GetManifestResourceStream(resourceName))
             {

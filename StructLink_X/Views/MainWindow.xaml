@@ -3,10 +3,10 @@
        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"  
        xmlns:hx="http://helix-toolkit.org/wpf"  
        xmlns:viewmodels="clr-namespace:StructLink_X.ViewModels"  
-       xmlns:local="clr-namespace:StructLink_X.converters"  
+       xmlns:local="clr-namespace:StructLink_X.Views"  
+       xmlns:converters="clr-namespace:StructLink_X.Converters"  
        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"  
        Title="StructLink-X - Rebar &amp; Concrete Analysis Suite"  
-       d:DataContext="{d:DesignInstance Type=viewmodels:Main, IsDesignTimeCreatable=False}"
        Width="1200" Height="750"  
        MinWidth="1200" MinHeight="800"  
        Background="#F8FAFC"  
@@ -19,9 +19,9 @@
             </ResourceDictionary.MergedDictionaries>
 
             <!-- الـ Converters جوا نفس الـ ResourceDictionary -->
-            <local:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-            <local:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
-            <local:ViewModeToVisibilityConverter x:Key="ViewModeToVisibilityConverter" />
+            <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+            <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
+            <converters:ViewModeToVisibilityConverter x:Key="ViewModeToVisibilityConverter" />
         </ResourceDictionary>
     </Window.Resources>
     

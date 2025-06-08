@@ -1,6 +1,5 @@
 ﻿using Autodesk.Revit.DB;
 using StructLink_X.ViewModels;
-using System;
 using System.Windows;
 using HelixToolkit.Wpf;
 
