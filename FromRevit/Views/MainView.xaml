@@ -4,7 +4,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewModels="clr-namespace:FromRevit.ViewModels"
-        d:DataContext="{d:DesignInstance Type=viewModels:MainViewModel, IsDesignTimeCreatable=False}"
         xmlns:local="clr-namespace:FromRevit.Views"
         mc:Ignorable="d"
         WindowStartupLocation="Manual"

@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RevitAddIns>
+	<AddIn Type="Application">
+		<Name>ExportJsonFileFromRevit</Name>
+		<Assembly>ExportJsonFileFromRevit\ExportJsonFileFromRevit.dll</Assembly>
+		<AddInId>
+			251D4AAF-FDDF-4E6B-832F-6C459AA1D9D9
+		</AddInId>
+		<FullClassName>ExportJsonFileFromRevit.Ribbon.AddinApplication</FullClassName>
+		<Text>ExportJsonFileFromRevit</Text>
+		<Description>ExportJsonFileFromRevit</Description>
+		<VendorId>xx</VendorId>
+		<VendorDescription>Export Json File FromRevit</VendorDescription>
+	</AddIn>
+</RevitAddIns>

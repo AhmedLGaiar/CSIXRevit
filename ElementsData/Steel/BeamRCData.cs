@@ -1,4 +1,6 @@
-﻿namespace ElementsData.Steel
+﻿using ElementsData.Geometry;
+
+namespace ElementsData.Steel
 {
     public class BeamRCData
     {
@@ -13,5 +15,9 @@
         public int TopBars { get; set; }
         public int TieSize { get; set; }
         public double TieSpacingLongit { get; set; }
+
+        public PointData StartPoint { get; set; }
+        public PointData EndPoint { get; set; }
+        public string Name { get; set; } // Added to match BeamGeometryData.Name
     }
 }

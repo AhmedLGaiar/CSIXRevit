@@ -1,4 +1,6 @@
-﻿namespace ElementsData.Steel
+﻿using ElementsData.Geometry;
+
+namespace ElementsData.Steel
 {
     public class ColumnRCData
     {
@@ -16,6 +18,9 @@
         public int Number2DirTieBars { get; set; }
         public int Number3DirTieBars { get; set; }
         public int SectionCount { get; set; }
+        public string SymbolName { get; set; }
 
+        public PointData BasePoint { get; set; }
+        public PointData TopPoint { get; set; }
     }
 }

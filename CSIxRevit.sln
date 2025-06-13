@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StructLink_X", "StructLink_
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoadData", "LoadDatas\LoadData.csproj", "{1A6C234C-007E-43FB-AAF4-085977A4219A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExportJsonFileFromRevit", "ExportJsonFileFromRevit\ExportJsonFileFromRevit.csproj", "{6B47AEE8-A000-40E4-B7C6-AAF7365B61A1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{1A6C234C-007E-43FB-AAF4-085977A4219A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1A6C234C-007E-43FB-AAF4-085977A4219A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1A6C234C-007E-43FB-AAF4-085977A4219A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B47AEE8-A000-40E4-B7C6-AAF7365B61A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B47AEE8-A000-40E4-B7C6-AAF7365B61A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B47AEE8-A000-40E4-B7C6-AAF7365B61A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B47AEE8-A000-40E4-B7C6-AAF7365B61A1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
