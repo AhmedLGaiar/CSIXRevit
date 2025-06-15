@@ -12,9 +12,10 @@ namespace ExportJsonFileFromRevit.Services
 {
     public class RevitService : IRevitService
     {
-        private const double PositionTolerance = 0.01; // in feet (~3mm)
-        private const double DimensionTolerance = 10.0; // in mm
+        private const double PositionTolerance = 0.01; // in feet (~3mm) - Used for spatial comparison tolerance
+        private const double DimensionTolerance = 10.0; // in mm - Used for dimensional comparison tolerance
 
+        // ProcessFrame: Combines beam and column data into a single FrameRCData object for unified processing
         public FrameRCData ProcessFrame(Document doc)
         {
             if (doc == null)
@@ -26,6 +27,7 @@ namespace ExportJsonFileFromRevit.Services
             return frameData;
         }
 
+        // ProcessBeams: Creates beams in the Revit document based on JSON data, handling duplicates and conflicts
         public void ProcessBeams(Document doc, List<BeamRCData> beams)
         {
             if (beams == null || beams.Count == 0)
@@ -34,7 +36,7 @@ namespace ExportJsonFileFromRevit.Services
                 return;
             }
 
-            var existingBeams = GetExistingBeams(doc);
+            var existingBeams = GetExistingBeams(doc); // Retrieve existing beams to check for duplicates
 
             using (Transaction tx = new Transaction(doc, "Create Beams"))
             {
@@ -49,7 +51,7 @@ namespace ExportJsonFileFromRevit.Services
                         XYZ startPoint = new XYZ(beam.StartPoint.X / 304.8, beam.StartPoint.Y / 304.8, beam.StartPoint.Z / 304.8);
                         XYZ endPoint = new XYZ(beam.EndPoint.X / 304.8, beam.EndPoint.Y / 304.8, beam.EndPoint.Z / 304.8);
 
-                        var duplicateResult = CheckBeamDuplicates(existingBeams, startPoint, endPoint, beam);
+                        var duplicateResult = CheckBeamDuplicates(existingBeams, startPoint, endPoint, beam); // Check for duplicate or conflicting beams
                         if (duplicateResult.HasExactDuplicate)
                         {
                             skipped++;
@@ -57,7 +59,7 @@ namespace ExportJsonFileFromRevit.Services
                         }
                         else if (duplicateResult.HasLocationConflict)
                         {
-                            var userChoice = ShowLocationConflictDialog(beam, duplicateResult.ConflictingElements);
+                            var userChoice = ShowLocationConflictDialog(beam, duplicateResult.ConflictingElements); // Prompt user to resolve conflicts
                             if (userChoice == DuplicateAction.Skip)
                             {
                                 skipped++;
@@ -74,7 +76,7 @@ namespace ExportJsonFileFromRevit.Services
                             }
                         }
 
-                        FamilySymbol symbol = GetOrCreateBeamType(doc, beam);
+                        FamilySymbol symbol = GetOrCreateBeamType(doc, beam); // Retrieve or create the beam type
                         if (symbol == null)
                         {
                             TaskDialog.Show("Error", $"Cannot find or create beam type '{beam.SectionName}'.");
@@ -82,11 +84,10 @@ namespace ExportJsonFileFromRevit.Services
                             continue;
                         }
 
-                        if (!symbol.IsActive)
-                            symbol.Activate();
+                        if (!symbol.IsActive) symbol.Activate();
 
                         Line beamLine = Line.CreateBound(startPoint, endPoint);
-                        Level baseLevel = GetClosestLevel(doc, startPoint.Z);
+                        Level baseLevel = GetClosestLevel(doc, startPoint.Z); // Find the closest level for placement
 
                         if (baseLevel == null)
                         {
@@ -117,10 +118,11 @@ namespace ExportJsonFileFromRevit.Services
                 }
 
                 tx.Commit();
-                ShowFinalSummary("Beams", created, skipped, replaced);
+                ShowFinalSummary("Beams", created, skipped, replaced); // Display summary of processing results
             }
         }
 
+        // ProcessColumns: Creates columns in the Revit document based on JSON data, handling duplicates and conflicts
         public void ProcessColumns(Document doc, List<ColumnRCData> columns)
         {
             if (columns == null || columns.Count == 0)
@@ -129,7 +131,7 @@ namespace ExportJsonFileFromRevit.Services
                 return;
             }
 
-            var existingColumns = GetExistingColumns(doc);
+            var existingColumns = GetExistingColumns(doc); // Retrieve existing columns to check for duplicates
 
             using (Transaction tx = new Transaction(doc, "Create Columns"))
             {
@@ -144,7 +146,7 @@ namespace ExportJsonFileFromRevit.Services
                         XYZ basePoint = new XYZ(column.BasePoint.X / 304.8, column.BasePoint.Y / 304.8, column.BasePoint.Z / 304.8);
                         XYZ topPoint = new XYZ(column.TopPoint.X / 304.8, column.TopPoint.Y / 304.8, column.TopPoint.Z / 304.8);
 
-                        var duplicateResult = CheckColumnDuplicates(existingColumns, basePoint, topPoint, column);
+                        var duplicateResult = CheckColumnDuplicates(existingColumns, basePoint, topPoint, column); // Check for duplicate or conflicting columns
                         if (duplicateResult.HasExactDuplicate)
                         {
                             skipped++;
@@ -152,7 +154,7 @@ namespace ExportJsonFileFromRevit.Services
                         }
                         else if (duplicateResult.HasLocationConflict)
                         {
-                            var userChoice = ShowLocationConflictDialog(column, duplicateResult.ConflictingElements);
+                            var userChoice = ShowLocationConflictDialog(column, duplicateResult.ConflictingElements); // Prompt user to resolve conflicts
                             if (userChoice == DuplicateAction.Skip)
                             {
                                 skipped++;
@@ -169,7 +171,7 @@ namespace ExportJsonFileFromRevit.Services
                             }
                         }
 
-                        FamilySymbol symbol = GetOrCreateColumnType(doc, column);
+                        FamilySymbol symbol = GetOrCreateColumnType(doc, column); // Retrieve or create the column type
                         if (symbol == null)
                         {
                             TaskDialog.Show("Error", $"Cannot find or create column type '{column.SectionName}'.");
@@ -177,11 +179,10 @@ namespace ExportJsonFileFromRevit.Services
                             continue;
                         }
 
-                        if (!symbol.IsActive)
-                            symbol.Activate();
+                        if (!symbol.IsActive) symbol.Activate();
 
                         Line columnLine = Line.CreateBound(basePoint, topPoint);
-                        Level baseLevel = GetClosestLevel(doc, basePoint.Z);
+                        Level baseLevel = GetClosestLevel(doc, basePoint.Z); // Find the closest level for placement
 
                         if (baseLevel == null)
                         {
@@ -212,22 +213,130 @@ namespace ExportJsonFileFromRevit.Services
                 }
 
                 tx.Commit();
-                ShowFinalSummary("Columns", created, skipped, replaced);
+                ShowFinalSummary("Columns", created, skipped, replaced); // Display summary of processing results
+            }
+        }
+
+        // ProcessWalls: Creates walls in the Revit document based on JSON data, handling duplicates and conflicts
+        public void ProcessWalls(Document doc, List<WallRCData> walls)
+        {
+            if (walls == null || walls.Count == 0)
+            {
+                TaskDialog.Show("Warning", "No wall data found.");
+                return;
+            }
+
+            var existingWalls = GetExistingWalls(doc); // Retrieve existing walls to check for duplicates
+
+            using (Transaction tx = new Transaction(doc, "Create Walls"))
+            {
+                tx.Start();
+                int created = 0, skipped = 0, replaced = 0;
+
+                foreach (var wall in walls)
+                {
+                    try
+                    {
+                        // Convert from meters (JSON) to feet (Revit internal)
+                        XYZ startPoint = new XYZ(wall.StartPoint.X * 3.28084, wall.StartPoint.Y * 3.28084, wall.StartPoint.Z * 3.28084);
+                        XYZ endPoint = new XYZ(wall.EndPoint.X * 3.28084, wall.EndPoint.Y * 3.28084, wall.EndPoint.Z * 3.28084);
+
+                        // Convert thickness and height from meters to mm for consistency
+                        double thicknessInMm = wall.Thickness * 1000;
+                        double heightInMm = wall.Height * 1000;
+
+                        var duplicateResult = CheckWallDuplicates(existingWalls, startPoint, endPoint, wall, thicknessInMm, heightInMm); // Check for duplicate or conflicting walls
+                        if (duplicateResult.HasExactDuplicate)
+                        {
+                            skipped++;
+                            continue;
+                        }
+                        else if (duplicateResult.HasLocationConflict)
+                        {
+                            var userChoice = ShowLocationConflictDialog(wall, duplicateResult.ConflictingElements); // Prompt user to resolve conflicts
+                            if (userChoice == DuplicateAction.Skip)
+                            {
+                                skipped++;
+                                continue;
+                            }
+                            else if (userChoice == DuplicateAction.Replace)
+                            {
+                                foreach (var existing in duplicateResult.ConflictingElements)
+                                {
+                                    doc.Delete(existing.WallInstance.Id);
+                                    existingWalls.Remove(existing);
+                                }
+                                replaced++;
+                            }
+                        }
+
+                        WallType wallType = GetOrCreateWallType(doc, wall); // Retrieve or create the wall type
+                        if (wallType == null)
+                        {
+                            TaskDialog.Show("Error", $"Cannot find or create wall type '{wall.WallTypeName}'.");
+                            skipped++;
+                            continue;
+                        }
+
+                        Line wallLine = Line.CreateBound(startPoint, endPoint);
+                        Level baseLevel = GetClosestLevel(doc, startPoint.Z); // Find the closest level for placement
+                        double levelOffset = startPoint.Z - baseLevel.Elevation;
+
+                        Wall wallInstance = Wall.Create(doc, wallLine, wallType.Id, baseLevel.Id, heightInMm / 304.8, levelOffset, false, true);
+
+                        if (wallInstance != null)
+                        {
+                            if (!string.IsNullOrEmpty(wall.Name))
+                            {
+                                Parameter nameParam = wallInstance.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS);
+                                if (nameParam != null && !nameParam.IsReadOnly)
+                                {
+                                    nameParam.Set(wall.Name);
+                                }
+                            }
+
+                            existingWalls.Add(new ExistingWallInfo
+                            {
+                                WallInstance = wallInstance,
+                                StartPoint = startPoint,
+                                EndPoint = endPoint,
+                                Thickness = thicknessInMm,
+                                Height = heightInMm,
+                                TypeName = wall.WallTypeName,
+                                WallName = wall.Name
+                            });
+
+                            created++;
+                        }
+                        else
+                        {
+                            TaskDialog.Show("Error", $"Failed to create wall '{wall.Name}'.");
+                            skipped++;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        TaskDialog.Show("Error", $"Failed to create wall '{wall.Name}': {ex.Message}");
+                        skipped++;
+                    }
+                }
+
+                tx.Commit();
+                ShowFinalSummary("Walls", created, skipped, replaced); // Display summary of processing results
             }
         }
 
         public void ProcessBeamsGeometry(Document doc, List<BeamGeometryData> beams)
         {
-            // Implementation for BeamGeometryData (similar to ProcessBeams but using BeamGeometryData)
-            // Add if needed
+            // Placeholder: Process beam geometry data if additional geometry processing is required
         }
 
         public void ProcessColumnsGeometry(Document doc, List<ColumnGeometryData> columns)
         {
-            // Implementation for ColumnGeometryData (similar to ProcessColumns but using ColumnGeometryData)
-            // Add if needed
+            // Placeholder: Process column geometry data if additional geometry processing is required
         }
 
+        // GetExistingBeams: Retrieves all existing beams from the document to check for duplicates
         private List<ExistingBeamInfo> GetExistingBeams(Document doc)
         {
             var existingBeams = new List<ExistingBeamInfo>();
@@ -281,6 +390,7 @@ namespace ExportJsonFileFromRevit.Services
             return existingBeams;
         }
 
+        // GetExistingColumns: Retrieves all existing columns from the document to check for duplicates
         private List<ExistingColumnInfo> GetExistingColumns(Document doc)
         {
             var existingColumns = new List<ExistingColumnInfo>();
@@ -334,6 +444,39 @@ namespace ExportJsonFileFromRevit.Services
             return existingColumns;
         }
 
+        // GetExistingWalls: Retrieves all existing walls from the document to check for duplicates
+        private List<ExistingWallInfo> GetExistingWalls(Document doc)
+        {
+            var existingWalls = new List<ExistingWallInfo>();
+            FilteredElementCollector collector = new FilteredElementCollector(doc).OfClass(typeof(Wall));
+            foreach (Wall wall in collector)
+            {
+                var locationCurve = wall.Location as LocationCurve;
+                if (locationCurve != null && locationCurve.Curve is Line line)
+                {
+                    var wallInfo = new ExistingWallInfo
+                    {
+                        WallInstance = wall,
+                        StartPoint = line.GetEndPoint(0),
+                        EndPoint = line.GetEndPoint(1),
+                        TypeName = wall.WallType.Name
+                    };
+                    try
+                    {
+                        wallInfo.Thickness = wall.Width * 304.8;
+                        Parameter heightParam = wall.get_Parameter(BuiltInParameter.WALL_USER_HEIGHT_PARAM);
+                        if (heightParam != null) wallInfo.Height = heightParam.AsDouble() * 304.8;
+                        Parameter nameParam = wall.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS);
+                        if (nameParam != null) wallInfo.WallName = nameParam.AsString();
+                    }
+                    catch { }
+                    existingWalls.Add(wallInfo);
+                }
+            }
+            return existingWalls;
+        }
+
+        // CheckBeamDuplicates: Checks if a new beam conflicts with existing beams based on location and dimensions
         private DuplicateCheckResult<ExistingBeamInfo> CheckBeamDuplicates(List<ExistingBeamInfo> existingBeams, XYZ startPoint, XYZ endPoint, BeamRCData beam)
         {
             var duplicateResult = new DuplicateCheckResult<ExistingBeamInfo>();
@@ -364,6 +507,7 @@ namespace ExportJsonFileFromRevit.Services
             return duplicateResult;
         }
 
+        // CheckColumnDuplicates: Checks if a new column conflicts with existing columns based on location and dimensions
         private DuplicateCheckResult<ExistingColumnInfo> CheckColumnDuplicates(List<ExistingColumnInfo> existingColumns, XYZ basePoint, XYZ topPoint, ColumnRCData column)
         {
             var duplicateResult = new DuplicateCheckResult<ExistingColumnInfo>();
@@ -401,6 +545,37 @@ namespace ExportJsonFileFromRevit.Services
             return duplicateResult;
         }
 
+        // CheckWallDuplicates: Checks if a new wall conflicts with existing walls based on location and dimensions
+        private DuplicateCheckResult<ExistingWallInfo> CheckWallDuplicates(List<ExistingWallInfo> existingWalls, XYZ newStart, XYZ newEnd, WallRCData newWall, double thicknessInMm, double heightInMm)
+        {
+            var result = new DuplicateCheckResult<ExistingWallInfo>();
+            foreach (var existing in existingWalls)
+            {
+                bool sameLocation =
+                    (ArePointsClose(newStart, existing.StartPoint, PositionTolerance) &&
+                     ArePointsClose(newEnd, existing.EndPoint, PositionTolerance)) ||
+                    (ArePointsClose(newStart, existing.EndPoint, PositionTolerance) &&
+                     ArePointsClose(newEnd, existing.StartPoint, PositionTolerance));
+
+                if (sameLocation)
+                {
+                    bool dimensionsMatch =
+                        Math.Abs(thicknessInMm - existing.Thickness) < DimensionTolerance &&
+                        Math.Abs(heightInMm - existing.Height) < DimensionTolerance;
+
+                    if (dimensionsMatch)
+                    {
+                        result.HasExactDuplicate = true;
+                        return result;
+                    }
+                    result.HasLocationConflict = true;
+                    result.ConflictingElements.Add(existing);
+                }
+            }
+            return result;
+        }
+
+        // ArePointsClose: Compares two points to determine if they are within a tolerance distance
         private bool ArePointsClose(XYZ point1, XYZ point2, double tolerance)
         {
             return Math.Abs(point1.X - point2.X) < tolerance &&
@@ -408,6 +583,7 @@ namespace ExportJsonFileFromRevit.Services
                    Math.Abs(point1.Z - point2.Z) < tolerance;
         }
 
+        // ShowLocationConflictDialog: Displays a dialog to resolve conflicts between new and existing elements
         private DuplicateAction ShowLocationConflictDialog<T1, T2>(T1 newItem, List<T2> conflictingItems)
         {
             string conflictInfo = newItem is BeamRCData beam
@@ -416,7 +592,10 @@ namespace ExportJsonFileFromRevit.Services
                 : newItem is ColumnRCData col
                     ? $"Column '{col.SectionName}' ({col.Width:F0}×{col.Depth:F0}mm) at same location as:\n" +
                       string.Join("\n", conflictingItems.Select(i => i is ExistingColumnInfo ci ? $"• Existing column '{ci.TypeName}' ({ci.Width:F0}×{ci.Depth:F0}mm)" : ""))
-                    : "Unknown element conflict";
+                    : newItem is WallRCData wall
+                        ? $"Wall '{wall.Name}' ({(wall.Thickness * 1000):F0}mm thick, {(wall.Height * 1000):F0}mm high) at same location as:\n" +
+                          string.Join("\n", conflictingItems.Select(i => i is ExistingWallInfo wi ? $"• Existing wall '{wi.WallName ?? wi.TypeName}' ({wi.Thickness:F0}mm thick, {wi.Height:F0}mm high)" : ""))
+                        : "Unknown element conflict";
 
             conflictInfo += "\nWhat would you like to do?";
 
@@ -443,6 +622,7 @@ namespace ExportJsonFileFromRevit.Services
             };
         }
 
+        // ShowFinalSummary: Displays a summary of the number of elements created, skipped, and replaced
         private void ShowFinalSummary(string elementType, int created, int skipped, int replaced)
         {
             string summary = $"{elementType} processing completed:\n\n" +
@@ -453,6 +633,7 @@ namespace ExportJsonFileFromRevit.Services
             TaskDialog.Show("Completed", summary);
         }
 
+        // GetOrCreateBeamType: Retrieves an existing beam type or uses a fallback if the specified type is not found
         private FamilySymbol GetOrCreateBeamType(Document doc, BeamRCData beam)
         {
             var collector = new FilteredElementCollector(doc)
@@ -475,6 +656,7 @@ namespace ExportJsonFileFromRevit.Services
             return null;
         }
 
+        // GetOrCreateColumnType: Retrieves an existing column type or uses a fallback if the specified type is not found
         private FamilySymbol GetOrCreateColumnType(Document doc, ColumnRCData column)
         {
             var collector = new FilteredElementCollector(doc)
@@ -497,6 +679,26 @@ namespace ExportJsonFileFromRevit.Services
             return null;
         }
 
+        // GetOrCreateWallType: Retrieves an existing wall type or uses a fallback if the specified type is not found
+        private WallType GetOrCreateWallType(Document doc, WallRCData wall)
+        {
+            FilteredElementCollector collector = new FilteredElementCollector(doc).OfClass(typeof(WallType));
+            foreach (WallType wallType in collector)
+            {
+                if (wallType.Name.Equals(wall.WallTypeName, StringComparison.OrdinalIgnoreCase) ||
+                    wallType.Name.Equals(wall.Section, StringComparison.OrdinalIgnoreCase))
+                    return wallType;
+            }
+            WallType fallbackWallType = collector.Cast<WallType>().FirstOrDefault(wt => wt.Kind == WallKind.Basic);
+            if (fallbackWallType != null)
+            {
+                TaskDialog.Show("Warning", $"Wall type '{wall.WallTypeName}' not found. Using '{fallbackWallType.Name}' instead.");
+                return fallbackWallType;
+            }
+            return null;
+        }
+
+        // GetClosestLevel: Finds the closest level in the document based on elevation for element placement
         private Level GetClosestLevel(Document doc, double elevation)
         {
             Level closest = null;
@@ -519,6 +721,4 @@ namespace ExportJsonFileFromRevit.Services
             return closest;
         }
     }
-
-
 }

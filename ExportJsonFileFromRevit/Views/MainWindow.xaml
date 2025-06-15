@@ -5,19 +5,34 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ExportJsonFileFromRevit.Views"
         mc:Ignorable="d"
-        Title="MainWindow" Height="178" Width="346">
+        Title="Revit Data Importer" Height="250" Width="500"
+        WindowStartupLocation="CenterScreen"
+        Background="#F5F5F5">
     <Window.Resources>
         <!-- Style for Buttons -->
         <Style TargetType="Button">
             <Setter Property="Background" Value="#0078D4"/>
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Padding" Value="12,6"/>
             <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="Margin" Value="5"/>
-            <Setter Property="Width" Value="120"/>
-            <Setter Property="Height" Value="30"/>
+            <Setter Property="Width" Value="140"/>
+            <Setter Property="Height" Value="35"/>
             <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="4"
+                                BorderThickness="0">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                             VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
                     <Setter Property="Background" Value="#005BB5"/>
@@ -25,20 +40,102 @@
                 <Trigger Property="IsPressed" Value="True">
                     <Setter Property="Background" Value="#004D99"/>
                 </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="#B0B0B0"/>
+                    <Setter Property="Foreground" Value="#FFFFFF"/>
+                </Trigger>
             </Style.Triggers>
         </Style>
+
         <!-- Style for Label -->
         <Style TargetType="Label">
-            <Setter Property="Foreground" Value="Blue"/>
-            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Foreground" Value="#333333"/>
+            <Setter Property="FontSize" Value="13"/>
             <Setter Property="Margin" Value="5"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+        </Style>
+
+        <!-- Style for Header TextBlock -->
+        <Style TargetType="TextBlock" x:Key="HeaderStyle">
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="#2E2E2E"/>
+            <Setter Property="Margin" Value="0,0,0,10"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+        </Style>
+
+        <!-- Style for ProgressBar -->
+        <Style TargetType="ProgressBar">
+            <Setter Property="Height" Value="8"/>
+            <Setter Property="Margin" Value="5,10,5,5"/>
+            <Setter Property="Foreground" Value="#0078D4"/>
+            <Setter Property="Background" Value="#E0E0E0"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ProgressBar">
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="4">
+                            <Grid>
+                                <Rectangle x:Name="PART_Indicator"
+                                          HorizontalAlignment="Left"
+                                          Fill="{TemplateBinding Foreground}"
+                                          RadiusX="4"
+                                          RadiusY="4"/>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
     </Window.Resources>
-    <Grid Margin="10">
-        <StackPanel>
-            <Button Content="Import Beams" Command="{Binding ImportBeamsCommand}"/>
-            <Button Content="Import Columns" Command="{Binding ImportColumnsCommand}"/>
-            <Label Content="{Binding StatusMessage}"/>
+
+    <Grid Margin="15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <TextBlock Text="Revit Structural Data Importer"
+                   Style="{StaticResource HeaderStyle}"
+                   Grid.Row="0"/>
+
+        <!-- Import Buttons -->
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                    Grid.Row="1">
+            <Button Content="Import Columns"
+                    Command="{Binding ImportColumnsCommand}"/>
+            <Button Content="Import Beams"
+                    Command="{Binding ImportBeamsCommand}"/>
+            <Button Content="Import Walls"
+                    Command="{Binding ImportWallsCommand}"/>
         </StackPanel>
+
+        <!-- Cancel Button -->
+        <Button x:Name="CancelButton"
+                Content="Cancel Operation"
+                Command="{Binding CancelOperationCommand}"
+                Width="100"
+                Grid.Row="2"
+                HorizontalAlignment="Center"
+                Visibility="Collapsed"/>
+
+        <!-- Progress Bar -->
+        <ProgressBar x:Name="OperationProgressBar"
+                     Grid.Row="3"
+                     IsIndeterminate="True"
+                     Visibility="Collapsed"/>
+
+        <!-- Status Message -->
+        <Label Content="{Binding StatusMessage}"
+               Grid.Row="4"
+               VerticalAlignment="Top"
+               HorizontalAlignment="Left"
+               Foreground="{Binding StatusColor}"/>
     </Grid>
 </Window>

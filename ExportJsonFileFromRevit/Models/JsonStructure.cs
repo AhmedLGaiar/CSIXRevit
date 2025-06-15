@@ -1,11 +1,12 @@
-﻿using ElementsData.Steel;
+﻿using ElementsData;
+using ElementsData.Geometry;
+using ElementsData.Steel;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ElementsData;
 
 namespace ExportJsonFileFromRevit.Models
 {
@@ -21,6 +22,6 @@ namespace ExportJsonFileFromRevit.Models
         public object Slabs { get; set; }
 
         [JsonProperty("StructWalls")]
-        public object StructWalls { get; set; }
+        public List<WallRCData> StructWalls { get; set; } // Updated to List<WallRCData>    }
     }
 }

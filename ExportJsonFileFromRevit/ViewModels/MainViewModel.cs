@@ -1,6 +1,7 @@
 ﻿using Autodesk.Revit.DB;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using ElementsData.Geometry;
 using ExportJsonFileFromRevit.Services;
 
 namespace ExportJsonFileFromRevit.ViewModels
@@ -59,6 +60,27 @@ namespace ExportJsonFileFromRevit.ViewModels
                 var jsonData = _fileService.ReadJsonFile(filePath);
                 _revitService.ProcessColumns(_doc, jsonData.Columns);
                 StatusMessage = "Columns processed successfully.";
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = $"Error: {ex.Message}";
+            }
+        }
+        [RelayCommand]
+        private void ImportWalls() // New command for walls
+        {
+            try
+            {
+                string filePath = _fileService.OpenJsonFileDialog();
+                if (string.IsNullOrEmpty(filePath))
+                {
+                    StatusMessage = "No file selected.";
+                    return;
+                }
+
+                var jsonData = _fileService.ReadJsonFile(filePath);
+                _revitService.ProcessWalls(_doc, jsonData.StructWalls ?? new List<WallRCData>());
+                StatusMessage = "Walls processed successfully.";
             }
             catch (Exception ex)
             {

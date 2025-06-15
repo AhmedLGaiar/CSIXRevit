@@ -19,5 +19,7 @@ namespace ExportJsonFileFromRevit.Services
         // Optional: Support for geometry data if needed
         void ProcessBeamsGeometry(Document doc, List<BeamGeometryData> beams);
         void ProcessColumnsGeometry(Document doc, List<ColumnGeometryData> columns);
+
+        void ProcessWalls(Document doc, List<WallRCData> walls); // New method for walls
     }
 }
