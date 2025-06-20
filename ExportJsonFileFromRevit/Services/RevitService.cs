@@ -244,7 +244,7 @@ namespace ExportJsonFileFromRevit.Services
 
                         // Convert thickness and height from meters to mm for consistency
                         double thicknessInMm = wall.Thickness ;
-                        double heightInMm = wall.Height ;
+                        double heightInMm = wall.Height;
 
                         var duplicateResult = CheckWallDuplicates(existingWalls, startPoint, endPoint, wall, thicknessInMm, heightInMm); // Check for duplicate or conflicting walls
                         if (duplicateResult.HasExactDuplicate)
@@ -1100,7 +1100,7 @@ namespace ExportJsonFileFromRevit.Services
 
             foreach (FamilySymbol symbol in collector)
             {
-                if (symbol.Name.Equals(column.SymbolName, StringComparison.OrdinalIgnoreCase))
+                if (symbol.Name.Equals(column.SectionName))
                     return symbol;
             }
 
