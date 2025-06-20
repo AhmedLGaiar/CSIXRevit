@@ -1,8 +1,6 @@
 ﻿using Autodesk.Revit.UI;
-using System.IO;
+using Nice3point.Revit.Extensions;
 using System.Reflection;
-using System.Windows.Controls.Ribbon;
-using System.Windows.Media.Imaging;
 
 namespace ExportJsonFileFromRevit.Ribbon
 {
@@ -10,60 +8,19 @@ namespace ExportJsonFileFromRevit.Ribbon
     {
         public Result OnStartup(UIControlledApplication application)
         {
-            try
-            {
-                // Check if the "" tab already exists
-                string tabName = "StructLink X";
-                bool tabExists = false;
-                foreach (string existingTabName in application.GetRibbonPanels().Select(panel => panel.Name))
-                {
-                    if (existingTabName == tabName)
-                    {
-                        tabExists = true;
-                        break;
-                    }
-                }
+            string tabName = "StructLink X";
+            var panel = application.CreatePanel("X Sheets", tabName);
 
-                // Create the "Masr" tab only if it doesn't exist
-                if (!tabExists)
-                {
-                    application.CreateRibbonTab(tabName);
-                }
+            // Get the assembly path
+            string path = Assembly.GetExecutingAssembly().Location;
+            PushButton button = panel.AddPushButton<AddinCommand>("Json Importer");
 
-                // Create a ribbon panel
-                RibbonPanel panel = application.CreateRibbonPanel(tabName, "JSON Importer");
+            //string assemblyName = Assembly.GetExecutingAssembly().GetName().Name;
+            //var themedIconUri = $"/{assemblyName};component/Resources/Icons/concerteBuilding.png";
 
-                // Get the assembly path
-                string assemblyPath = Assembly.GetExecutingAssembly().Location;
+            //button.SetLargeImage(themedIconUri);
 
-                // Create push button data
-                PushButtonData buttonData = new PushButtonData(
-                    "JsonImporterCommand",
-                    "Import JSON",
-                    assemblyPath,
-                    "ExportJsonFileFromRevit.Ribbon.AddinCommand")
-                {
-                    ToolTip = "Import beams and columns from a JSON file.",
-                    LongDescription = "Select a JSON file to create beams and columns in the Revit model."
-                };
-
-                // Optionally, set an icon (place 16x16 and 32x32 PNG images in the same folder as the DLL)
-                string iconPath = Path.Combine(Path.GetDirectoryName(assemblyPath), "icon.png");
-                if (File.Exists(iconPath))
-                {
-                    buttonData.LargeImage = new BitmapImage(new Uri(iconPath));
-                }
-
-                // Add the button to the panel
-                panel.AddItem(buttonData);
-
-                return Result.Succeeded;
-            }
-            catch (Exception ex)
-            {
-                TaskDialog.Show("Error", $"Failed to create ribbon: {ex.Message}");
-                return Result.Failed;
-            }
+            return Result.Succeeded;
         }
 
         public Result OnShutdown(UIControlledApplication application)

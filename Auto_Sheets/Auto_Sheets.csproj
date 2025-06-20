@@ -8,10 +8,19 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 	</PropertyGroup>
 
+	<ItemGroup>
+	  <None Remove="Resources\SheetIcon.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Resource Include="Resources\SheetIcon.png" />
+	</ItemGroup>
+
 
 	<ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
+    <PackageReference Include="Nice3point.Revit.Extensions" Version="2024.2.1" />
   </ItemGroup>
 
   <ItemGroup>

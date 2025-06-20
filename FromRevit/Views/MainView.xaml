@@ -6,7 +6,7 @@
         xmlns:viewModels="clr-namespace:FromRevit.ViewModels"
         xmlns:local="clr-namespace:FromRevit.Views"
         mc:Ignorable="d"
-        WindowStartupLocation="Manual"
+        WindowStartupLocation="CenterScreen"
         Top="40"
         Title="Revit ↔ ETABS" Height="300" Width="300">
 
