@@ -1,0 +1,55 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net48</TargetFramework>
+		<Nullable>enable</Nullable>
+		<UseWPF>true</UseWPF>
+		<LangVersion>latest</LangVersion>
+		<ImplicitUsings>enable</ImplicitUsings>
+	</PropertyGroup>
+
+
+	<ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="RevitAPI">
+      <HintPath>..\..\..\..\..\..\Program Files\Autodesk\Revit 2022\RevitAPI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="RevitAPIUI">
+      <HintPath>..\..\..\..\..\..\Program Files\Autodesk\Revit 2022\RevitAPIUI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+	<PropertyGroup>
+		<RevitAddinFolder>$(AppData)\Autodesk\Revit\Addins\2022</RevitAddinFolder>
+		<PluginFolder>$(RevitAddinFolder)\$(AssemblyName)</PluginFolder>
+		<ApplicationManifest>Auto_Sheets.addin</ApplicationManifest>
+	</PropertyGroup>
+
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+		<!-- Create plugin folder if not exists -->
+		<MakeDir Directories="$(PluginFolder)" />
+
+		<!-- Copy all output DLLs to subfolder -->
+		<ItemGroup>
+			<PluginFiles Include="$(TargetDir)*.*" />
+		</ItemGroup>
+		<Copy SourceFiles="@(PluginFiles)" DestinationFolder="$(PluginFolder)\%(RecursiveDir)" SkipUnchangedFiles="true" />
+
+		<!-- Copy .addin manifest to root Addins folder -->
+		<Copy SourceFiles="Auto_Sheets.addin" DestinationFolder="$(RevitAddinFolder)" SkipUnchangedFiles="true" />
+	</Target>
+
+	<ItemGroup>
+		<None Update="Auto_Sheets.addin">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+
+
+
+</Project>

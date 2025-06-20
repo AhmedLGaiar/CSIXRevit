@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<RevitAddIns>
+	<AddIn Type="Application">
+		<Name>Auto_Sheets</Name>
+		<Assembly>Auto_Sheets\Auto_Sheets.dll</Assembly>
+		<AddInId>
+			A0FFD435-36EC-4672-B6A4-B845D1BF1430
+		</AddInId>
+		<FullClassName>Auto_Sheets.ExtenalApp.ExtrnalApp</FullClassName>
+		<VendorId>ITI</VendorId>
+		<VendorDescription>@ITI</VendorDescription>
+	</AddIn>
+</RevitAddIns>
