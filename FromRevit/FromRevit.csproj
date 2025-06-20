@@ -11,6 +11,10 @@
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'" />
 
 	<ItemGroup>
+	  <None Remove="Resources\Icons\concerteBuilding.png" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 	</ItemGroup>
@@ -35,6 +39,10 @@
 		<None Update="FromRevit.addin">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
+	</ItemGroup>
+	<ItemGroup>
+	  <EmbeddedResource Include="Resources\Icons\concerteBuilding.png">
+	  </EmbeddedResource>
 	</ItemGroup>
 
 	<PropertyGroup>
