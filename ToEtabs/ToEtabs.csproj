@@ -22,8 +22,8 @@
 
 	<ItemGroup>
 	  <Reference Include="ETABSv1">
-		  <HintPath>..\..\..\..\Program Files\Computers and Structures\ETABS 22\ETABSv1.dll</HintPath>
-		  <Private>False</Private>
+	    <HintPath>..\..\..\..\..\..\Program Files\Computers and Structures\ETABS 21\ETABSv1.dll</HintPath>
+	    <Private>False</Private>
 	  </Reference>
 	</ItemGroup>
 

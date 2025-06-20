@@ -3,9 +3,9 @@ using System.Reflection;
 using System.Windows.Media.Imaging;
 using Autodesk.Revit.UI;
 
-namespace Auto_Sheets.ExtenalApp
+namespace Auto_Sheets.ExternalApp
 {
-    public class ExtrnalApp : IExternalApplication
+    public class ExternalApp : IExternalApplication
     {
         public Result OnShutdown(UIControlledApplication application)
         {
@@ -14,46 +14,74 @@ namespace Auto_Sheets.ExtenalApp
 
         public Result OnStartup(UIControlledApplication application)
         {
-            string path = Assembly.GetExecutingAssembly().Location;
-
-            // Create ribbon tab and panel
-            try { application.CreateRibbonTab("StructLink_X"); } catch { }
-            RibbonPanel panel = application.CreateRibbonPanel("Masar", "Masar Sheets");
-
-            // Create button
-            PushButtonData buttonData = new PushButtonData(
-                "BTN",
-                "Auto Sheets",
-                path,
-                "Auto_Sheets.ExtenalApp.SheetsCommand"
-            );
-
-
-
-            PushButton pushButton = panel.AddItem(buttonData) as PushButton;
-
-            // Load embedded PNG icon
-            var assembly = Assembly.GetExecutingAssembly();
-            string resourceName = "Auto_Sheets.Resources.SheetIcon.png";
-
-            using (var stream = assembly.GetManifestResourceStream(resourceName))
+            try
             {
-                if (stream != null)
+                // Check if the "StructLink X" tab already exists
+                string tabName = "StructLink X";
+                bool tabExists = false;
+                foreach (string existingTabName in application.GetRibbonPanels().Select(panel => panel.Name))
                 {
-                    BitmapImage image = new BitmapImage();
-                    image.BeginInit();
-                    image.StreamSource = stream;
-                    image.CacheOption = BitmapCacheOption.OnLoad;
-                    image.EndInit();
-                    pushButton.LargeImage = image;
+                    if (existingTabName == tabName)
+                    {
+                        tabExists = true;
+                        break;
+                    }
                 }
-                else
-                {
-                    TaskDialog.Show("Error", $"Resource '{resourceName}' not found.");
-                }
-            }
 
-            return Result.Succeeded;
+                // Create the "StructLink X" tab only if it doesn't exist
+                if (!tabExists)
+                {
+                    application.CreateRibbonTab(tabName);
+                }
+
+                // Create a ribbon panel
+                RibbonPanel panel = application.CreateRibbonPanel(tabName, "Masar Sheets");
+
+                // Get the assembly path
+                string path = Assembly.GetExecutingAssembly().Location;
+
+                // Create button
+                PushButtonData buttonData = new PushButtonData(
+                    "BTN",
+                    "Auto Sheets",
+                    path,
+                    "Auto_Sheets.ExternalApp.SheetsCommand")
+                {
+                    ToolTip = "Create sheets automatically in Revit.",
+                    LongDescription = "Automate the creation of sheets in the Revit model."
+                };
+
+                // Add the button to the panel
+                PushButton pushButton = panel.AddItem(buttonData) as PushButton;
+
+                // Load embedded PNG icon
+                var assembly = Assembly.GetExecutingAssembly();
+                string resourceName = "Auto_Sheets.Resources.SheetIcon.png";
+
+                using (var stream = assembly.GetManifestResourceStream(resourceName))
+                {
+                    if (stream != null)
+                    {
+                        BitmapImage image = new BitmapImage();
+                        image.BeginInit();
+                        image.StreamSource = stream;
+                        image.CacheOption = BitmapCacheOption.OnLoad;
+                        image.EndInit();
+                        pushButton.LargeImage = image;
+                    }
+                    else
+                    {
+                        TaskDialog.Show("Error", $"Resource '{resourceName}' not found.");
+                    }
+                }
+
+                return Result.Succeeded;
+            }
+            catch (Exception ex)
+            {
+                TaskDialog.Show("Error", $"Failed to create ribbon: {ex.Message}");
+                return Result.Failed;
+            }
         }
     }
 }
