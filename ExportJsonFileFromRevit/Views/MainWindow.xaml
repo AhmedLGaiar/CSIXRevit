@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ExportJsonFileFromRevit.Views"
         mc:Ignorable="d"
-        Title="Revit Data Importer" Height="250" Width="500"
+        Title="Revit Data Importer" Height="250" Width="600"
         WindowStartupLocation="CenterScreen"
         Background="#F5F5F5">
     <Window.Resources>
@@ -114,6 +114,10 @@
                     Command="{Binding ImportBeamsCommand}"/>
             <Button Content="Import Walls"
                     Command="{Binding ImportWallsCommand}"/>
+            <Button Content="Import Slabs"
+                    Command="{Binding ImportSlabsCommand}"
+                    
+                    />
         </StackPanel>
 
         <!-- Cancel Button -->

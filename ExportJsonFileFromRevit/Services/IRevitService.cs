@@ -21,5 +21,6 @@ namespace ExportJsonFileFromRevit.Services
         void ProcessColumnsGeometry(Document doc, List<ColumnGeometryData> columns);
 
         void ProcessWalls(Document doc, List<WallRCData> walls); // New method for walls
+        void ProcessSlabs(Document doc, List<SlabData> slabs); // Add for slabs
     }
 }

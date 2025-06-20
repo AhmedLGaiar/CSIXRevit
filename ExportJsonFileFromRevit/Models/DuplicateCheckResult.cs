@@ -11,7 +11,8 @@ namespace ExportJsonFileFromRevit.Models
         public bool HasExactDuplicate { get; set; }
         public bool HasLocationConflict { get; set; }
         public List<T> ConflictingElements { get; set; } = new List<T>();
-    }
+    
+}
 
     public enum DuplicateAction
     {

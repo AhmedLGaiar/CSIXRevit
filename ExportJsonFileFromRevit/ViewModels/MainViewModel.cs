@@ -86,6 +86,28 @@ namespace ExportJsonFileFromRevit.ViewModels
             {
                 StatusMessage = $"Error: {ex.Message}";
             }
+        
+        }
+        [RelayCommand]
+        private void ImportSlabs()
+        {
+            try
+            {
+                string filePath = _fileService.OpenJsonFileDialog();
+                if (string.IsNullOrEmpty(filePath))
+                {
+                    StatusMessage = "No file selected.";
+                    return;
+                }
+
+                var jsonData = _fileService.ReadJsonFile(filePath);
+                _revitService.ProcessSlabs(_doc, jsonData.Slabs ?? new List<SlabData>());
+                StatusMessage = "Slabs processed successfully.";
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = $"Error: {ex.Message}";
+            }
         }
     }
 }

@@ -19,8 +19,7 @@ namespace ExportJsonFileFromRevit.Models
         public List<ColumnRCData> Columns { get; set; }
 
         [JsonProperty("Slabs")]
-        public object Slabs { get; set; }
-
+        public List<SlabData> Slabs { get; set; } // Uses ElementsData.Geometry.SlabData
         [JsonProperty("StructWalls")]
         public List<WallRCData> StructWalls { get; set; } // Updated to List<WallRCData>    }
     }
