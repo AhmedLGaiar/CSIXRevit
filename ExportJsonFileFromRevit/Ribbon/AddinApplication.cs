@@ -13,7 +13,7 @@ namespace ExportJsonFileFromRevit.Ribbon
             try
             {
                 // Check if the "Masr" tab already exists
-                string tabName = "Masar";
+                string tabName = "StructLink X";
                 bool tabExists = false;
                 foreach (string existingTabName in application.GetRibbonPanels().Select(panel => panel.Name))
                 {

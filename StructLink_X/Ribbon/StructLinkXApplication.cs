@@ -8,7 +8,7 @@ namespace StructLink_X.Ribbon
     {
         public Result OnStartup(UIControlledApplication application)
         {
-            string tabName = "Masar";
+            string tabName = "StructLink X";
             RibbonPanel panel = null;
 
             try
@@ -20,7 +20,7 @@ namespace StructLink_X.Ribbon
             }
 
             // Get or create the panel in the "Masar" tab
-            panel = application.CreateRibbonPanel(tabName, "StructLink_X");
+            panel = application.CreateRibbonPanel(tabName, "Report Exporter");
 
             // Path to the DLL
             string path = Assembly.GetExecutingAssembly().Location;

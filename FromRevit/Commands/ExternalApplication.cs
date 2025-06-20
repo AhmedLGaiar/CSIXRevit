@@ -8,7 +8,7 @@ namespace FromRevit.Commands
         public Result OnStartup(UIControlledApplication application)
         {
             // Create Tab
-            string tabName = "Masar";
+            string tabName = "StructLink X";
             try
             {
                 application.CreateRibbonTab(tabName);
