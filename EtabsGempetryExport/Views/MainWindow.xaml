@@ -1,0 +1,69 @@
+﻿<Window x:Class="EtabsGempetryExport.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:EtabsGempetryExport.Views"
+        xmlns:vm="clr-namespace:EtabsGempetryExport.ViewModel"
+        mc:Ignorable="d"
+        Title="ETABS Geometry Export" Height="500" Width="700">
+    <Window.DataContext>
+        <vm:MainViewModel />
+    </Window.DataContext>
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <!-- الحالة -->
+        <TextBlock Text="{Binding StatusText}"
+                   FontWeight="Bold"
+                   FontSize="14"
+                   Foreground="DarkBlue"
+                   Margin="0,0,0,10"/>
+        <!-- خيارات التصدير -->
+        <GroupBox Header="Select Elements to Export" Grid.Row="1" Margin="0,10,0,0">
+            <StackPanel Margin="10">
+                <CheckBox Content="Export Beams"
+                          IsChecked="{Binding ExportBeams}"
+                          Margin="0,2"/>
+                <CheckBox Content="Export Columns"
+                          IsChecked="{Binding ExportColumns}"
+                          Margin="0,2"/>
+                <CheckBox Content="Export Slabs"
+                          IsChecked="{Binding ExportSlabs}"
+                          Margin="0,2"/>
+                <CheckBox Content="Export Walls"
+                          IsChecked="{Binding ExportWalls}"
+                          Margin="0,2"/>
+            </StackPanel>
+        </GroupBox>
+        <!-- زر الاستخراج -->
+        <Button Grid.Row="2"
+                Content="Extract Data from ETABS"
+                Command="{Binding ExtractDataCommand}"
+                Width="250"
+                Height="40"
+                HorizontalAlignment="Left"
+                Margin="0,10,0,0"
+                Background="#007ACC"
+                Foreground="White"
+                FontWeight="Bold"/>
+        <!-- النتائج -->
+        <StackPanel Grid.Row="4" Margin="0,10,0,0">
+            <TextBlock Text="Beam Count:" FontWeight="Bold"/>
+            <TextBlock Text="{Binding BeamCount}" Margin="0,0,0,10"/>
+            <TextBlock Text="Column Count:" FontWeight="Bold"/>
+            <TextBlock Text="{Binding ColumnCount}" Margin="0,0,0,10"/>
+            <TextBlock Text="Slab Count:" FontWeight="Bold"/>
+            <TextBlock Text="{Binding SlabCount}" Margin="0,0,0,10"/>
+            <TextBlock Text="Wall Count:" FontWeight="Bold"/>
+            <TextBlock Text="{Binding WallCount}" Margin="0,0,0,10"/>
+            <TextBlock Text="Last Saved File:" FontWeight="Bold"/>
+            <TextBlock Text="{Binding LastSavedFile}" Margin="0,0,0,10"/>
+        </StackPanel>
+    </Grid>
+</Window>

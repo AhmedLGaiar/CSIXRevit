@@ -9,16 +9,16 @@ namespace ExportJsonFileFromRevit.Ribbon
         public Result OnStartup(UIControlledApplication application)
         {
             string tabName = "StructLink X";
-            var panel = application.CreatePanel("X Sheets", tabName);
+            var panel = application.CreatePanel("Import Json File To Revit ", tabName);
 
             // Get the assembly path
             string path = Assembly.GetExecutingAssembly().Location;
             PushButton button = panel.AddPushButton<AddinCommand>("Json Importer");
 
-            //string assemblyName = Assembly.GetExecutingAssembly().GetName().Name;
-            //var themedIconUri = $"/{assemblyName};component/Resources/Icons/concerteBuilding.png";
+            string assemblyName = Assembly.GetExecutingAssembly().GetName().Name;
+            var themedIconUri = $"/{assemblyName};component/Resources/Icons/import.png";
 
-            //button.SetLargeImage(themedIconUri);
+            button.SetLargeImage(themedIconUri);
 
             return Result.Succeeded;
         }

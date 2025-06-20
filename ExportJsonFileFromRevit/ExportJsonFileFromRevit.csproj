@@ -8,6 +8,10 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 	</PropertyGroup>
 
+	<ItemGroup>
+	  <None Remove="Resources\import.png" />
+	</ItemGroup>
+
 
 	<ItemGroup>
 	  <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
@@ -52,6 +56,10 @@
 		<!-- Copy .addin manifest to root Addins folder -->
 		<Copy SourceFiles="ExportJsonFileFromRevit.addin" DestinationFolder="$(RevitAddinFolder)" SkipUnchangedFiles="true" />
 	</Target>
+
+	<ItemGroup>
+	  <Resource Include="Resources\import.png" />
+	</ItemGroup>
 
 	<ItemGroup>
 	  <None Update="ExportJsonFileFromRevit.addin">

@@ -11,7 +11,7 @@ namespace FromRevit.Commands
         public Result OnStartup(UIControlledApplication application)
         {
             string tabName = "StructLink X";
-            var panel = application.CreatePanel("X Sheets", tabName);
+            var panel = application.CreatePanel("Export Json File From Revit", tabName);
 
             // Get the assembly path
             string path = Assembly.GetExecutingAssembly().Location;

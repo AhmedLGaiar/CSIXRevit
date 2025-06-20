@@ -10,16 +10,16 @@ namespace StructLink_X.Ribbon
         public Result OnStartup(UIControlledApplication application)
         {
             string tabName = "StructLink X";
-            var panel = application.CreatePanel("X Sheets", tabName);
+            var panel = application.CreatePanel("Report Generator", tabName);
 
             // Get the assembly path
             string path = Assembly.GetExecutingAssembly().Location;
             PushButton button = panel.AddPushButton<StructLinkXCommand>("StructLinkX");
 
-            //string assemblyName = Assembly.GetExecutingAssembly().GetName().Name;
-            //var themedIconUri = $"/{assemblyName};component/Resources/Icons/concerteBuilding.png";
+            string assemblyName = Assembly.GetExecutingAssembly().GetName().Name;
+            var themedIconUri = $"/{assemblyName};component/Resources/Icons/report.png";
 
-            //button.SetLargeImage(themedIconUri);
+            button.SetLargeImage(themedIconUri);
 
             return Result.Succeeded;
            

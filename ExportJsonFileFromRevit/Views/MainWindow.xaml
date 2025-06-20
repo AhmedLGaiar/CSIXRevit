@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ExportJsonFileFromRevit.Views"
         mc:Ignorable="d"
-        Title="Revit Data Importer" Height="250" Width="600"
+        Title="Revit Data Importer" Height="300" Width="350"
         WindowStartupLocation="CenterScreen"
         Background="#F5F5F5">
     <Window.Resources>
@@ -102,10 +102,10 @@
         <!-- Header -->
         <TextBlock Text="Revit Structural Data Importer"
                    Style="{StaticResource HeaderStyle}"
-                   Grid.Row="0"/>
+                   Grid.Row="0" Margin="0,0,10,30"/>
 
         <!-- Import Buttons -->
-        <StackPanel Orientation="Horizontal"
+        <StackPanel Orientation="Vertical"
                     HorizontalAlignment="Center"
                     Grid.Row="1">
             <Button Content="Import Columns"

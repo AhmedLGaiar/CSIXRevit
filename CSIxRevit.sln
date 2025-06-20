@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExportJsonFileFromRevit", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Auto_Sheets", "Auto_Sheets\Auto_Sheets.csproj", "{C3DF6025-6510-44C6-BC61-E9C40A2F3900}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EtabsGempetryExport", "EtabsGempetryExport\EtabsGempetryExport.csproj", "{FEDE3370-736D-4BAE-9CE3-618A06D349AF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{C3DF6025-6510-44C6-BC61-E9C40A2F3900}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C3DF6025-6510-44C6-BC61-E9C40A2F3900}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C3DF6025-6510-44C6-BC61-E9C40A2F3900}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FEDE3370-736D-4BAE-9CE3-618A06D349AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEDE3370-736D-4BAE-9CE3-618A06D349AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FEDE3370-736D-4BAE-9CE3-618A06D349AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FEDE3370-736D-4BAE-9CE3-618A06D349AF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

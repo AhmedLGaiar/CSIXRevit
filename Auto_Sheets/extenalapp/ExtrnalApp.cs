@@ -15,7 +15,7 @@ namespace Auto_Sheets.ExternalApp
         public Result OnStartup(UIControlledApplication application)
         {
             string tabName = "StructLink X";
-            var panel = application.CreatePanel("X Sheets", tabName);
+            var panel = application.CreatePanel(" Sheets Generator", tabName);
 
             // Get the assembly path
             string path = Assembly.GetExecutingAssembly().Location;

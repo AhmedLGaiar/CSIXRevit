@@ -38,6 +38,10 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Resource Include="Resources\report.png" />
+  </ItemGroup>
+
 	<PropertyGroup>
 		<RevitAddinFolder>$(AppData)\Autodesk\Revit\Addins\2022</RevitAddinFolder>
 		<PluginFolder>$(RevitAddinFolder)\$(AssemblyName)</PluginFolder>
