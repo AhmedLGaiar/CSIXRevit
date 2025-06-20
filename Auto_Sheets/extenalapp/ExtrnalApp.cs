@@ -18,15 +18,8 @@ namespace Auto_Sheets.ExternalApp
             {
                 // Check if the "StructLink X" tab already exists
                 string tabName = "StructLink X";
-                bool tabExists = false;
-                foreach (string existingTabName in application.GetRibbonPanels().Select(panel => panel.Name))
-                {
-                    if (existingTabName == tabName)
-                    {
-                        tabExists = true;
-                        break;
-                    }
-                }
+                var ribbonPanels = application.GetRibbonPanels(tabName); // Use GetRibbonPanels instead of GetRibbonTabs
+                bool tabExists = ribbonPanels != null && ribbonPanels.Any();
 
                 // Create the "StructLink X" tab only if it doesn't exist
                 if (!tabExists)
