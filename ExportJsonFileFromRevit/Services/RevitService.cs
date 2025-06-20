@@ -239,12 +239,12 @@ namespace ExportJsonFileFromRevit.Services
                     try
                     {
                         // Convert from meters (JSON) to feet (Revit internal)
-                        XYZ startPoint = new XYZ(wall.StartPoint.X * 3.28084, wall.StartPoint.Y * 3.28084, wall.StartPoint.Z * 3.28084);
-                        XYZ endPoint = new XYZ(wall.EndPoint.X * 3.28084, wall.EndPoint.Y * 3.28084, wall.EndPoint.Z * 3.28084);
+                        XYZ startPoint = new XYZ(wall.StartPoint.X / 304.8, wall.StartPoint.Y / 304.8, wall.StartPoint.Z / 304.8);
+                        XYZ endPoint = new XYZ(wall.EndPoint.X / 304.8, wall.EndPoint.Y / 304.8, wall.EndPoint.Z / 304.8);
 
                         // Convert thickness and height from meters to mm for consistency
-                        double thicknessInMm = wall.Thickness * 1000;
-                        double heightInMm = wall.Height * 1000;
+                        double thicknessInMm = wall.Thickness ;
+                        double heightInMm = wall.Height;
 
                         var duplicateResult = CheckWallDuplicates(existingWalls, startPoint, endPoint, wall, thicknessInMm, heightInMm); // Check for duplicate or conflicting walls
                         if (duplicateResult.HasExactDuplicate)
@@ -1100,7 +1100,7 @@ namespace ExportJsonFileFromRevit.Services
 
             foreach (FamilySymbol symbol in collector)
             {
-                if (symbol.Name.Equals(column.SymbolName, StringComparison.OrdinalIgnoreCase))
+                if (symbol.Name.Equals(column.SectionName))
                     return symbol;
             }
 
