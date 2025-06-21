@@ -15,6 +15,8 @@ namespace ExportJsonFileFromRevit.Ribbon
             try
             {
                 var doc = commandData.Application.ActiveUIDocument.Document;
+                AppDomain.CurrentDomain.AssemblyResolve += ResolveStyleLibrary;
+
 
                 // Show the WPF Window directly
                 MainWindow window = new MainWindow(doc);

@@ -14,7 +14,7 @@ namespace StructLink_X.Ribbon
 
             // Get the assembly path
             string path = Assembly.GetExecutingAssembly().Location;
-            PushButton button = panel.AddPushButton<StructLinkXCommand>("StructLinkX");
+            PushButton button = panel.AddPushButton<StructLinkXCommand>("Export Design Report");
 
             string assemblyName = Assembly.GetExecutingAssembly().GetName().Name;
             var themedIconUri = $"/{assemblyName};component/Resources/report_16939689.png";

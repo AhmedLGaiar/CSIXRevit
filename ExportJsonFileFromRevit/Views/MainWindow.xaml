@@ -5,93 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ExportJsonFileFromRevit.Views"
         mc:Ignorable="d"
-        Title="Revit Data Importer" Height="300" Width="350"
+        Title="Revit Data Importer" Height="400" Width="370"
         WindowStartupLocation="CenterScreen"
         Background="#F5F5F5">
+
     <Window.Resources>
-        <!-- Style for Buttons -->
-        <Style TargetType="Button">
-            <Setter Property="Background" Value="#0078D4"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Padding" Value="12,6"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="Margin" Value="5"/>
-            <Setter Property="Width" Value="140"/>
-            <Setter Property="Height" Value="35"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}"
-                                CornerRadius="4"
-                                BorderThickness="0">
-                            <ContentPresenter HorizontalAlignment="Center"
-                                             VerticalAlignment="Center"/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#005BB5"/>
-                </Trigger>
-                <Trigger Property="IsPressed" Value="True">
-                    <Setter Property="Background" Value="#004D99"/>
-                </Trigger>
-                <Trigger Property="IsEnabled" Value="False">
-                    <Setter Property="Background" Value="#B0B0B0"/>
-                    <Setter Property="Foreground" Value="#FFFFFF"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-
-        <!-- Style for Label -->
-        <Style TargetType="Label">
-            <Setter Property="Foreground" Value="#333333"/>
-            <Setter Property="FontSize" Value="13"/>
-            <Setter Property="Margin" Value="5"/>
-            <Setter Property="FontFamily" Value="Segoe UI"/>
-        </Style>
-
-        <!-- Style for Header TextBlock -->
-        <Style TargetType="TextBlock" x:Key="HeaderStyle">
-            <Setter Property="FontSize" Value="18"/>
-            <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="Foreground" Value="#2E2E2E"/>
-            <Setter Property="Margin" Value="0,0,0,10"/>
-            <Setter Property="FontFamily" Value="Segoe UI"/>
-        </Style>
-
-        <!-- Style for ProgressBar -->
-        <Style TargetType="ProgressBar">
-            <Setter Property="Height" Value="8"/>
-            <Setter Property="Margin" Value="5,10,5,5"/>
-            <Setter Property="Foreground" Value="#0078D4"/>
-            <Setter Property="Background" Value="#E0E0E0"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="ProgressBar">
-                        <Border Background="{TemplateBinding Background}"
-                                CornerRadius="4">
-                            <Grid>
-                                <Rectangle x:Name="PART_Indicator"
-                                          HorizontalAlignment="Left"
-                                          Fill="{TemplateBinding Foreground}"
-                                          RadiusX="4"
-                                          RadiusY="4"/>
-                            </Grid>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
+        <ResourceDictionary Source="pack://application:,,,/Styles;component/MasterStyles.xaml" />
     </Window.Resources>
 
     <Grid Margin="15">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -102,22 +26,35 @@
         <!-- Header -->
         <TextBlock Text="Revit Structural Data Importer"
                    Style="{StaticResource HeaderStyle}"
-                   Grid.Row="0" Margin="0,0,10,30"/>
+                   Grid.Row="0" Margin="0,0,10,20"/>
+
+        <!-- File Selection Section -->
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,20">
+            <Button Content="Browse JSON"
+                    Command="{Binding BrowseJsonCommand}"
+                    Width="100" Margin="0,0,10,0"/>
+            <TextBox Text="{Binding SelectedFileName, Mode=OneWay}"
+                     IsReadOnly="True"
+                     Width="200"
+                     VerticalContentAlignment="Center"/>
+        </StackPanel>
 
         <!-- Import Buttons -->
         <StackPanel Orientation="Vertical"
                     HorizontalAlignment="Center"
-                    Grid.Row="1">
+                    Grid.Row="2">
             <Button Content="Import Columns"
-                    Command="{Binding ImportColumnsCommand}"/>
+                    Command="{Binding ImportColumnsCommand}"
+                    Margin="0,5"/>
             <Button Content="Import Beams"
-                    Command="{Binding ImportBeamsCommand}"/>
+                    Command="{Binding ImportBeamsCommand}"
+                    Margin="0,5"/>
             <Button Content="Import Walls"
-                    Command="{Binding ImportWallsCommand}"/>
+                    Command="{Binding ImportWallsCommand}"
+                    Margin="0,5"/>
             <Button Content="Import Slabs"
                     Command="{Binding ImportSlabsCommand}"
-                    
-                    />
+                    Margin="0,5"/>
         </StackPanel>
 
         <!-- Cancel Button -->
@@ -125,19 +62,21 @@
                 Content="Cancel Operation"
                 Command="{Binding CancelOperationCommand}"
                 Width="100"
-                Grid.Row="2"
+                Grid.Row="3"
                 HorizontalAlignment="Center"
+                Margin="0,10,0,0"
                 Visibility="Collapsed"/>
 
         <!-- Progress Bar -->
         <ProgressBar x:Name="OperationProgressBar"
-                     Grid.Row="3"
+                     Grid.Row="4"
                      IsIndeterminate="True"
-                     Visibility="Collapsed"/>
+                     Visibility="Collapsed"
+                     Margin="0,10,0,0"/>
 
         <!-- Status Message -->
         <Label Content="{Binding StatusMessage}"
-               Grid.Row="4"
+               Grid.Row="5"
                VerticalAlignment="Top"
                HorizontalAlignment="Left"
                Foreground="{Binding StatusColor}"/>
