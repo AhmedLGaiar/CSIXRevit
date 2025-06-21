@@ -10,6 +10,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\report_16939689.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
     <PackageReference Include="EPPlus" Version="8.0.5" />
     <PackageReference Include="HelixToolkit.Wpf" Version="2.27.0" />
@@ -33,13 +37,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="StructLink_X.addin">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <Resource Include="Resources\report_16939689.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Resources\report.png" />
+    <None Update="StructLink_X.addin">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 	<PropertyGroup>

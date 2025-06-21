@@ -16,7 +16,7 @@ namespace ExportJsonFileFromRevit.Ribbon
             PushButton button = panel.AddPushButton<AddinCommand>("Json Importer");
 
             string assemblyName = Assembly.GetExecutingAssembly().GetName().Name;
-            var themedIconUri = $"/{assemblyName};component/Resources/Icons/import.png";
+            var themedIconUri = $"/{assemblyName};component/Resources/import_507259.png";
 
             button.SetLargeImage(themedIconUri);
 

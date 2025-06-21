@@ -17,7 +17,7 @@ namespace StructLink_X.Ribbon
             PushButton button = panel.AddPushButton<StructLinkXCommand>("StructLinkX");
 
             string assemblyName = Assembly.GetExecutingAssembly().GetName().Name;
-            var themedIconUri = $"/{assemblyName};component/Resources/Icons/report.png";
+            var themedIconUri = $"/{assemblyName};component/Resources/report_16939689.png";
 
             button.SetLargeImage(themedIconUri);
 

@@ -106,7 +106,7 @@ namespace EtabsGempetryExport.ViewModel
         public event EventHandler<string> ShowError;
         public event EventHandler<string> ShowSuccess;
 
-        public MainViewModel() : this(new ETABSService(), new FileService()) { }
+        //public MainViewModel() : this(new ETABSService(), new FileService()) { }
 
         public MainViewModel(IETABSService etabsService, IFileService fileService)
         {

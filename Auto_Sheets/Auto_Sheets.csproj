@@ -9,11 +9,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <None Remove="Resources\SheetIcon.png" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Resource Include="Resources\SheetIcon.png" />
+	  <None Remove="resources\SheetIcon.png" />
 	</ItemGroup>
 
 
@@ -55,6 +51,10 @@
 		<!-- Copy .addin manifest to root Addins folder -->
 		<Copy SourceFiles="Auto_Sheets.addin" DestinationFolder="$(RevitAddinFolder)" SkipUnchangedFiles="true" />
 	</Target>
+
+	<ItemGroup>
+	  <Resource Include="resources\SheetIcon.png" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<None Update="Auto_Sheets.addin">

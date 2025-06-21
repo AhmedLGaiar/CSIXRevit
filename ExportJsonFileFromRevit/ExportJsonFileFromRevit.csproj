@@ -9,7 +9,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <None Remove="Resources\import.png" />
+	  <None Remove="Resources\import_507259.png" />
 	</ItemGroup>
 
 
@@ -58,7 +58,7 @@
 	</Target>
 
 	<ItemGroup>
-	  <Resource Include="Resources\import.png" />
+	  <Resource Include="Resources\import_507259.png" />
 	</ItemGroup>
 
 	<ItemGroup>
