@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Xml;
 using EtabsGempetryExport.Model.HelperClasses;
 using Newtonsoft.Json;
 
@@ -33,7 +34,7 @@ namespace EtabsGempetryExport.Model.Service
             try
             {
                 ValidationHelper.ValidateFilePath(filePath);
-                var json = JsonConvert.SerializeObject(data, Formatting.Indented);
+                var json = JsonConvert.SerializeObject(data, Newtonsoft.Json.Formatting.Indented);
                 File.WriteAllText(filePath, json);
             }
             catch (Exception ex)
