@@ -16,7 +16,7 @@ namespace ToEtabs.Importers
             {
                 double widthMeters = column.Width;
                 double depthMeters = column.Depth;
-                done = ColumnUtilities.DefineColumnSection(_sapModel, $"C {widthMeters:0.00}*{depthMeters:0.00} H",
+                done = ColumnUtilities.DefineColumnSection(_sapModel, $"C {widthMeters:0.00}*{depthMeters:0.00} V",
                     SelectedConcreteMaterial, depthMeters * 1000, widthMeters * 1000);
                 if (done == 0)
                 {
@@ -40,11 +40,11 @@ namespace ToEtabs.Importers
                 else if (ColumnHelpers.IsApproximately(rotation, 90) ||
                          ColumnHelpers.IsApproximately(rotation, 270))
                 {
-                    orientation = "H";
+                    orientation = "V";
                 }
                 else
                 {
-                    orientation = "H"; // Default/fallback
+                    orientation = "V"; // Default/fallback
                 }
 
                 done = ColumnUtilities.DrawColumnByCoordinates(_sapModel,
