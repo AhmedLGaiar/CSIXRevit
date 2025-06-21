@@ -5,80 +5,269 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ExportJsonFileFromRevit.Views"
         mc:Ignorable="d"
-        Title="Revit Data Importer" Height="400" Width="370"
+        Title="Revit Data Importer" Height="500" Width="450"
         WindowStartupLocation="CenterScreen"
-        Background="#F5F5F5">
-
+        Background="White"
+        ResizeMode="CanMinimize">
+    
     <Window.Resources>
-        <ResourceDictionary Source="pack://application:,,,/Styles;component/MasterStyles.xaml" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Styles;component/MasterStyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            
+            <!-- Enhanced Styles -->
+            <Style x:Key="ModernButtonStyle" TargetType="Button">
+                <Setter Property="Background" Value="#2196F3"/>
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Padding" Value="20,12"/>
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="FontWeight" Value="Medium"/>
+                <Setter Property="Cursor" Value="Hand"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="{TemplateBinding Background}"
+                                    CornerRadius="6"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    BorderBrush="{TemplateBinding BorderBrush}">
+                                <ContentPresenter HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#1976D2"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Background" Value="#1565C0"/>
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Background" Value="#CCCCCC"/>
+                                    <Setter Property="Foreground" Value="#666666"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="BrowseButtonStyle" TargetType="Button" BasedOn="{StaticResource ModernButtonStyle}">
+                <Setter Property="Background" Value="#4CAF50"/>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="#45a049"/>
+                    </Trigger>
+                    <Trigger Property="IsPressed" Value="True">
+                        <Setter Property="Background" Value="#3d8b40"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style x:Key="CancelButtonStyle" TargetType="Button" BasedOn="{StaticResource ModernButtonStyle}">
+                <Setter Property="Background" Value="#F44336"/>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="#d32f2f"/>
+                    </Trigger>
+                    <Trigger Property="IsPressed" Value="True">
+                        <Setter Property="Background" Value="#c62828"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style x:Key="ModernTextBoxStyle" TargetType="TextBox">
+                <Setter Property="Background" Value="#F8F9FA"/>
+                <Setter Property="BorderBrush" Value="#E0E0E0"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="Padding" Value="12,8"/>
+                <Setter Property="FontSize" Value="13"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="TextBox">
+                            <Border Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="4">
+                                <ScrollViewer x:Name="PART_ContentHost"
+                                            Margin="{TemplateBinding Padding}"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsFocused" Value="True">
+                                    <Setter Property="BorderBrush" Value="#2196F3"/>
+                                    <Setter Property="BorderThickness" Value="2"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="ModernProgressBarStyle" TargetType="ProgressBar">
+                <Setter Property="Background" Value="#E0E0E0"/>
+                <Setter Property="Foreground" Value="#2196F3"/>
+                <Setter Property="Height" Value="6"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="ProgressBar">
+                            <Border Background="{TemplateBinding Background}"
+                                    CornerRadius="3">
+                                <Rectangle x:Name="PART_Track"
+                                         Fill="{TemplateBinding Foreground}"
+                                         RadiusX="3" RadiusY="3"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="HeaderTextStyle" TargetType="TextBlock">
+                <Setter Property="FontSize" Value="24"/>
+                <Setter Property="FontWeight" Value="Bold"/>
+                <Setter Property="Foreground" Value="#1A1A1A"/>
+                <Setter Property="TextAlignment" Value="Center"/>
+            </Style>
+
+            <Style x:Key="SectionHeaderStyle" TargetType="TextBlock">
+                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="FontWeight" Value="SemiBold"/>
+                <Setter Property="Foreground" Value="#424242"/>
+                <Setter Property="Margin" Value="0,0,0,10"/>
+            </Style>
+
+            <Style x:Key="StatusLabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="13"/>
+                <Setter Property="FontWeight" Value="Medium"/>
+                <Setter Property="Padding" Value="12,8"/>
+                <Setter Property="Background" Value="#F8F9FA"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Label">
+                            <Border Background="{TemplateBinding Background}"
+                                    CornerRadius="4"
+                                    Padding="{TemplateBinding Padding}">
+                                <ContentPresenter/>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
     </Window.Resources>
 
-    <Grid Margin="15">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+    <Border Background="White" CornerRadius="8" Margin="2">
+        <Border.Effect>
+            <DropShadowEffect Color="Black" Opacity="0.1" ShadowDepth="2" BlurRadius="8"/>
+        </Border.Effect>
+        
+        <Grid Margin="30,25">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-        <!-- Header -->
-        <TextBlock Text="Revit Structural Data Importer"
-                   Style="{StaticResource HeaderStyle}"
-                   Grid.Row="0" Margin="0,0,10,20"/>
+            <!-- Header Section -->
+            <StackPanel Grid.Row="0" Margin="0,0,0,30">
+                <TextBlock Text="🏗️" 
+                          FontSize="32" 
+                          TextAlignment="Center" 
+                          Margin="0,0,0,8"/>
+                <TextBlock Text="Revit Structural Data Importer"
+                          Style="{StaticResource HeaderTextStyle}"/>
+                <Rectangle Height="2" 
+                          Fill="#E0E0E0" 
+                          Margin="0,15,0,0"/>
+            </StackPanel>
 
-        <!-- File Selection Section -->
-        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,20">
-            <Button Content="Browse JSON"
-                    Command="{Binding BrowseJsonCommand}"
-                    Width="100" Margin="0,0,10,0"/>
-            <TextBox Text="{Binding SelectedFileName, Mode=OneWay}"
-                     IsReadOnly="True"
-                     Width="200"
-                     VerticalContentAlignment="Center"/>
-        </StackPanel>
+            <!-- File Selection Section -->
+            <StackPanel Grid.Row="1" Margin="0,0,0,25">
+                <TextBlock Text="📁 File Selection" 
+                          Style="{StaticResource SectionHeaderStyle}"/>
+                <Border Background="#F8F9FA" 
+                       CornerRadius="8" 
+                       Padding="20,15" Width="395">
+                    <StackPanel Orientation="Horizontal">
+                        <Button Content="Browse JSON"
+                               Command="{Binding BrowseJsonCommand}"
+                               Style="{StaticResource BrowseButtonStyle}"
+                               Width="120" 
+                               Margin="0,0,15,0"/>
+                        <TextBox Text="{Binding SelectedFileName, Mode=OneWay}"
+                                IsReadOnly="True"
+                                Style="{StaticResource ModernTextBoxStyle}"
+                                Width="214"
+                                VerticalContentAlignment="Center"
+                                Background="White"/>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
 
-        <!-- Import Buttons -->
-        <StackPanel Orientation="Vertical"
-                    HorizontalAlignment="Center"
-                    Grid.Row="2">
-            <Button Content="Import Columns"
-                    Command="{Binding ImportColumnsCommand}"
-                    Margin="0,5"/>
-            <Button Content="Import Beams"
-                    Command="{Binding ImportBeamsCommand}"
-                    Margin="0,5"/>
-            <Button Content="Import Walls"
-                    Command="{Binding ImportWallsCommand}"
-                    Margin="0,5"/>
-            <Button Content="Import Slabs"
-                    Command="{Binding ImportSlabsCommand}"
-                    Margin="0,5"/>
-        </StackPanel>
+            <!-- Import Operations Section -->
+            <StackPanel Grid.Row="2" Margin="0,0,0,20">
+                <TextBlock Text="⚡ Import Operations" 
+                          Style="{StaticResource SectionHeaderStyle}"/>
+                <Border Background="#F8F9FA" 
+                       CornerRadius="8" 
+                       Padding="20,15">
+                    <UniformGrid Columns="2" 
+                                HorizontalAlignment="Center">
+                        <Button Content="🏛️ Import Columns"
+                               Command="{Binding ImportColumnsCommand}"
+                               Style="{StaticResource ModernButtonStyle}"
+                               Margin="5,8"
+                               MinWidth="160" MinHeight="30"/>
+                        <Button Content="🌉 Import Beams"
+                               Command="{Binding ImportBeamsCommand}"
+                               Style="{StaticResource ModernButtonStyle}"
+                               Margin="5,8"
+                               MinWidth="160"/>
+                        <Button Content="🧱 Import Walls"
+                               Command="{Binding ImportWallsCommand}"
+                               Style="{StaticResource ModernButtonStyle}"
+                               Margin="5,8"
+                               MinWidth="160"/>
+                        <Button Content="🏢 Import Slabs"
+                               Command="{Binding ImportSlabsCommand}"
+                               Style="{StaticResource ModernButtonStyle}"
+                               Margin="5,8"
+                               MinWidth="160"/>
+                    </UniformGrid>
+                </Border>
+            </StackPanel>
 
-        <!-- Cancel Button -->
-        <Button x:Name="CancelButton"
-                Content="Cancel Operation"
-                Command="{Binding CancelOperationCommand}"
-                Width="100"
-                Grid.Row="3"
-                HorizontalAlignment="Center"
-                Margin="0,10,0,0"
-                Visibility="Collapsed"/>
+            <!-- Cancel Button -->
+            <Button x:Name="CancelButton"
+                   Content="❌ Cancel Operation"
+                   Command="{Binding CancelOperationCommand}"
+                   Style="{StaticResource CancelButtonStyle}"
+                   Width="140"
+                   Grid.Row="3"
+                   HorizontalAlignment="Center"
+                   Margin="0,10,0,0"
+                   Visibility="Collapsed"/>
 
-        <!-- Progress Bar -->
-        <ProgressBar x:Name="OperationProgressBar"
-                     Grid.Row="4"
-                     IsIndeterminate="True"
-                     Visibility="Collapsed"
-                     Margin="0,10,0,0"/>
+            <!-- Progress Section -->
+            <StackPanel Grid.Row="4" Margin="0,15,0,0">
+                <ProgressBar x:Name="OperationProgressBar"
+                           Style="{StaticResource ModernProgressBarStyle}"
+                           IsIndeterminate="True"
+                           Visibility="Collapsed"/>
+            </StackPanel>
 
-        <!-- Status Message -->
-        <Label Content="{Binding StatusMessage}"
-               Grid.Row="5"
-               VerticalAlignment="Top"
-               HorizontalAlignment="Left"
-               Foreground="{Binding StatusColor}"/>
-    </Grid>
+            <!-- Status Section -->
+            <Border Grid.Row="6" 
+                   VerticalAlignment="Top"
+                   Margin="0,15,0,0">
+                <Label Content="{Binding StatusMessage}"
+                      Style="{StaticResource StatusLabelStyle}"
+                      HorizontalAlignment="Stretch"
+                      Foreground="{Binding StatusColor}"/>
+            </Border>
+        </Grid>
+    </Border>
 </Window>
