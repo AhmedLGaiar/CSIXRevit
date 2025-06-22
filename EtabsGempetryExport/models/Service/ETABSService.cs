@@ -67,7 +67,7 @@ namespace EtabsGempetryExport.Model.Service
                     beams.Add(new BeamGeometryData
                     {
                         ApplicationId = name,
-                        Name = $"{width} x {height}mm",
+                        Name = $"{width:F0} x {height:F0}mm",
                         StartPoint = new PointData { X = startCoord.X, Y = startCoord.Y, Z = startCoord.Z },
                         EndPoint = new PointData { X = endCoord.X, Y = endCoord.Y, Z = endCoord.Z },
                         Width = width,
@@ -130,7 +130,7 @@ namespace EtabsGempetryExport.Model.Service
                         TopPoint = new PointData { X = topPoint.X, Y = topPoint.Y, Z = topPoint.Z },
                         Width = depth,
                         Depth = width,
-                        SectionName = $"{depth} x {width}mm",
+                        SectionName = $"{depth:F0} x {width:F0}mm",
                         Rotation = rotation,
                         SlantedAngle = _helper.GetDesignOrientation(name),
                         BaseLevel = baseStory,
@@ -207,7 +207,7 @@ namespace EtabsGempetryExport.Model.Service
 
                     slabs.Add(new SlabData
                     {
-                        SectionName = $"Generic {thickness}mm",
+                        SectionName = $"Generic {thickness:F0}mm",
                         Thickness = thickness,
                         Level = story,
                         OuterBoundary = outerBoundary,
@@ -286,7 +286,7 @@ namespace EtabsGempetryExport.Model.Service
                     {
                         Id = guid,
                         Name = areaName,
-                        Section = $"Generic - {thickness}mm",
+                        Section = $"Generic - {thickness:F0}mm",
                         Story = story,
                         StartPoint = new PointData { X = wallGeometry.StartPoint.X, Y = wallGeometry.StartPoint.Y, Z = wallGeometry.StartPoint.Z },
                         EndPoint = new PointData { X = wallGeometry.EndPoint.X, Y = wallGeometry.EndPoint.Y, Z = wallGeometry.EndPoint.Z },
@@ -298,7 +298,7 @@ namespace EtabsGempetryExport.Model.Service
                         BaseLevel = story,
                         TopLevel = story,
                         Material = material,
-                        WallTypeName = $"Generic - {thickness}mm",
+                        WallTypeName = $"Generic - {thickness:F0}mm",
                         AdditionalProperties = new Dictionary<string, string>
                         {
                             ["Label"] = label,
