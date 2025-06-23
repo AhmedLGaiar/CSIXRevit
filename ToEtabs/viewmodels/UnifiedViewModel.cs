@@ -380,13 +380,17 @@ namespace ToEtabs.ViewModels
         #endregion
 
         #region Export Methods
+
         public void BrowseExportFile()
         {
+            string fileName = _etabsModel.GetModelFilename(false);
+
             var saveFileDialog = new SaveFileDialog
             {
                 Filter = "JSON files (*.json)|*.json",
                 Title = "Save Load Data File",
-                DefaultExt = "json"
+                DefaultExt = "json",
+                FileName = fileName + "_LoadData"
             };
 
             if (saveFileDialog.ShowDialog() == true)
