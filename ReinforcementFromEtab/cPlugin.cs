@@ -1,6 +1,7 @@
 ﻿using ElementsData.Steel;
 using ETABSv1;
 using Newtonsoft.Json;
+using System;
 using System.Windows.Forms;
 
 namespace ReinforcementFromEtab
@@ -9,6 +10,7 @@ namespace ReinforcementFromEtab
     {
         public void Main(ref cSapModel SapModel, ref cPluginCallback ISapPlugin)
         {
+            string fileName = SapModel.GetModelFilename(false);
             // Get data
             FrameRCData Frames = ReinforcementOfConcrete.GetRCFrames(SapModel);
 
@@ -18,7 +20,7 @@ namespace ReinforcementFromEtab
                 Title = "Save JSON File",
                 Filter = "JSON Files (*.json)|*.json",
                 DefaultExt = "json",
-                FileName = "ToEtabsExport.json"
+                FileName = fileName + "_ReinforcementData"
             };
 
             // If user cancels or doesn't choose a path

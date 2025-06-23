@@ -56,7 +56,7 @@ namespace FromRevit.ViewModels
                 Title = "Export JSON File",
                 Filter = "JSON files (*.json)|*.json",
                 DefaultExt = "json",
-                FileName = "exported_data"
+                FileName = ExportFromRevit.document.Title + "_Geometry",
             };
 
             bool? result = saveDialog.ShowDialog();

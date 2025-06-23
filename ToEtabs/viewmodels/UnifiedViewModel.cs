@@ -196,11 +196,24 @@ namespace ToEtabs.ViewModels
 
             if (openFileDialog.ShowDialog() == true)
             {
-                ImportFilePath = openFileDialog.FileName;
-                LoadImportFileContents();
-                CommandManager.InvalidateRequerySuggested();
+                string fileName = openFileDialog.FileName;
+
+                if (Path.GetFileName(fileName).ToLower().Contains("_geometry"))
+                {
+                    ImportFilePath = fileName;
+                    LoadImportFileContents();
+                    CommandManager.InvalidateRequerySuggested();
+                }
+                else
+                {
+                    MessageBox.Show("Please select a JSON file that contains '_Geometry' in its name.",
+                                    "Invalid File",
+                                    MessageBoxButton.OK,
+                                    MessageBoxImage.Warning);
+                }
             }
         }
+
 
         private void LoadImportFileContents()
         {
