@@ -24,15 +24,6 @@ namespace EtabsGempetryExport
                     return;
                 }
 
-                //string modelPath = "";
-                //int result = SapModel.GetModelFilename(modelPath);
-                //if (result != 0)
-                //{
-                //    ShowError("Cannot access ETABS model. Ensure model is open and unlocked.", IShowCallback);
-                //    return;
-                //}
-
-                // Check if model has structural elements
                 try
                 {
                     int numFrames = 0;
@@ -55,43 +46,21 @@ namespace EtabsGempetryExport
                     return;
                 }
 
-                // Capture the SapModel reference in a local variable to use in lambda
-                cSapModel sapModelLocal = SapModel;
+                // Create services
+                var etabsService = new ETABSService(SapModel);
+                var fileService = new FileService();
 
-                // Launch WPF Window on STA thread
-                Thread staThread = new Thread(() =>
-                {
-                    try
-                    {
-                        // Create services using the local variable
-                        var etabsService = new ETABSService(sapModelLocal);
-                        var fileService = new FileService();
+                // Create and show Window with services
+                var mainWindow = MainWindow.CreateWithServices(etabsService, fileService);
 
-                        // Create and show Window with services
-                        var mainWindow = MainWindow.CreateWithServices(etabsService, fileService);
-
-                        // Show window as dialog
-                        mainWindow.ShowDialog();
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show($"Failed to open export window: {ex.Message}",
-                            "Plugin Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                });
-
-                // Set STA apartment state for WPF
-                staThread.SetApartmentState(ApartmentState.STA);
-                staThread.Start();
-                staThread.Join(); // Wait for window to close
-
-                // Signal success after window closes
-                IShowCallback.Finish(0);
+                // Show window as dialog (on same thread)
+                mainWindow.ShowDialog();
             }
             catch (Exception ex)
             {
                 ShowError($"Unexpected error: {ex.Message}\n\nStack Trace:\n{ex.StackTrace}", IShowCallback);
             }
+
         }
 
         public int Info(ref string Info)
