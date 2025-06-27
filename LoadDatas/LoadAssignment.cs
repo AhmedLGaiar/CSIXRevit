@@ -1,5 +1,4 @@
 ﻿using System;
-
 namespace CSIXRevit.LoadData
 {
     public class LoadAssignment
@@ -10,29 +9,29 @@ namespace CSIXRevit.LoadData
         public double Value { get; set; }
         public string Unit { get; set; }
         public int Dir { get; set; }
-        
         public double? StartDistance { get; set; }
         public double? EndDistance { get; set; }
         public string RelativeDistance { get; set; }
-        
         public string UniqueIdentifier { get; set; }
         public string SourcePlatform { get; set; }
         public DateTime LastModified { get; set; }
         public LoadSyncState SyncState { get; set; }
-        
+        // Additional properties that were missing
+        public string DisplayUnits { get; set; }
+        public string LoadCase { get; set; }
+        public string FormattedDescription { get; set; }
+        public double? DistanceFromStart { get; set; }
         public void GenerateUniqueIdentifier()
         {
             if (string.IsNullOrEmpty(UniqueIdentifier))
             {
-                UniqueIdentifier = $"{SourcePlatform}_{ElementID}_{LoadType}_{Guid.NewGuid().ToString("N").Substring(0, 8)}";
+                UniqueIdentifier = $"{SourcePlatform}{ElementID}{LoadType}_{Guid.NewGuid().ToString("N").Substring(0, 8)}";
             }
         }
-        
         public bool HasSameValues(LoadAssignment other)
         {
             if (other == null)
                 return false;
-                
             return this.LoadPattern == other.LoadPattern &&
                    this.LoadType == other.LoadType &&
                    Math.Abs(this.Value - other.Value) < 0.0001 &&
@@ -43,7 +42,6 @@ namespace CSIXRevit.LoadData
                    this.RelativeDistance == other.RelativeDistance;
         }
     }
-    
     public enum LoadSyncState
     {
         New,
