@@ -54,8 +54,8 @@ namespace ToEtabs.Views
         // Main action button handlers
         private void ImportLoadsButton_Click(object sender, RoutedEventArgs e)
         {
-            // Use the simple direct import method instead of the sync system
-            _viewModel.PerformSimpleLoadImport();
+            // Use the regular load import method (removed the Simple version)
+            _viewModel.PerformLoadImport();
         }
 
         private void ExportButton_Click(object sender, RoutedEventArgs e)

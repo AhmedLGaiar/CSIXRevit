@@ -1,218 +1,351 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Diagnostics;
 using ETABSv1;
-using CSIXRevit.LoadData;
-using loadData;
+using loadData; // For SyncReport
 
 namespace CSIXRevit.LoadData
 {
     public class LoadSynchronizationManager
     {
         private LoadSyncRegistry _registry;
+        private cSapModel _sapModel;
 
         public LoadSynchronizationManager(string syncFilePath)
         {
             _registry = new LoadSyncRegistry(syncFilePath);
         }
 
-        public SyncReport SyncFromRevitToEtabs(List<LoadAssignment> revitLoads, cSapModel etabsModel)
+        public SyncReport SyncFromRevitToEtabs(List<LoadAssignment> revitLoads, cSapModel sapModel)
         {
-            foreach (var load in _registry.GetAllLoads().Where(l => l.SourcePlatform == "Etabs"))
+            _sapModel = sapModel;
+            SyncReport report = new SyncReport();
+
+            try
             {
-                load.SyncState = LoadSyncState.Deleted;
-                _registry.RegisterLoad(load);
+                Debug.WriteLine("=== STARTING LOAD IMPORT ===");
+                Debug.WriteLine($"Total loads to import: {revitLoads.Count}");
+
+                // STEP 1: Create load patterns first (CRITICAL)
+                CreateLoadPatterns(revitLoads);
+
+                // STEP 2: Clear existing loads
+                ClearExistingLoads(revitLoads);
+
+                // STEP 3: Apply loads one by one with detailed logging
+                foreach (var load in revitLoads)
+                {
+                    try
+                    {
+                        Debug.WriteLine($"\n--- Processing Load ---");
+                        Debug.WriteLine($"Element: {load.ElementID}");
+                        Debug.WriteLine($"Pattern: {load.LoadPattern}");
+                        Debug.WriteLine($"Type: {load.LoadType}");
+                        Debug.WriteLine($"Value: {load.Value}");
+
+                        ApplyLoadToEtabs(load);
+                        report.NewLoads++;
+
+                        Debug.WriteLine($"✓ SUCCESS: Load applied to {load.ElementID}");
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine($"✗ ERROR: Failed to apply load to {load.ElementID}: {ex.Message}");
+                        // Continue with next load instead of stopping
+                    }
+                }
+
+                report.TotalLoads = revitLoads.Count;
+                _registry.SaveRegistry();
+
+                Debug.WriteLine($"\n=== IMPORT COMPLETED ===");
+                Debug.WriteLine($"Total processed: {revitLoads.Count}");
+                Debug.WriteLine($"Successfully applied: {report.NewLoads}");
+                Debug.WriteLine($"Failed: {revitLoads.Count - report.NewLoads}");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"CRITICAL ERROR: {ex.Message}");
+                Debug.WriteLine($"Stack trace: {ex.StackTrace}");
+                throw;
             }
 
-            int newCount = 0;
-            int modifiedCount = 0;
-            int unchangedCount = 0;
-            int deletedCount = 0;
+            return report;
+        }
 
-            foreach (var revitLoad in revitLoads)
+        private void CreateLoadPatterns(List<LoadAssignment> loads)
+        {
+            try
             {
-                revitLoad.SourcePlatform = "Revit";
-                revitLoad.LastModified = DateTime.Now;
+                Debug.WriteLine("\n=== CREATING LOAD PATTERNS ===");
 
-                var existingLoads = _registry.GetAllLoads()
-                    .Where(l => l.ElementID == revitLoad.ElementID &&
-                               l.LoadType == revitLoad.LoadType &&
-                               l.LoadPattern == revitLoad.LoadPattern &&
-                               l.Dir == revitLoad.Dir)
-                    .ToList();
-
-                if (existingLoads.Any())
+                HashSet<string> uniquePatterns = new HashSet<string>();
+                foreach (var load in loads)
                 {
-                    var existingLoad = existingLoads.First();
-
-                    if (!existingLoad.HasSameValues(revitLoad))
+                    if (!string.IsNullOrEmpty(load.LoadPattern))
                     {
-                        existingLoad.Value = revitLoad.Value;
-                        existingLoad.StartDistance = revitLoad.StartDistance;
-                        existingLoad.EndDistance = revitLoad.EndDistance;
-                        existingLoad.LastModified = DateTime.Now;
-                        existingLoad.SyncState = LoadSyncState.Modified;
+                        uniquePatterns.Add(load.LoadPattern);
+                    }
+                }
 
-                        UpdateEtabsLoad(etabsModel, existingLoad);
-                        modifiedCount++;
+                Debug.WriteLine($"Unique patterns to create: {string.Join(", ", uniquePatterns)}");
+
+                // Get existing patterns
+                int patternCount = 0;
+                string[] existingPatterns = null;
+                int ret = _sapModel.LoadPatterns.GetNameList(ref patternCount, ref existingPatterns);
+
+                HashSet<string> existingSet = new HashSet<string>(existingPatterns ?? new string[0]);
+                Debug.WriteLine($"Existing patterns: {string.Join(", ", existingSet)}");
+
+                // Create missing patterns
+                foreach (string pattern in uniquePatterns)
+                {
+                    if (!existingSet.Contains(pattern))
+                    {
+                        eLoadPatternType patternType = eLoadPatternType.Other; // Use simple type
+                        ret = _sapModel.LoadPatterns.Add(pattern, patternType);
+
+                        if (ret == 0)
+                        {
+                            Debug.WriteLine($"✓ Created pattern: {pattern}");
+                        }
+                        else
+                        {
+                            Debug.WriteLine($"✗ Failed to create pattern {pattern}, code: {ret}");
+                        }
                     }
                     else
                     {
-                        existingLoad.SyncState = LoadSyncState.Unchanged;
-                        unchangedCount++;
+                        Debug.WriteLine($"Pattern {pattern} already exists");
                     }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"ERROR creating patterns: {ex.Message}");
+                throw;
+            }
+        }
 
-                    _registry.RegisterLoad(existingLoad);
+        private void ClearExistingLoads(List<LoadAssignment> loads)
+        {
+            try
+            {
+                Debug.WriteLine("\n=== CLEARING EXISTING LOADS ===");
+
+                var elementIds = loads.Select(l => l.ElementID).Distinct().ToList();
+                Debug.WriteLine($"Elements to clear: {string.Join(", ", elementIds)}");
+
+                foreach (string elementId in elementIds)
+                {
+                    try
+                    {
+                        if (IsFrameElement(elementId))
+                        {
+                            int ret1 = _sapModel.FrameObj.DeleteLoadDistributed(elementId, "All");
+                            int ret2 = _sapModel.FrameObj.DeleteLoadPoint(elementId, "All");
+                            Debug.WriteLine($"Cleared frame {elementId}: Dist={ret1}, Point={ret2}");
+                        }
+                        else if (IsAreaElement(elementId))
+                        {
+                            int ret = _sapModel.AreaObj.DeleteLoadUniform(elementId, "All");
+                            Debug.WriteLine($"Cleared area {elementId}: {ret}");
+                        }
+                        else
+                        {
+                            Debug.WriteLine($"WARNING: Element {elementId} not found in model");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine($"Error clearing {elementId}: {ex.Message}");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"ERROR in clear: {ex.Message}");
+            }
+        }
+
+        private void ApplyLoadToEtabs(LoadAssignment load)
+        {
+            if (_sapModel == null)
+            {
+                throw new InvalidOperationException("ETABS model not initialized");
+            }
+
+            if (IsFrameElement(load.ElementID))
+            {
+                ApplyFrameLoad(load);
+            }
+            else if (IsAreaElement(load.ElementID))
+            {
+                ApplyAreaLoad(load);
+            }
+            else
+            {
+                throw new Exception($"Element {load.ElementID} not found in ETABS model");
+            }
+        }
+
+        private bool IsFrameElement(string elementID)
+        {
+            try
+            {
+                int frameCount = 0;
+                string[] frameNames = null;
+                _sapModel.FrameObj.GetNameList(ref frameCount, ref frameNames);
+
+                bool isFrame = frameNames != null && frameNames.Contains(elementID);
+                Debug.WriteLine($"Element {elementID} is frame: {isFrame}");
+                return isFrame;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error checking frame {elementID}: {ex.Message}");
+                return false;
+            }
+        }
+
+        private bool IsAreaElement(string elementID)
+        {
+            try
+            {
+                int areaCount = 0;
+                string[] areaNames = null;
+                _sapModel.AreaObj.GetNameList(ref areaCount, ref areaNames);
+
+                bool isArea = areaNames != null && areaNames.Contains(elementID);
+                Debug.WriteLine($"Element {elementID} is area: {isArea}");
+                return isArea;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error checking area {elementID}: {ex.Message}");
+                return false;
+            }
+        }
+
+        private void ApplyFrameLoad(LoadAssignment load)
+        {
+            try
+            {
+                if (load.LoadType.Contains("Linear") || load.LoadType.Contains("Distributed"))
+                {
+                    // Apply distributed load - SIMPLE AND RELIABLE
+                    double loadValue = Math.Abs(load.Value); // Force positive value
+
+                    Debug.WriteLine($"Applying distributed load:");
+                    Debug.WriteLine($"  Element: {load.ElementID}");
+                    Debug.WriteLine($"  Pattern: {load.LoadPattern}");
+                    Debug.WriteLine($"  Value: {loadValue} (original: {load.Value})");
+                    Debug.WriteLine($"  Direction: Local Z (3)");
+
+                    int ret = _sapModel.FrameObj.SetLoadDistributed(
+                        load.ElementID,     // Name
+                        load.LoadPattern,   // LoadPat
+                        1,                  // MyType (1=Force)
+                        3,                  // Dir (3=Local Z)
+                        0.0,               // Dist1 (start)
+                        1.0,               // Dist2 (end)
+                        loadValue,         // Val1 (start value)
+                        loadValue          // Val2 (end value)
+                                           // Using 8-parameter version (no CSys, no RelDist)
+                    );
+
+                    Debug.WriteLine($"SetLoadDistributed result: {ret} (0=success)");
+
+                    if (ret != 0)
+                    {
+                        throw new Exception($"SetLoadDistributed failed with code {ret}");
+                    }
+                }
+                else if (load.LoadType.Contains("Point"))
+                {
+                    // Apply point load
+                    double loadValue = Math.Abs(load.Value);
+                    double distance = load.DistanceFromStart ?? 0.5;
+
+                    Debug.WriteLine($"Applying point load:");
+                    Debug.WriteLine($"  Element: {load.ElementID}");
+                    Debug.WriteLine($"  Pattern: {load.LoadPattern}");
+                    Debug.WriteLine($"  Value: {loadValue}");
+                    Debug.WriteLine($"  Distance: {distance}");
+
+                    int ret = _sapModel.FrameObj.SetLoadPoint(
+                        load.ElementID,
+                        load.LoadPattern,
+                        1,                  // MyType (1=Force)
+                        3,                  // Dir (3=Local Z)
+                        distance,
+                        loadValue
+                    );
+
+                    Debug.WriteLine($"SetLoadPoint result: {ret} (0=success)");
+
+                    if (ret != 0)
+                    {
+                        throw new Exception($"SetLoadPoint failed with code {ret}");
+                    }
                 }
                 else
                 {
-                    revitLoad.SyncState = LoadSyncState.New;
-                    _registry.RegisterLoad(revitLoad);
-
-                    CreateEtabsLoad(etabsModel, revitLoad);
-                    newCount++;
+                    throw new Exception($"Unsupported load type: {load.LoadType}");
                 }
             }
-
-            foreach (var loadToDelete in _registry.GetAllLoads().Where(l => l.SyncState == LoadSyncState.Deleted).ToList())
+            catch (Exception ex)
             {
-                DeleteEtabsLoad(etabsModel, loadToDelete);
-                _registry.RemoveLoad(loadToDelete.UniqueIdentifier);
-                deletedCount++;
-            }
-
-            _registry.SaveRegistry();
-
-            return new SyncReport
-            {
-                NewLoads = newCount,
-                ModifiedLoads = modifiedCount,
-                DeletedLoads = deletedCount,
-                UnchangedLoads = unchangedCount,
-                TotalLoads = _registry.GetAllLoads().Count
-            };
-        }
-
-        private void UpdateEtabsLoad(cSapModel model, LoadAssignment load)
-        {
-            switch (load.LoadType)
-            {
-                case "PointLoad":
-                    UpdateEtabsPointLoad(model, load);
-                    break;
-                case "UniformLoad":
-                    UpdateEtabsUniformLoad(model, load);
-                    break;
-                case "LinearLoad":
-                    UpdateEtabsLinearLoad(model, load);
-                    break;
+                Debug.WriteLine($"ERROR in ApplyFrameLoad: {ex.Message}");
+                throw;
             }
         }
 
-        private void CreateEtabsLoad(cSapModel model, LoadAssignment load)
+        private void ApplyAreaLoad(LoadAssignment load)
         {
-            switch (load.LoadType)
+            try
             {
-                case "PointLoad":
-                    CreateEtabsPointLoad(model, load);
-                    break;
-                case "UniformLoad":
-                    CreateEtabsUniformLoad(model, load);
-                    break;
-                case "LinearLoad":
-                    CreateEtabsLinearLoad(model, load);
-                    break;
+                if (load.LoadType.Contains("Uniform"))
+                {
+                    double loadValue = Math.Abs(load.Value);
+
+                    Debug.WriteLine($"Applying area uniform load:");
+                    Debug.WriteLine($"  Element: {load.ElementID}");
+                    Debug.WriteLine($"  Pattern: {load.LoadPattern}");
+                    Debug.WriteLine($"  Value: {loadValue}");
+
+                    int ret = _sapModel.AreaObj.SetLoadUniform(
+                        load.ElementID,
+                        load.LoadPattern,
+                        loadValue,
+                        3                   // Dir (3=Local Z)
+                    );
+
+                    Debug.WriteLine($"SetLoadUniform result: {ret} (0=success)");
+
+                    if (ret != 0)
+                    {
+                        throw new Exception($"SetLoadUniform failed with code {ret}");
+                    }
+                }
+                else
+                {
+                    throw new Exception($"Unsupported area load type: {load.LoadType}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"ERROR in ApplyAreaLoad: {ex.Message}");
+                throw;
             }
         }
 
-        private void DeleteEtabsLoad(cSapModel model, LoadAssignment load)
+        private List<LoadAssignment> ExtractLoadsFromEtabs()
         {
-            switch (load.LoadType)
-            {
-                case "PointLoad":
-                    DeleteEtabsPointLoad(model, load);
-                    break;
-                case "UniformLoad":
-                    DeleteEtabsUniformLoad(model, load);
-                    break;
-                case "LinearLoad":
-                    DeleteEtabsLinearLoad(model, load);
-                    break;
-            }
-        }
-
-        private void UpdateEtabsPointLoad(cSapModel model, LoadAssignment load)
-        {
-            DeleteEtabsPointLoad(model, load);
-            CreateEtabsPointLoad(model, load);
-        }
-
-        private void CreateEtabsPointLoad(cSapModel model, LoadAssignment load)
-        {
-            // Create a Value array for the point load as per ETABS API documentation
-            double[] value = new double[6] { 0, 0, 0, 0, 0, 0 };
-
-            // Set the appropriate force component based on direction
-            value[load.Dir] = load.Value;
-
-            // Use the correct signature from ETABS API documentation
-            model.PointObj.SetLoadForce(load.ElementID, load.LoadPattern, ref value, false, "Global", 0);
-        }
-
-        private void DeleteEtabsPointLoad(cSapModel model, LoadAssignment load)
-        {
-            model.PointObj.DeleteLoadForce(load.ElementID, load.LoadPattern);
-        }
-
-        private void UpdateEtabsUniformLoad(cSapModel model, LoadAssignment load)
-        {
-            DeleteEtabsUniformLoad(model, load);
-            CreateEtabsUniformLoad(model, load);
-        }
-
-        private void CreateEtabsUniformLoad(cSapModel model, LoadAssignment load)
-        {
-            // Create scalar values for the uniform load as per ETABS API documentation
-            double value = load.Value;
-            int dir = load.Dir + 1; // Convert 0-based index to 1-based direction
-
-            // Use the correct signature from ETABS API documentation
-            model.AreaObj.SetLoadUniform(load.ElementID, load.LoadPattern, value, dir, true, "Global", 0);
-        }
-
-        private void DeleteEtabsUniformLoad(cSapModel model, LoadAssignment load)
-        {
-            model.AreaObj.DeleteLoadUniform(load.ElementID, load.LoadPattern);
-        }
-
-        private void UpdateEtabsLinearLoad(cSapModel model, LoadAssignment load)
-        {
-            DeleteEtabsLinearLoad(model, load);
-            CreateEtabsLinearLoad(model, load);
-        }
-
-        private void CreateEtabsLinearLoad(cSapModel model, LoadAssignment load)
-        {
-            // Get start and end distances
-            double startDist = load.StartDistance ?? 0;
-            double endDist = load.EndDistance ?? 1;
-
-            // Create scalar values for the linear load as per ETABS API documentation
-            int myType = 1; // Force per unit length
-            int dir = load.Dir + 1; // Convert 0-based index to 1-based direction
-            double val1 = load.Value; // Start value
-            double val2 = load.Value; // End value (same for constant load)
-            bool relDist = load.RelativeDistance == "Relative";
-
-            // Use the correct signature from ETABS API documentation
-            model.FrameObj.SetLoadDistributed(load.ElementID, load.LoadPattern, myType, dir,
-                                             startDist, endDist, val1, val2,
-                                             "Global", relDist, true, 0);
-        }
-
-        private void DeleteEtabsLinearLoad(cSapModel model, LoadAssignment load)
-        {
-            model.FrameObj.DeleteLoadDistributed(load.ElementID, load.LoadPattern);
+            return new List<LoadAssignment>();
         }
     }
 }
+
