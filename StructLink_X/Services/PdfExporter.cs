@@ -10,381 +10,418 @@ namespace StructLink_X.Services
 {
     public class PdfExporter
     {
+        // Define consistent styling
+        private static readonly Font TitleFont = new Font(Font.FontFamily.HELVETICA, 16, Font.BOLD, BaseColor.BLACK);
+        private static readonly Font SectionFont = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD, BaseColor.BLACK);
+        private static readonly Font HeaderFont = new Font(Font.FontFamily.HELVETICA, 14, Font.BOLD, BaseColor.BLACK);
+        private static readonly Font DateFont = new Font(Font.FontFamily.HELVETICA, 10, Font.NORMAL, BaseColor.DARK_GRAY);
+        private static readonly Font TableHeaderFont = new Font(Font.FontFamily.HELVETICA, 8, Font.BOLD, BaseColor.WHITE);
+        private static readonly Font TableDataFont = new Font(Font.FontFamily.HELVETICA, 7, Font.NORMAL, BaseColor.BLACK);
+        private static readonly Font FooterFont = new Font(Font.FontFamily.HELVETICA, 9, Font.ITALIC, BaseColor.DARK_GRAY);
+
+        private static readonly BaseColor HeaderColor = new BaseColor(0, 122, 204); // Professional blue
+        private static readonly BaseColor AlternateRowColor = new BaseColor(248, 248, 248); // Light gray
+        private static readonly BaseColor SummaryHeaderColor = new BaseColor(76, 175, 80); // Green accent
+
         public static void ExportToPDF(IEnumerable<ColumnRCData> columns, IEnumerable<BeamRCData> beams, string filePath, string selectedCode)
         {
-            Document doc = new Document(PageSize.A4.Rotate(), 25f, 25f, 30f, 30f); // Landscape for more columns
+            Document doc = new Document(PageSize.A4.Rotate(), 20f, 20f, 25f, 25f);
             PdfWriter writer = PdfWriter.GetInstance(doc, new FileStream(filePath, FileMode.Create));
             doc.Open();
 
-            // Add header with logo placeholder and formatted date
-            PdfPTable headerTable = new PdfPTable(2);
-            headerTable.WidthPercentage = 100;
-            headerTable.SetWidths(new float[] { 1f, 3f });
+            // Add professional header
+            AddHeader(doc, selectedCode);
 
-            PdfPCell logoCell = new PdfPCell(new Phrase(" SLX ", new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD, BaseColor.BLACK)));
+            // Add project summary first
+            AddProjectSummary(doc, columns, beams);
+
+            // Add columns section
+            if (columns != null && columns.Any())
+            {
+                AddColumnsSection(doc, columns);
+            }
+
+            // Add beams section
+            if (beams != null && beams.Any())
+            {
+                AddBeamsSection(doc, beams);
+            }
+
+            // Add footer
+            AddFooter(doc);
+
+            doc.Close();
+        }
+
+        private static void AddHeader(Document doc, string selectedCode)
+        {
+            // Professional header with logo and project info
+            PdfPTable headerTable = new PdfPTable(3);
+            headerTable.WidthPercentage = 100;
+            headerTable.SetWidths(new float[] { 1f, 3f, 1.5f });
+
+            // Logo/Company cell
+            PdfPCell logoCell = new PdfPCell(new Phrase("SLX", new Font(Font.FontFamily.HELVETICA, 18, Font.BOLD, BaseColor.WHITE)));
+            logoCell.BackgroundColor = HeaderColor;
             logoCell.Border = Rectangle.NO_BORDER;
+            logoCell.HorizontalAlignment = Element.ALIGN_CENTER;
             logoCell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            logoCell.Padding = 10;
             headerTable.AddCell(logoCell);
 
-            Font headerFont = new Font(Font.FontFamily.HELVETICA, 14, Font.BOLD, BaseColor.BLACK);
-            Font dateFont = new Font(Font.FontFamily.HELVETICA, 10, Font.NORMAL, BaseColor.DARK_GRAY);
-            PdfPCell headerCell = new PdfPCell();
-            headerCell.AddElement(new Paragraph($"StructLink_X - Enhanced Rebar Report (SLX)", headerFont));
-            headerCell.AddElement(new Paragraph($"Generated on: {DateTime.Now:dd MMMM yyyy, HH:mm}", dateFont));
-            headerCell.Border = Rectangle.NO_BORDER;
-            headerCell.VerticalAlignment = Element.ALIGN_MIDDLE;
-            headerTable.AddCell(headerCell);
+            // Title cell
+            PdfPCell titleCell = new PdfPCell();
+            titleCell.AddElement(new Paragraph("StructLink_X - Enhanced Structural Analysis Report", TitleFont));
+            titleCell.Border = Rectangle.NO_BORDER;
+            titleCell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            titleCell.Padding = 10;
+            headerTable.AddCell(titleCell);
+
+            // Date and project info cell
+            PdfPCell infoCell = new PdfPCell();
+            infoCell.AddElement(new Paragraph($"Generated: {DateTime.Now:dd MMM yyyy}", new Font(Font.FontFamily.HELVETICA, 9, Font.BOLD, BaseColor.BLACK)));
+            infoCell.AddElement(new Paragraph($"Time: {DateTime.Now:HH:mm}", DateFont));
+            infoCell.AddElement(new Paragraph($"Page: 1", DateFont));
+            infoCell.Border = Rectangle.NO_BORDER;
+            infoCell.HorizontalAlignment = Element.ALIGN_RIGHT;
+            infoCell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            infoCell.Padding = 10;
+            headerTable.AddCell(infoCell);
 
             doc.Add(headerTable);
             doc.Add(new Paragraph("\n"));
+        }
 
-            // Styling for tables
-            Font tableHeaderFont = new Font(Font.FontFamily.HELVETICA, 8, Font.BOLD, BaseColor.WHITE);
-            Font tableDataFont = new Font(Font.FontFamily.HELVETICA, 7, Font.NORMAL, BaseColor.BLACK);
-            BaseColor headerColor = new BaseColor(0, 122, 204); // Dark blue header
-            BaseColor alternateRowColor = new BaseColor(240, 240, 240); // Light gray for alternate rows
-
-            // Enhanced Columns Table
-            if (columns != null && columns.Any())
-            {
-                doc.Add(new Paragraph("Columns", new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD, BaseColor.BLACK)));
-                doc.Add(new Paragraph("\n"));
-
-                // Enhanced table with 10 columns
-                PdfPTable columnTable = new PdfPTable(10);
-                columnTable.WidthPercentage = 100;
-                columnTable.SetWidths(new float[] { 0.8f, 1.3f, 1.2f, 0.8f, 1.3f, 1.2f, 1.2f, 1f, 1.2f, 1.2f });
-                columnTable.DefaultCell.Padding = 3;
-
-                string[] columnHeaders = {
-                    "ID",
-                    "Section",
-                    "Size (mm)",
-                    "Qty",
-                    "Main Bars",
-                    "Dir-2 Bars",
-                    "Dir-3 Bars",
-                    "Tie Dia.",
-                    "Tie Spacing",
-                    "Cover"
-                };
-
-                foreach (string header in columnHeaders)
-                {
-                    PdfPCell cell = new PdfPCell(new Phrase(header, tableHeaderFont));
-                    cell.BackgroundColor = headerColor;
-                    cell.HorizontalAlignment = Element.ALIGN_CENTER;
-                    cell.VerticalAlignment = Element.ALIGN_MIDDLE;
-                    cell.Padding = 6;
-                    columnTable.AddCell(cell);
-                }
-
-                int rowCount = 0;
-                int idCounter = 1;
-
-                foreach (var column in columns)
-                {
-                    // Validate inputs
-                    if (column.MainBarDiameter <= 0) throw new ArgumentException("MainBarDiameter must be positive for column.");
-                    if (column.TieSpacing <= 0) throw new ArgumentException("TieSpacing must be positive for column.");
-
-                    int tieBarDiameter = column.TieBarDiameter > 0 ? column.TieBarDiameter : 8;
-                    int totalMainBars = column.NumBarsDir3 + column.NumBarsDir2;
-
-                    PdfPCell[] cells = new PdfPCell[]
-                    {
-                        new PdfPCell(new Phrase(idCounter.ToString(), tableDataFont)),
-                        new PdfPCell(new Phrase(column.SectionName ?? column.UniqueName ?? $"COL-{idCounter}", tableDataFont)),
-                        new PdfPCell(new Phrase($"{column.Width}×{column.Depth}", tableDataFont)),
-                        new PdfPCell(new Phrase(column.SectionCount.ToString(), tableDataFont)),
-                        new PdfPCell(new Phrase($"{totalMainBars}T{column.MainBarDiameter}", tableDataFont)),
-                        new PdfPCell(new Phrase($"{column.NumBarsDir2}T{column.MainBarDiameter}", tableDataFont)),
-                        new PdfPCell(new Phrase($"{column.NumBarsDir3}T{column.MainBarDiameter}", tableDataFont)),
-                        new PdfPCell(new Phrase($"T{tieBarDiameter}", tableDataFont)),
-                        new PdfPCell(new Phrase($"{column.TieSpacing:F0}", tableDataFont)),
-                        new PdfPCell(new Phrase($"{column.ConcreteCover:F0}", tableDataFont))
-                    };
-
-                    foreach (var cell in cells)
-                    {
-                        cell.BackgroundColor = rowCount % 2 == 0 ? BaseColor.WHITE : alternateRowColor;
-                        cell.HorizontalAlignment = Element.ALIGN_CENTER;
-                        cell.VerticalAlignment = Element.ALIGN_MIDDLE;
-                        cell.Padding = 4;
-                        columnTable.AddCell(cell);
-                    }
-                    rowCount++;
-                    idCounter++;
-                }
-
-                doc.Add(columnTable);
-                doc.Add(new Paragraph("\n"));
-            }
-
-            // Enhanced Beams Table
-            if (beams != null && beams.Any())
-            {
-                doc.Add(new Paragraph("Beams", new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD, BaseColor.BLACK)));
-                doc.Add(new Paragraph("\n"));
-
-                // Enhanced table with 9 columns
-                PdfPTable beamTable = new PdfPTable(9);
-                beamTable.WidthPercentage = 100;
-                beamTable.SetWidths(new float[] { 0.8f, 1.3f, 1.2f, 1.3f, 1.3f, 1f, 1.2f, 1f, 1.2f });
-                beamTable.DefaultCell.Padding = 3;
-
-                string[] beamHeaders = {
-                    "ID",
-                    "Section",
-                    "Size (mm)",
-                    "Top Bars",
-                    "Bottom Bars",
-                    "Tie Dia.",
-                    "Tie Spacing",
-                    "Legs",
-                    "Cover"
-                };
-
-                foreach (string header in beamHeaders)
-                {
-                    PdfPCell cell = new PdfPCell(new Phrase(header, tableHeaderFont));
-                    cell.BackgroundColor = headerColor;
-                    cell.HorizontalAlignment = Element.ALIGN_CENTER;
-                    cell.VerticalAlignment = Element.ALIGN_MIDDLE;
-                    cell.Padding = 6;
-                    beamTable.AddCell(cell);
-                }
-
-                int rowCount = 0;
-                int idCounter = 1;
-
-                foreach (var beam in beams)
-                {
-                    // Validate inputs
-                    if (beam.MainBarDiameter <= 0) throw new ArgumentException("MainBarDiameter must be positive for beam.");
-                    if (beam.TieSpacing <= 0) throw new ArgumentException("TieSpacing must be positive for beam.");
-                    if (beam.NumOfLegs <= 0) throw new ArgumentException("NumOfLegs must be positive for beam.");
-
-                    int tieBarDiameter = beam.TieBarDiameter > 0 ? beam.TieBarDiameter : 8;
-
-                    PdfPCell[] cells = new PdfPCell[]
-                    {
-                        new PdfPCell(new Phrase(idCounter.ToString(), tableDataFont)),
-                        new PdfPCell(new Phrase(beam.SectionName ?? beam.UniqueName ?? $"BEAM-{idCounter}", tableDataFont)),
-                        new PdfPCell(new Phrase($"{beam.Width}×{beam.Depth}", tableDataFont)),
-                        new PdfPCell(new Phrase($"{beam.TopBars}T{beam.MainBarDiameter}", tableDataFont)),
-                        new PdfPCell(new Phrase($"{beam.BottomBars}T{beam.MainBarDiameter}", tableDataFont)),
-                        new PdfPCell(new Phrase($"T{tieBarDiameter}", tableDataFont)),
-                        new PdfPCell(new Phrase($"{beam.TieSpacing:F0}", tableDataFont)),
-                        new PdfPCell(new Phrase($"{beam.NumOfLegs}", tableDataFont)),
-                        new PdfPCell(new Phrase($"{beam.ConcreteCover:F0}", tableDataFont))
-                    };
-
-                    foreach (var cell in cells)
-                    {
-                        cell.BackgroundColor = rowCount % 2 == 0 ? BaseColor.WHITE : alternateRowColor;
-                        cell.HorizontalAlignment = Element.ALIGN_CENTER;
-                        cell.VerticalAlignment = Element.ALIGN_MIDDLE;
-                        cell.Padding = 4;
-                        beamTable.AddCell(cell);
-                    }
-                    rowCount++;
-                    idCounter++;
-                }
-
-                doc.Add(beamTable);
-                doc.Add(new Paragraph("\n"));
-            }
-
-            // Enhanced Summary Table
-            doc.Add(new Paragraph("Project Summary", new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD, BaseColor.BLACK)));
+        private static void AddColumnsSection(Document doc, IEnumerable<ColumnRCData> columns)
+        {
+            // Section header with count
+            int columnCount = columns.Count();
+            doc.Add(new Paragraph($"COLUMNS ({columnCount} Types)", SectionFont));
             doc.Add(new Paragraph("\n"));
 
-            // Summary Statistics Table
-            PdfPTable summaryTable = new PdfPTable(4);
-            summaryTable.WidthPercentage = 80;
-            summaryTable.SetWidths(new float[] { 2f, 1f, 2f, 1f });
-            summaryTable.DefaultCell.Padding = 5;
+            // Enhanced columns table with better layout
+            PdfPTable columnTable = new PdfPTable(11);
+            columnTable.WidthPercentage = 100;
+            columnTable.SetWidths(new float[] { 0.6f, 1.2f, 1f, 0.7f, 1.1f, 1.1f, 1.1f, 0.8f, 1f, 0.8f, 1f });
 
-            string[] summaryHeaders = { "Element Type", "Count", "Total Sections", "Avg Dimensions" };
+            string[] columnHeaders = {
+                "ID", "Section", "Size (mm)", "Qty", "Main Bars", "Dir-2 Bars",
+                "Dir-3 Bars", "Tie Ø", "Tie Spacing", "Cover", "Height (m)"
+            };
+
+            // Add headers
+            foreach (string header in columnHeaders)
+            {
+                PdfPCell cell = CreateHeaderCell(header);
+                columnTable.AddCell(cell);
+            }
+
+            // Add data rows
+            int idCounter = 1;
+            foreach (var column in columns)
+            {
+                ValidateColumnData(column, idCounter);
+
+                int tieBarDiameter = column.TieBarDiameter > 0 ? column.TieBarDiameter : 8;
+                int totalMainBars = column.NumBarsDir3 + column.NumBarsDir2;
+                string sectionName = GetSectionName(column.SectionName, column.UniqueName, "COL", idCounter);
+
+                var cellData = new string[]
+                {
+                    idCounter.ToString(),
+                    sectionName,
+                    $"{column.Width}×{column.Depth}",
+                    column.SectionCount.ToString(),
+                    $"{totalMainBars}T{column.MainBarDiameter}",
+                    $"{column.NumBarsDir2}T{column.MainBarDiameter}",
+                    $"{column.NumBarsDir3}T{column.MainBarDiameter}",
+                    $"T{tieBarDiameter}",
+                    $"{column.TieSpacing:F0}",
+                    $"{column.ConcreteCover:F0}",
+                    $"{column.Height:F1}"
+                };
+
+                AddTableRow(columnTable, cellData, idCounter % 2 == 0);
+                idCounter++;
+            }
+
+            doc.Add(columnTable);
+            doc.Add(new Paragraph("\n"));
+        }
+
+        private static void AddBeamsSection(Document doc, IEnumerable<BeamRCData> beams)
+        {
+            // Group beams by their properties to remove duplicates and count quantities
+            var groupedBeams = GroupBeamsByProperties(beams);
+
+            int uniqueBeamTypes = groupedBeams.Count();
+            int totalBeamCount = groupedBeams.Sum(g => g.Count());
+
+            doc.Add(new Paragraph($"BEAMS ({uniqueBeamTypes} Unique Types, {totalBeamCount} Total)", SectionFont));
+            doc.Add(new Paragraph("\n"));
+
+            // Enhanced beams table with quantity column
+            PdfPTable beamTable = new PdfPTable(10);
+            beamTable.WidthPercentage = 100;
+            beamTable.SetWidths(new float[] { 0.6f, 1.2f, 1f, 0.7f, 1.1f, 1.1f, 0.8f, 1f, 0.8f, 1f });
+
+            string[] beamHeaders = {
+                "ID", "Section", "Size (mm)", "Qty", "Top Bars", "Bottom Bars",
+                "Tie Ø", "Tie Spacing", "Legs", "Cover"
+            };
+
+            // Add headers
+            foreach (string header in beamHeaders)
+            {
+                PdfPCell cell = CreateHeaderCell(header);
+                beamTable.AddCell(cell);
+            }
+
+            // Add data rows
+            int idCounter = 1;
+            foreach (var group in groupedBeams.OrderBy(g => g.Key.Width).ThenBy(g => g.Key.Depth))
+            {
+                var beam = group.First(); // Representative beam from the group
+                ValidateBeamData(beam, idCounter);
+
+                int tieBarDiameter = beam.TieBarDiameter > 0 ? beam.TieBarDiameter : 8;
+                string sectionName = GetGroupedSectionName(group.ToList(), idCounter);
+
+                var cellData = new string[]
+                {
+                    idCounter.ToString(),
+                    sectionName,
+                    $"{beam.Width}×{beam.Depth}",
+                    group.Count().ToString(),
+                    $"{beam.TopBars}T{beam.MainBarDiameter}",
+                    $"{beam.BottomBars}T{beam.MainBarDiameter}",
+                    $"T{tieBarDiameter}",
+                    $"{beam.TieSpacing:F0}",
+                    beam.NumOfLegs.ToString(),
+                    $"{beam.ConcreteCover:F0}"
+                };
+
+                AddTableRow(beamTable, cellData, idCounter % 2 == 0);
+                idCounter++;
+            }
+
+            doc.Add(beamTable);
+            doc.Add(new Paragraph("\n"));
+        }
+
+        private static void AddProjectSummary(Document doc, IEnumerable<ColumnRCData> columns, IEnumerable<BeamRCData> beams)
+        {
+            doc.Add(new Paragraph("PROJECT SUMMARY", SectionFont));
+            doc.Add(new Paragraph("\n"));
+
+            PdfPTable summaryTable = new PdfPTable(3); // Reduced to 3 columns
+            summaryTable.WidthPercentage = 90;
+            summaryTable.SetWidths(new float[] { 2f, 1f, 1f }); // Adjusted widths for 3 columns
+
+            string[] summaryHeaders = { "Element Type", "Unique Types", "Total Elements" }; // Removed Avg Dimensions and Total Volume
+
             foreach (string header in summaryHeaders)
             {
-                PdfPCell cell = new PdfPCell(new Phrase(header, tableHeaderFont));
-                cell.BackgroundColor = headerColor;
-                cell.HorizontalAlignment = Element.ALIGN_CENTER;
-                cell.VerticalAlignment = Element.ALIGN_MIDDLE;
-                cell.Padding = 8;
+                PdfPCell cell = CreateHeaderCell(header);
+                cell.BackgroundColor = SummaryHeaderColor;
                 summaryTable.AddCell(cell);
             }
 
-            int columnCount = columns?.Count() ?? 0;
-            int totalColumnSections = columns?.Sum(c => c.SectionCount) ?? 0;
-            int beamCount = beams?.Count() ?? 0;
+            // Calculate summary data
+            int columnTypes = columns?.Count() ?? 0;
+            int totalColumnElements = columns?.Sum(c => c.SectionCount) ?? 0;
 
-            // Calculate average dimensions
-            string avgColumnDim = columns?.Any() == true ?
-                $"{columns.Average(c => c.Width):F0}×{columns.Average(c => c.Depth):F0}" : "N/A";
-            string avgBeamDim = beams?.Any() == true ?
-                $"{beams.Average(b => b.Width):F0}×{beams.Average(b => b.Depth):F0}" : "N/A";
+            // Group beams to get accurate counts
+            var groupedBeams = beams != null ? GroupBeamsByProperties(beams) : new List<IGrouping<BeamKey, BeamRCData>>();
+            int beamTypes = groupedBeams.Count();
+            int totalBeamElements = groupedBeams.Sum(g => g.Count());
 
-            PdfPCell[] summaryCells = new PdfPCell[]
+            var summaryData = new string[][]
             {
-                new PdfPCell(new Phrase("Columns", tableDataFont)),
-                new PdfPCell(new Phrase(columnCount.ToString(), tableDataFont)),
-                new PdfPCell(new Phrase(totalColumnSections.ToString(), tableDataFont)),
-                new PdfPCell(new Phrase(avgColumnDim, tableDataFont)),
-                new PdfPCell(new Phrase("Beams", tableDataFont)),
-                new PdfPCell(new Phrase(beamCount.ToString(), tableDataFont)),
-                new PdfPCell(new Phrase(beamCount.ToString(), tableDataFont)),
-                new PdfPCell(new Phrase(avgBeamDim, tableDataFont))
+                new string[] { "Columns", columnTypes.ToString(), totalColumnElements.ToString() },
+                new string[] { "Beams", beamTypes.ToString(), totalBeamElements.ToString() },
+                new string[] { "TOTAL", (columnTypes + beamTypes).ToString(), (totalColumnElements + totalBeamElements).ToString() }
             };
 
-            foreach (var cell in summaryCells)
+            for (int i = 0; i < summaryData.Length; i++)
             {
-                cell.BackgroundColor = BaseColor.WHITE;
-                cell.HorizontalAlignment = Element.ALIGN_CENTER;
-                cell.VerticalAlignment = Element.ALIGN_MIDDLE;
-                cell.Padding = 6;
-                summaryTable.AddCell(cell);
+                bool isTotal = i == summaryData.Length - 1;
+                AddTableRow(summaryTable, summaryData[i], false, isTotal);
             }
 
             doc.Add(summaryTable);
             doc.Add(new Paragraph("\n"));
+        }
 
-            // Rebar Summary Table
-            if ((columns?.Any() == true) || (beams?.Any() == true))
+        private static void AddFooter(Document doc)
+        {
+            // Add a separator line
+            doc.Add(new Paragraph("_".PadRight(150, '_'), FooterFont));
+            doc.Add(new Paragraph("\n"));
+
+            // Footer information
+            PdfPTable footerTable = new PdfPTable(2);
+            footerTable.WidthPercentage = 100;
+            footerTable.SetWidths(new float[] { 1f, 1f });
+
+            PdfPCell leftFooter = new PdfPCell(new Phrase("Report generated by StructLink_X v2.0", FooterFont));
+            leftFooter.Border = Rectangle.NO_BORDER;
+            leftFooter.HorizontalAlignment = Element.ALIGN_LEFT;
+            footerTable.AddCell(leftFooter);
+
+            PdfPCell rightFooter = new PdfPCell(new Phrase("Thank you for using StructLink_X", FooterFont));
+            rightFooter.Border = Rectangle.NO_BORDER;
+            rightFooter.HorizontalAlignment = Element.ALIGN_RIGHT;
+            footerTable.AddCell(rightFooter);
+
+            doc.Add(footerTable);
+        }
+
+        // Helper methods
+        private static PdfPCell CreateHeaderCell(string text)
+        {
+            PdfPCell cell = new PdfPCell(new Phrase(text, TableHeaderFont));
+            cell.BackgroundColor = HeaderColor;
+            cell.HorizontalAlignment = Element.ALIGN_CENTER;
+            cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            cell.Padding = 6;
+            return cell;
+        }
+
+        private static void AddTableRow(PdfPTable table, string[] data, bool alternateRow, bool isTotalRow = false)
+        {
+            Font font = isTotalRow ? new Font(Font.FontFamily.HELVETICA, 7, Font.BOLD, BaseColor.BLACK) : TableDataFont;
+            BaseColor bgColor = isTotalRow ? new BaseColor(220, 220, 220) :
+                               (alternateRow ? AlternateRowColor : BaseColor.WHITE);
+
+            foreach (string item in data)
             {
-                doc.Add(new Paragraph("Rebar Summary", new Font(Font.FontFamily.HELVETICA, 11, Font.BOLD, BaseColor.BLACK)));
-                doc.Add(new Paragraph("\n"));
+                PdfPCell cell = new PdfPCell(new Phrase(item, font));
+                cell.BackgroundColor = bgColor;
+                cell.HorizontalAlignment = Element.ALIGN_CENTER;
+                cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+                cell.Padding = 4;
+                table.AddCell(cell);
+            }
+        }
 
-                PdfPTable rebarTable = new PdfPTable(3);
-                rebarTable.WidthPercentage = 60;
-                rebarTable.SetWidths(new float[] { 2f, 1f, 1f });
+        private static string GetSectionName(string sectionName, string uniqueName, string prefix, int id)
+        {
+            return sectionName ?? uniqueName ?? $"{prefix}-{id:D3}";
+        }
 
-                string[] rebarHeaders = { "Rebar Size", "Total Length (m)", "Total Weight (kg)" };
-                foreach (string header in rebarHeaders)
+        private static void ValidateColumnData(ColumnRCData column, int id)
+        {
+            if (column.MainBarDiameter <= 0)
+                throw new ArgumentException($"MainBarDiameter must be positive for column {id}.");
+            if (column.TieSpacing <= 0)
+                throw new ArgumentException($"TieSpacing must be positive for column {id}.");
+            if (column.Width <= 0 || column.Depth <= 0)
+                throw new ArgumentException($"Column dimensions must be positive for column {id}.");
+        }
+
+        private static void ValidateBeamData(BeamRCData beam, int id)
+        {
+            if (beam.MainBarDiameter <= 0)
+                throw new ArgumentException($"MainBarDiameter must be positive for beam {id}.");
+            if (beam.TieSpacing <= 0)
+                throw new ArgumentException($"TieSpacing must be positive for beam {id}.");
+            if (beam.NumOfLegs <= 0)
+                throw new ArgumentException($"NumOfLegs must be positive for beam {id}.");
+            if (beam.Width <= 0 || beam.Depth <= 0)
+                throw new ArgumentException($"Beam dimensions must be positive for beam {id}.");
+        }
+
+        // Beam grouping helper methods
+        private static IEnumerable<IGrouping<BeamKey, BeamRCData>> GroupBeamsByProperties(IEnumerable<BeamRCData> beams)
+        {
+            return beams.GroupBy(beam => new BeamKey
+            {
+                Width = beam.Width,
+                Depth = beam.Depth,
+                MainBarDiameter = beam.MainBarDiameter,
+                TopBars = beam.TopBars,
+                BottomBars = beam.BottomBars,
+                TieBarDiameter = beam.TieBarDiameter > 0 ? beam.TieBarDiameter : 8,
+                TieSpacing = beam.TieSpacing,
+                NumOfLegs = beam.NumOfLegs,
+                ConcreteCover = beam.ConcreteCover,
+                Length = Math.Round(beam.Length, 1) // Round to nearest 0.1m for grouping
+            });
+        }
+
+        private static string GetGroupedSectionName(List<BeamRCData> beamGroup, int id)
+        {
+            // Try to get a meaningful name from the group
+            var namesWithValues = beamGroup
+                .Where(b => !string.IsNullOrEmpty(b.SectionName) || !string.IsNullOrEmpty(b.UniqueName))
+                .ToList();
+
+            if (namesWithValues.Any())
+            {
+                var firstValidName = namesWithValues.First();
+                string baseName = firstValidName.SectionName ?? firstValidName.UniqueName;
+
+                // If multiple beams have different names, show the count
+                if (beamGroup.Count > 1)
                 {
-                    PdfPCell cell = new PdfPCell(new Phrase(header, tableHeaderFont));
-                    cell.BackgroundColor = headerColor;
-                    cell.HorizontalAlignment = Element.ALIGN_CENTER;
-                    cell.VerticalAlignment = Element.ALIGN_MIDDLE;
-                    cell.Padding = 8;
-                    rebarTable.AddCell(cell);
-                }
+                    var uniqueNames = beamGroup
+                        .Select(b => b.SectionName ?? b.UniqueName)
+                        .Where(name => !string.IsNullOrEmpty(name))
+                        .Distinct()
+                        .ToList();
 
-                // Calculate rebar totals by diameter
-                var rebarSummary = new Dictionary<int, (double length, double weight)>();
-
-                if (columns?.Any() == true)
-                {
-                    foreach (var column in columns)
+                    if (uniqueNames.Count > 1)
                     {
-                        // Main bars
-                        double mainLength = RebarCalculator.CalculateColumnRebarLength(column);
-                        double mainWeight = RebarCalculator.CalculateRebarWeight(mainLength * column.SectionCount, column.MainBarDiameter);
-
-                        if (rebarSummary.ContainsKey(column.MainBarDiameter))
-                        {
-                            rebarSummary[column.MainBarDiameter] = (
-                                rebarSummary[column.MainBarDiameter].length + mainLength * column.SectionCount,
-                                rebarSummary[column.MainBarDiameter].weight + mainWeight
-                            );
-                        }
-                        else
-                        {
-                            rebarSummary[column.MainBarDiameter] = (mainLength * column.SectionCount, mainWeight);
-                        }
-
-                        // Tie bars
-                        int tieDiameter = column.TieBarDiameter > 0 ? column.TieBarDiameter : 8;
-                        double tieLength = RebarCalculator.CalculateColumnTieLength(column);
-                        double tieWeight = RebarCalculator.CalculateRebarWeight(tieLength * column.SectionCount, tieDiameter);
-
-                        if (rebarSummary.ContainsKey(tieDiameter))
-                        {
-                            rebarSummary[tieDiameter] = (
-                                rebarSummary[tieDiameter].length + tieLength * column.SectionCount,
-                                rebarSummary[tieDiameter].weight + tieWeight
-                            );
-                        }
-                        else
-                        {
-                            rebarSummary[tieDiameter] = (tieLength * column.SectionCount, tieWeight);
-                        }
+                        return $"{baseName} (+{beamGroup.Count - 1} similar)";
                     }
                 }
 
-                if (beams?.Any() == true)
-                {
-                    foreach (var beam in beams)
-                    {
-                        // Main bars
-                        double mainLength = RebarCalculator.CalculateBeamRebarLength(beam);
-                        double mainWeight = RebarCalculator.CalculateRebarWeight(mainLength, beam.MainBarDiameter);
-
-                        if (rebarSummary.ContainsKey(beam.MainBarDiameter))
-                        {
-                            rebarSummary[beam.MainBarDiameter] = (
-                                rebarSummary[beam.MainBarDiameter].length + mainLength,
-                                rebarSummary[beam.MainBarDiameter].weight + mainWeight
-                            );
-                        }
-                        else
-                        {
-                            rebarSummary[beam.MainBarDiameter] = (mainLength, mainWeight);
-                        }
-
-                        // Tie bars
-                        int tieDiameter = beam.TieBarDiameter > 0 ? beam.TieBarDiameter : 8;
-                        double tieCount = Math.Ceiling(beam.Length / (beam.TieSpacing / 1000));
-                        double singleTieLength = RebarCalculator.CalculateBeamTieLength(beam);
-                        double totalTieLength = singleTieLength * tieCount * beam.NumOfLegs;
-                        double tieWeight = RebarCalculator.CalculateRebarWeight(totalTieLength, tieDiameter);
-
-                        if (rebarSummary.ContainsKey(tieDiameter))
-                        {
-                            rebarSummary[tieDiameter] = (
-                                rebarSummary[tieDiameter].length + totalTieLength,
-                                rebarSummary[tieDiameter].weight + tieWeight
-                            );
-                        }
-                        else
-                        {
-                            rebarSummary[tieDiameter] = (totalTieLength, tieWeight);
-                        }
-                    }
-                }
-
-                // Add rebar summary rows
-                foreach (var kvp in rebarSummary.OrderBy(x => x.Key))
-                {
-                    PdfPCell[] rebarCells = new PdfPCell[]
-                    {
-                        new PdfPCell(new Phrase($"T{kvp.Key}", tableDataFont)),
-                        new PdfPCell(new Phrase($"{kvp.Value.length:F2}", tableDataFont)),
-                        new PdfPCell(new Phrase($"{kvp.Value.weight:F2}", tableDataFont))
-                    };
-
-                    foreach (var cell in rebarCells)
-                    {
-                        cell.BackgroundColor = BaseColor.WHITE;
-                        cell.HorizontalAlignment = Element.ALIGN_CENTER;
-                        cell.VerticalAlignment = Element.ALIGN_MIDDLE;
-                        cell.Padding = 6;
-                        rebarTable.AddCell(cell);
-                    }
-                }
-
-                doc.Add(rebarTable);
-                doc.Add(new Paragraph("\n"));
+                return baseName;
             }
 
-            // Footer
-            Font footerFont = new Font(Font.FontFamily.HELVETICA, 9, Font.ITALIC, BaseColor.DARK_GRAY);
-            doc.Add(new Paragraph("Report generated by StructLink_X v2.0", footerFont));
-            doc.Add(new Paragraph("Thank you for using StructLink_X", footerFont));
+            return $"BEAM-{id:D3}";
+        }
 
-            doc.Close();
+        // BeamKey class for grouping beams with similar properties
+        private class BeamKey : IEquatable<BeamKey>
+        {
+            public double Width { get; set; }
+            public double Depth { get; set; }
+            public int MainBarDiameter { get; set; }
+            public int TopBars { get; set; }
+            public int BottomBars { get; set; }
+            public int TieBarDiameter { get; set; }
+            public double TieSpacing { get; set; }
+            public int NumOfLegs { get; set; }
+            public double ConcreteCover { get; set; }
+            public double Length { get; set; }
+
+            public bool Equals(BeamKey other)
+            {
+                if (other == null) return false;
+                return Width == other.Width &&
+                       Depth == other.Depth &&
+                       MainBarDiameter == other.MainBarDiameter &&
+                       TopBars == other.TopBars &&
+                       BottomBars == other.BottomBars &&
+                       TieBarDiameter == other.TieBarDiameter &&
+                       Math.Abs(TieSpacing - other.TieSpacing) < 0.01 &&
+                       NumOfLegs == other.NumOfLegs &&
+                       Math.Abs(ConcreteCover - other.ConcreteCover) < 0.01 &&
+                       Math.Abs(Length - other.Length) < 0.1; // 0.1m tolerance for length
+            }
+
+            public override bool Equals(object obj)
+            {
+                return Equals(obj as BeamKey);
+            }
+
+            public override int GetHashCode()
+            {
+                return (Width, Depth, MainBarDiameter, TopBars, BottomBars,
+                        TieBarDiameter, TieSpacing, NumOfLegs, ConcreteCover, Length).GetHashCode();
+            }
         }
     }
 }
