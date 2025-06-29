@@ -1,12 +1,9 @@
 ﻿using System.Collections.ObjectModel;
-using System.Linq;
 using Auto_Sheets.Models;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using CommunityToolkit.Mvvm.ComponentModel;
-using System.Collections.Generic;
 using CommunityToolkit.Mvvm.Input;
-using System;
 
 namespace Auto_Sheets.ViewModels
 {
