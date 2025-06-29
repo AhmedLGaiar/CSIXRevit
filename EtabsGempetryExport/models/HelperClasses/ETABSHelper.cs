@@ -1,7 +1,6 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
-namespace EtabsGempetryExport.Model.HelperClasses
+namespace EtabsGeometryExport.Model.HelperClasses
 {
     public static class ETABSHelper
     {

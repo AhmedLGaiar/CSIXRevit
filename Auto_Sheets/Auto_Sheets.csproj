@@ -43,7 +43,7 @@
 	</Target>
 
 	<ItemGroup>
-	  <Resource Include="resources\SheetIcon.png" />
+	  <Resource Include="Resources\SheetIcon.png" />
 	</ItemGroup>
 
 	<ItemGroup>

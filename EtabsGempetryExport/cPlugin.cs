@@ -1,15 +1,9 @@
-﻿using System;
-using System.IO;
-using System.Windows.Forms;
-using System.Threading;
+﻿using System.Windows.Forms;
 using ETABSv1;
-using Newtonsoft.Json;
-using EtabsGempetryExport.Model;
-using EtabsGempetryExport.Model.Service;
-using EtabsGempetryExport.Views;
-using EtabsGempetryExport.ViewModel;
+using EtabsGeometryExport.Model.Service;
+using EtabsGeometryExport.Views;
 
-namespace EtabsGempetryExport
+namespace EtabsGeometryExport
 {
     public class cPlugin : cPluginContract
     {

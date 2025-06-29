@@ -1,9 +1,8 @@
-﻿using System;
-using System.IO;
-using EtabsGempetryExport.Model.HelperClasses;
+﻿using System.IO;
+using EtabsGeometryExport.Model.HelperClasses;
 using Newtonsoft.Json;
 
-namespace EtabsGempetryExport.Model.Service
+namespace EtabsGeometryExport.Model.Service
 {
     public class FileService : IFileService
     {

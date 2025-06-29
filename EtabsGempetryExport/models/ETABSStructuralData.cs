@@ -1,18 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using ElementsData;
-using ElementsData.Geometry;
-using ElementsData.Steel;
-using EtabsGempetryExport.Model.HelperClasses;
-using ETABSv1;
-using Microsoft.Win32;
+﻿using ElementsData.Geometry;
 
-namespace EtabsGempetryExport.Model
+namespace EtabsGeometryExport.Model
 {
     public class ETABSStructuralData
     {
@@ -27,7 +15,4 @@ namespace EtabsGempetryExport.Model
         public int TotalElementCount => Beams.Count + Columns.Count+ Slabs.Count + StructWalls.Count;
     }
 
-
-
-
- }
+}

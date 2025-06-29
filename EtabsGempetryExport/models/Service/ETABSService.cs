@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Media.Media3D;
+﻿using ETABSv1;
 using ElementsData.Geometry;
-using EtabsGempetryExport.Model.HelperClasses;
-using ETABSv1;
+using EtabsGeometryExport.Model.HelperClasses;
+using System.Windows.Media.Media3D;
 
-namespace EtabsGempetryExport.Model.Service
+namespace EtabsGeometryExport.Model.Service
 {
     public class ETABSService : IETABSService
     {

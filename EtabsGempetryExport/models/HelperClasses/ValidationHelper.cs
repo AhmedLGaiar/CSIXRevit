@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ETABSv1;
+﻿using ETABSv1;
 
-namespace EtabsGempetryExport.Model.HelperClasses
+namespace EtabsGeometryExport.Model.HelperClasses
 {
     public static class ValidationHelper
     {

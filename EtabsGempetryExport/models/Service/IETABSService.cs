@@ -1,9 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using ElementsData;
-using ElementsData.Geometry;
+﻿using ElementsData.Geometry;
 
-namespace EtabsGempetryExport.Model.Service
+namespace EtabsGeometryExport.Model.Service
 {
 
 

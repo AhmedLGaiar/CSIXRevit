@@ -21,7 +21,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExportJsonFileFromRevit", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Auto_Sheets", "Auto_Sheets\Auto_Sheets.csproj", "{C3DF6025-6510-44C6-BC61-E9C40A2F3900}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EtabsGempetryExport", "EtabsGempetryExport\EtabsGempetryExport.csproj", "{60130F0A-3A5E-4C54-AA0E-80E495884635}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EtabsGeometryExport", "EtabsGempetryExport\EtabsGeometryExport.csproj", "{60130F0A-3A5E-4C54-AA0E-80E495884635}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,4 +1,4 @@
-﻿namespace EtabsGempetryExport.Model.Service
+﻿namespace EtabsGeometryExport.Model.Service
 {
 
     /// <summary>

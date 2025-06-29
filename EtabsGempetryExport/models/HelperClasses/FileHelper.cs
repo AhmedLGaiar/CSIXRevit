@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
 
-namespace EtabsGempetryExport.Model.HelperClasses
+namespace EtabsGeometryExport.Model.HelperClasses
 {
     public static class FileHelper
     {
