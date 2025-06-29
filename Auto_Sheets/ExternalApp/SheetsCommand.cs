@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Auto_Sheets.Views;
+﻿using Auto_Sheets.Views;
 using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 
-namespace Auto_Sheets.ExtenalApp
+namespace Auto_Sheets.ExternalApp
 {
     [Transaction(TransactionMode.Manual)]
     public class SheetsCommand : IExternalCommand
