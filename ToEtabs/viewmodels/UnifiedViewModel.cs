@@ -9,14 +9,13 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Win32;
 using Newtonsoft.Json;
-using CSIXRevit.LoadData;
 using ETABSv1;
 using ElementsData;
 using ToEtabs.Importers;
 using ToEtabs;
 using ToEtabs.Utilities;
 using ElementsData.Geometry;
-using loadData; // Added for SyncReport
+using LoadData; // Added for SyncReport
 
 namespace ToEtabs.ViewModels
 {

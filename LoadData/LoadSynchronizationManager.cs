@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Diagnostics;
 using ETABSv1;
-using loadData; // For SyncReport
+using LoadData;
 
-namespace CSIXRevit.LoadData
+namespace LoadData
 {
     public class LoadSynchronizationManager
     {
