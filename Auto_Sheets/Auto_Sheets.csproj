@@ -20,9 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Microsoft.Xaml.Behaviors">
-      <HintPath>..\..\..\..\Desktop\Auto_Sheets\Auto_Sheets\bin\Release\Microsoft.Xaml.Behaviors.dll</HintPath>
-    </Reference>
     <Reference Include="RevitAPI">
       <HintPath>..\..\..\..\..\..\..\Program Files\Autodesk\Revit 2022\RevitAPI.dll</HintPath>
     </Reference>
@@ -59,7 +56,4 @@
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 	</ItemGroup>
-
-
-
 </Project>
