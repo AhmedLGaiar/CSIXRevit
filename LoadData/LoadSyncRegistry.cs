@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using System.IO;
 
-namespace CSIXRevit.LoadData
+namespace LoadData
 {
     public class LoadSyncRegistry
     {

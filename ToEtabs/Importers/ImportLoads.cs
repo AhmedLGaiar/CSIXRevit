@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using ETABSv1;
-using CSIXRevit.LoadData;
 using Newtonsoft.Json;
-using loadData;
+using LoadData;
 
 namespace CSIXRevit.ToEtabs
 {

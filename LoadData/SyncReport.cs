@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace loadData
+namespace LoadData
 
 {
     public class SyncReport
