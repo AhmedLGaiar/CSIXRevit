@@ -6,12 +6,20 @@
 		<UseWPF>true</UseWPF>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<LangVersion>latest</LangVersion>
-				
-	</PropertyGroup>
+		</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
 	  <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+	  
+		<PackageReference Include="Costura.Fody" Version="6.0.0"> 
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildTransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Fody" Version="6.9.0">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildTransitive</IncludeAssets>
+		</PackageReference>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -23,6 +31,7 @@
 	<ItemGroup>
 	  <Reference Include="ETABSv1">
 	    <HintPath>..\..\..\..\Program Files\Computers and Structures\ETABS 22\ETABSv1.dll</HintPath>
+	    <Private>False</Private> 
 	  </Reference>
 	</ItemGroup>
 
